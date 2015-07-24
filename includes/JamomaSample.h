@@ -122,6 +122,33 @@ namespace Jamoma {
 				std::fill(channel.begin(), channel.end(), value);
 		}
 		
+		/** Copy value into the SampleBundle from outside. */
+		template <typename T>
+		void copyIn(int channel, int frameCount, T* values)
+		{
+			assert(frameCount == this->frameCount());
+				   
+			SampleVector& vector = this->at(channel);
+
+			for (int i=0; i<frameCount; i++)
+				vector[i] = values[i];
+		}
+		
+		
+		/** Copy value out of the SampleBundle to an outside sink. */
+		template <typename T>
+		void copyOut(int channel, int frameCount, T* values)
+		{
+			assert(frameCount == this->frameCount());
+			
+			SampleVector& vector = this->at(channel);
+			
+			for (int i=0; i<frameCount; i++)
+				values[i] = vector[i];
+		}
+		
+
+		
 		/* perhaps the following would be better as an "apply" method or something?
 		 template <class T>
 		 void operator()(SharedSampleBundle& out, T target) const
