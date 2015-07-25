@@ -56,7 +56,6 @@ namespace Jamoma {
 		AudioObject() = default;
 		
 		
-		Parameter<bool> bypass = {this, "bypass", false};
 
 		
 		Parameter<int>	channelCount = { this, "channelCount", 1,
