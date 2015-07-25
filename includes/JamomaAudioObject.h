@@ -143,7 +143,7 @@ namespace Jamoma {
 #pragma mark -
 #pragma mark Implementation of AdaptingSampleBundle
 	
-	AdaptingSampleBundle::AdaptingSampleBundle(AudioObject* owner)
+	inline AdaptingSampleBundle::AdaptingSampleBundle(AudioObject* owner)
 	: mOwner(owner)
 	{
 		mOwner->registerAdaptingSampleBundle(this);	// register with owner so we can get notifications
@@ -158,7 +158,7 @@ namespace Jamoma {
 		@param	input	The linear gain value to convert.
 		@return			Converted decibel value.
 	 */
-	double linearGainToDecibels(double input)
+	inline double linearGainToDecibels(double input)
 	{
 		if (input < 0.0)
 			return 0.0;
@@ -170,7 +170,7 @@ namespace Jamoma {
 		@param	input	The decibel value to convert.
 		@return			The converted linear gain value.
 	 */
-	double decibelsToLinearGain(double input)
+	inline double decibelsToLinearGain(double input)
 	{
 		return(pow(10.0, (input / 20.0)));
 	}
