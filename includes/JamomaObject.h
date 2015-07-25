@@ -48,9 +48,19 @@ namespace Jamoma {
 		// how does that all work?
 		
 		
+		/** send a message to the object dynamically
+		 */
+		ValueBase send(const String& name, const ValueBase& input)
+		{
+			return Value<int>(0);	// stub
+		};
 		
-		ValueBase send(const String& name, const ValueBase& input) { return Value<int>(0); };
-		ValueBase send(const String& name) { return Value<int>(0); };
+		/** send a message to the object dynamically 
+		 */
+		ValueBase send(const String& name)
+		{
+			return Value<int>(0);	// stub
+		};
 		
 		
 		// Allows us a unified means for referencing a Parameter of any template-specialization

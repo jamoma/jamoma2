@@ -7,6 +7,15 @@ A header-only C++ library for building dynamic and reflexive systems with an emp
 
 ## Notable Shifts in Thinking from Jamoma1
 
+### Fewer 'Amenities'
+
+We've eliminated the inherited **bypass** for every object.
+We've eliminated the inherited **gain** for every object.
+
+These services are not free, not always appropriate, sometimes redundant, and better implemented on an as-needed basis in a way that is idiomatic to the algorithm at hand.
+
+We have not discussed the **mute** option explicitly. In general the sentiment of the Florida workshop was that things like this are perhaps better left as a function of the graph instead of as baked-in to the unit generators themselves.
+
 ### DSP Calculation
 
 Back in the PPC processor days we paid a very heavy penalty for branching instructions in the code. As such the original JamomaDSP (or TTBlue as it was then called) went to extreme lengths to optimize by eliminating such branching.  In the case of the DSP calculation routine this meant that we wanted to avoid `if/else` clauses and we did so by creating separate calculation routines and pointed to the routine we wanted by calling through one or more function pointers.

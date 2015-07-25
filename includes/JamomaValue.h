@@ -44,6 +44,9 @@ namespace Jamoma {
 		}
 		
 		
+		/** Default constructor with no specialization. 
+			Intended for internal use only.
+		 */
 		ValueBase()
 		{}
 		
@@ -84,30 +87,47 @@ namespace Jamoma {
 	
 	
 	/**	Value specialization for most basic types of data.
+		This specialization assumes that the data is a stored directly on the stack and the type is not some sort of pointer or reference.
+		TODO: can we use some type deduction to perform some compile-time assertions?
 	 */
 	template <class T>
 	class Value : public ValueBase {
 	public:
+		/** Create an uninitialized Value.
+			Initializing the value at construction is preferred.
+		 */
 		Value()
 		{
 			mType = &typeid(T);
 		}
 		
-		
+		/** Create an initialized Value.
+			@param	initial	The value with which to initialize.
+		 */
 		Value(T initial)
 		{
 			*this = initial;
 		}
 		
+
+		Value(const Value&) = default;	// using the default copy constructor
+
 		
+		/**	Assignment operator from another Value.
+			@param	value	The value from which to assign.
+		 */
 		Value& operator = (const ValueBase& value)
 		{
 			mType = &typeid(T);
-			mData = value.mData; // TODO: but if it's a pointer we need a copy, use a shared_pointer, or ???
+			mData = value.mData;
 			return *this;
 		}
 		
 		
+		/**	Assignment operator.
+			@param	value	The value from which to assign. 
+							Type conversions will be done prior to assignment.
+		 */
 		Value& operator = (const T value)
 		{
 			mType = &typeid(T);
@@ -116,6 +136,9 @@ namespace Jamoma {
 		}
 		
 		
+		/**	Casting operator to fetch the value.
+			@return	The value.
+		 */
 		operator T() const
 		{
 			T value;
@@ -130,6 +153,9 @@ namespace Jamoma {
 	template <>
 	class Value<Function> : public ValueBase {
 	public:
+		/** Create an uninitialized Function Value.
+			Initializing the value at construction is preferred.
+		 */
 		Value()
 		{
 			mType = &typeid(Function);
@@ -137,20 +163,34 @@ namespace Jamoma {
 		}
 		
 		
+		/** Create a Value initialized with a Function.
+			@param	initial		The Function with which to initialize.
+		 */
 		Value(Function initial)
 		{
-			mType = &typeid(Function);
 			memcpy(mData, *(char**) new Function, sizeof(char)*8);
 			*this = initial;
 		}
 		
 		
+		/** Copy constructor */
+		Value(const Value& other)
+		{
+			memcpy(mData, *(char**) new Function, sizeof(char)*8);
+			*this = other;
+		}
+
+		
+		/** Destructor */
 		virtual ~Value()
 		{
 			delete (Function*)mData;
 		}
 		
 		
+		/**	Assignment operator.
+			@param	value	The Function to be assigned.
+		 */
 		Value& operator = (const Function value)
 		{
 			mType = &typeid(Function);
@@ -159,10 +199,14 @@ namespace Jamoma {
 		}
 		
 		
+		/**	Casting operator to fetch the Function.
+			@return	The Function.
+		 */
 		operator Function() const
 		{
 			return *(Function*)mData;
 		}
 	};
+	
 
 } // namespace Jamoma
