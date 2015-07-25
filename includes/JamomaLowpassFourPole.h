@@ -15,6 +15,8 @@ namespace Jamoma {
 	
 	class LowpassFourPole : public AudioObject {
 		
+		// TODO: change the below to use 2 bundles of 4 frames each
+		
 		AdaptingSampleBundle		mX1 = {this};					///< previous input sample for each channel
 		AdaptingSampleBundle		mX2 = {this};					///< 2nd previous input sample for each channel
 		AdaptingSampleBundle		mX3 = {this};					///< 3rd previous input sample for each channel

@@ -13,26 +13,28 @@
 
 namespace Jamoma {
 
-	/**	A generic circular buffer designed specifically
-		for access from a single thread.
+	
+	/**	A generic circular buffer designed specifically for access from a single thread.
 	 */
 	template <class T>
 	class CircularStorage {
 		
-		std::vector<T>		mItems;
-		std::size_t			mIndex = { 0 };
-		std::thread::id		mThread = { std::this_thread::get_id() };
+		std::vector<T>		mItems;										///< storage for the circular buffer's data
+		std::size_t			mIndex = { 0 };								///< location of the record head
+		std::thread::id		mThread = { std::this_thread::get_id() };	///< used to ensure we don't access unsafely from multiple threads
 	
 	public:
 		/** Constructor specifies a fixed size for the container.
-			If you want a different size, create a new container.
+			If you want a different size, create a new container and dispose of the one you don't want.
 		 */
 		CircularStorage(std::size_t itemCount)
 		: mItems(itemCount)
 		{}
 		
 		
-		/** Write a block of things into the container. */
+		/** Write a block of things into the container. 
+			@param	newInput	A block of things to add. May not be larger than the size of the buffer.
+		 */
 		void write(const std::vector<T>& newInput)
 		{
 			assert(std::this_thread::get_id() == mThread);
@@ -61,7 +63,11 @@ namespace Jamoma {
 		
 		
 		/** Read a block of things out from the container.
-			These will be the N most recent items added to the history. */
+			These will be the N most recent items added to the history.
+			@param	output	A place to write the block of things from the buffer. 
+							The size of this buffer will determine the number of things to request. 
+							May not be larger than the size of the buffer.
+		 */
 		void read(std::vector<T>& output)
 		{
 			assert(std::this_thread::get_id() == mThread);
@@ -87,5 +93,6 @@ namespace Jamoma {
 			}
 		}
 	};
+	
 	
 } // namespace Jamoma

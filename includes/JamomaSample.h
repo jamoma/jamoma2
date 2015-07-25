@@ -331,5 +331,9 @@ namespace Jamoma {
 		
 	};
 
+
+	/** Instance of an empty/default sampleBundle for use as a default function parameter. */
+	static const SampleBundle kSampleBundleNone;
+
 	
 } // namespace Jamoma
