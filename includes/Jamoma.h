@@ -13,6 +13,7 @@
 #include <unordered_map>
 
 
+namespace Jamoma {
 
 using String = std::string;
 using Function = std::function<void(void)>;
@@ -36,7 +37,7 @@ T Limit(T input, T low, T high)
 }
 
 
-
+}  // namespace Jamoma
 
 
 #include "JamomaSymbol.h"

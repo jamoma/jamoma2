@@ -124,25 +124,20 @@ namespace Jamoma {
 		}
 		
 		
-		SharedSampleBundle operator()(const SampleBundle& x)
+		SharedSampleBundleGroup operator()(const SampleBundle& x)
 		{
 			auto out = mOutput;
-			out->adapt(x);
+			out.adapt(x);
 			channelCount = (int)x.channelCount();
 			
 			for (int channel=0; channel < x.channelCount(); channel++) {
 				for	(int i=0; i < x.frameCount(); i++)
-					(*out)[channel][i] = (*this)(x[channel][i], channel);
+					out[0][channel][i] = (*this)(x[channel][i], channel);
 			}
 			return out;
 		}
 		
-		
-		SharedSampleBundle operator()(const SharedSampleBundle& x)
-		{
-			return (*this)(*x);
-		}
 	};
 	
 
-}
+} // namespace Jamoma

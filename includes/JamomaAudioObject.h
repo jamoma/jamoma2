@@ -37,7 +37,7 @@ namespace Jamoma {
 			While an optimization could be made to share the output buffers (like MSP does), it's not clear how that would be represented here.
 			This seems somehow more declarative?
 		 */
-		SharedSampleBundle mOutput = std::make_shared<SampleBundle>();
+		SharedSampleBundleGroup mOutput;
 
 		
 		
@@ -61,7 +61,7 @@ namespace Jamoma {
 		
 		Parameter<int>	channelCount = { this, "channelCount", 1,
 			[this]{
-				mOutput->resizeChannels(channelCount);
+				mOutput.resizeChannels(channelCount);
 				
 				// resize all AdaptingSampleVector instances for this class
 				for (auto* asb : mAdaptingSampleBundles)
@@ -73,7 +73,7 @@ namespace Jamoma {
 		// used for initializing output to avoid resizing at perform time
 		// also important for generator units
 		Parameter<int>	frameCount = { this, "frameCount", 1,
-									  [this]{ mOutput->resizeFrames(frameCount); }
+									  [this]{ mOutput.resizeFrames(frameCount); }
 		};
 		
 		
@@ -81,26 +81,17 @@ namespace Jamoma {
 		
 		
 		virtual Sample operator()(const Sample x) = 0;
-//		{
-//			return 0.0;
-//			return (*this)(x);
-//		}
 
 		
-		virtual SharedSampleBundle operator()(const SampleBundle& x) = 0;
-//		{
-//			auto out = mOutput;
-//			out->adapt(x);
-//
-//			for (int channel=0; channel<x.channelCount(); channel++)
-//				std::transform(x[channel].begin(), x[channel].end(), out->at(channel).begin(), *this);
-//
-//			return out;
-//		}
-	public:
-		virtual SharedSampleBundle operator()(const SharedSampleBundle& x) = 0;
+		virtual SharedSampleBundleGroup operator()(const SampleBundle& x) = 0;
 
+	
+		virtual SharedSampleBundleGroup operator()(const SharedSampleBundleGroup x)
+		{
+			return (*this)(x[0]);
+		}
 		
+
 
 	/*
 		class SampleFunction {
@@ -210,7 +201,7 @@ namespace Jamoma {
 
 	/** empty/default sampleBundle */
 	static const SampleBundle kSampleBundleNone;
-	static const SharedSampleBundle kSharedSampleBundleNone = {std::make_shared<SampleBundle>()};
+	static const SampleBundle kSharedSampleBundleNone;
 	
 	
 	
@@ -223,4 +214,4 @@ namespace Jamoma {
 	}
 
 	
-}
+} // namespace Jamoma

@@ -188,4 +188,4 @@ namespace Jamoma {
 		
 	};
 
-}
+} // namespace Jamoma

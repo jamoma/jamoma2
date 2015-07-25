@@ -59,7 +59,7 @@ void SampleBundleAndGainTest()
 	auto out_samples = my_gain(in_samples);
 	
 	my_gain.gain = 0.25;
-	in_samples = *out_samples;
+	in_samples = out_samples;
 	out_samples = my_gain(in_samples);
 	
 	// samplebundle
@@ -75,13 +75,12 @@ void SampleBundleAndGainTest()
 
 class MyGraph {
 public:
-	Jamoma::Noise				random;
-	Jamoma::Noise				noise;
-	Jamoma::Dcblock				dcblock;
-	Jamoma::LowpassFourPole		lowpass;
-	Jamoma::SharedSampleBundle	output = std::make_shared<Jamoma::SampleBundle>();
-	int							i = 0;
-	
+	Jamoma::Noise					random;
+	Jamoma::Noise					noise;
+	Jamoma::Dcblock					dcblock;
+	Jamoma::LowpassFourPole			lowpass;
+	Jamoma::SharedSampleBundleGroup	output;
+
 	
 	MyGraph()
 	{
@@ -96,11 +95,11 @@ public:
 	
 	void process(float*	out,  unsigned long framesPerBuffer)
 	{
-		output = lowpass( dcblock( noise() ) ); // our graph!
+		output = lowpass( dcblock( noise() ) );		// our "graph"
 		
 		for (int i=0; i<framesPerBuffer; i++ ) {
-			*out++ = (*output)[0][i];
-			*out++ = (*output)[1][i];
+			*out++ = output[0][0][i];
+			*out++ = output[0][1][i];
 		}
 	}
 	

@@ -10,4 +10,4 @@ namespace Jamoma {
 		Symbol& operator = (String str) { return *this; }
 	};
 
-}
+} // namespace Jamoma

@@ -29,21 +29,16 @@ namespace Jamoma {
 		}
 		
 		
-		SharedSampleBundle operator()(const SampleBundle& x = kSampleBundleNone)
+		SharedSampleBundleGroup operator()(const SampleBundle& x = kSampleBundleNone)
 		{
 			auto out = mOutput;
 
-			for (int channel=0; channel < out->channelCount(); channel++)
-				for	(auto& sample : out->at(channel))
+			for (int channel=0; channel < out.channelCount(); channel++)
+				for	(auto& sample : out[0][channel])
 					sample = (*this)(0.0);
 			return out;
 		}
 		
-		
-		SharedSampleBundle operator()(const SharedSampleBundle& x)
-		{
-			return (*this)(*x);
-		}
 	};
 	
-}
+} // namespace Jamoma
