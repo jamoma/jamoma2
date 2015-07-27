@@ -4,7 +4,7 @@
  *
  * @brief Apply gain to samples.
  *
- * @details This #AudioObject scales the values within a #Sample or #SampleBundle according to the current value of its gain #Parameter. Gain is currently represented internally as linear gain using a double.
+ * @details This #AudioObject scales the values within a #Sample or #SampleBundle according to the current value of its gain #Parameter. <a href="https://en.wikipedia.org/wiki/Gain">Gain</a> is currently represented internally as linear gain using a double.
  *
  * @author Timothy Place, Nathan Wolek
  *
