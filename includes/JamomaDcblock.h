@@ -1,17 +1,17 @@
 /** @file
- *
- * @ingroup jamoma2
- *
- * @brief Block DC offset within samples.
- *
- * @details This #AudioObject removes DC offset (sometimes called <a href="https://en.wikipedia.org/wiki/DC_bias">DC bias</a> from a #Sample or #SampleBundle. 
- * The process is acheived by applying a first-order highpass filter to the input.
- *
- * @author Timothy Place, Nathan Wolek
- *
- * @copyright Copyright © 2015 by Jamoma authors and contributors @n
- * This code is licensed under the terms of the "BSD 3-Clause License" @n
- * https://github.com/jamoma/jamoma2/blob/master/LICENSE.md @n
+	
+	@ingroup jamoma2
+	
+	@brief Block DC offset within samples.
+	
+	@details This #AudioObject removes DC offset (sometimes called <a href="https://en.wikipedia.org/wiki/DC_bias">DC bias</a> from a #Sample or #SampleBundle. 
+	The process is acheived by applying a first-order highpass filter to the input.
+	
+	@author Timothy Place, Nathan Wolek
+	
+	@copyright Copyright © 2015 by Jamoma authors and contributors @n
+	This code is licensed under the terms of the "BSD 3-Clause License" @n
+	https://github.com/jamoma/jamoma2/blob/master/LICENSE.md @n
  */
 
 #pragma once

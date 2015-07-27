@@ -1,17 +1,17 @@
 /** @file
- *
- * @ingroup jamoma2
- *
- * @brief Create Jamoma AudioObject instances.
- *
- * @details Parent class for all AudioObjects within the Jamoma library. 
- * Defines common features such as frameCount, sampleRate and operator().
- *
- * @author Timothy Place, Nathan Wolek
- *
- * @copyright Copyright © 2015 by Jamoma authors and contributors @n
- * This code is licensed under the terms of the "BSD 3-Clause License" @n
- * https://github.com/jamoma/jamoma2/blob/master/LICENSE.md @n
+	
+	@ingroup jamoma2
+	
+	@brief Create Jamoma AudioObject instances.
+	
+	@details Parent class for all AudioObjects within the Jamoma library. 
+	Defines common features such as frameCount, sampleRate and operator().
+	
+	@author Timothy Place, Nathan Wolek
+	
+	@copyright Copyright © 2015 by Jamoma authors and contributors @n
+	This code is licensed under the terms of the "BSD 3-Clause License" @n
+	https://github.com/jamoma/jamoma2/blob/master/LICENSE.md @n
  */
 
 #pragma once

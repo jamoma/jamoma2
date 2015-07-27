@@ -1,18 +1,18 @@
 /** @file
- *
- * @ingroup jamoma2
- *
- * @brief Read and write items within a circular container.
- *
- * @details Allows items of a single datatype to be written into a vector that wraps around to the beginning whenever the end is exceeded. 
- * Reading items from the vector can then return chunks of the N most recent items. 
- * The initial design of this class was for use as an audio sample delay buffer, however it's functionality has been generalized to allow for other datatypes and applications.
- *
- * @author Timothy Place, Nathan Wolek
- *
- * @copyright Copyright © 2015 by Jamoma authors and contributors @n
- * This code is licensed under the terms of the "BSD 3-Clause License" @n
- * https://github.com/jamoma/jamoma2/blob/master/LICENSE.md @n
+	
+	@ingroup jamoma2
+	
+	@brief Read and write items within a circular container.
+	
+	@details Allows items of a single datatype to be written into a vector that wraps around to the beginning whenever the end is exceeded. 
+	Reading items from the vector can then return chunks of the N most recent items. 
+	The initial design of this class was for use as an audio sample delay buffer, however it's functionality has been generalized to allow for other datatypes and applications.
+	
+	@author Timothy Place, Nathan Wolek
+	
+	@copyright Copyright © 2015 by Jamoma authors and contributors @n
+	This code is licensed under the terms of the "BSD 3-Clause License" @n
+	https://github.com/jamoma/jamoma2/blob/master/LICENSE.md @n
  */
 
 #pragma once
