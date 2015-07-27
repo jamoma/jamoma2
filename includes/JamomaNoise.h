@@ -4,9 +4,6 @@
 	
 	@brief Generate random samples to produce noise.
 	
-	@details This #AudioObject generates <a href="https://en.wikipedia.org/wiki/White_noise">white noise</a> by filling a #Sample or #SampleBundle with random values. 
-	These values are generated using the <a href="https://en.wikipedia.org/wiki/Mersenne_Twister">Mersenne Twister algorithm</a>.
-	
 	@author Timothy Place, Nathan Wolek
 	
 	@copyright Copyright © 2015 by Jamoma authors and contributors @n
@@ -22,6 +19,9 @@
 
 namespace Jamoma {
 	
+	/**	This #AudioObject generates <a href="https://en.wikipedia.org/wiki/White_noise">white noise</a> by filling a #Sample or #SampleBundle with random values.
+		These values are generated using the <a href="https://en.wikipedia.org/wiki/Mersenne_Twister">Mersenne Twister algorithm</a>.
+	 */
 	class Noise : public AudioObject {
 		
 		MTRand	mTwister;	///< Class implementing Mersenne Twister algorithm

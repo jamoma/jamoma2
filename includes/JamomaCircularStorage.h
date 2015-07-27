@@ -4,10 +4,6 @@
 	
 	@brief Read and write items within a circular container.
 	
-	@details Allows items of a single datatype to be written into a vector that wraps around to the beginning whenever the end is exceeded. 
-	Reading items from the vector can then return chunks of the N most recent items. 
-	The initial design of this class was for use as an audio sample delay buffer, however it's functionality has been generalized to allow for other datatypes and applications.
-	
 	@author Timothy Place, Nathan Wolek
 	
 	@copyright Copyright © 2015 by Jamoma authors and contributors @n
@@ -24,6 +20,11 @@ namespace Jamoma {
 
 	
 	/**	A generic circular buffer designed specifically for access from a single thread.
+	 
+		Allows items of a single datatype to be written into a vector that wraps around to the beginning whenever the end is exceeded.
+		Reading items from the vector can then return chunks of the N most recent items.
+		The initial design of this class was for use as an audio sample delay buffer, 
+		however it's functionality has been generalized to allow for other datatypes and applications.
 	 */
 	template <class T>
 	class CircularStorage {

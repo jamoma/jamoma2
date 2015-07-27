@@ -4,9 +4,6 @@
 	
 	@brief Apply gain to samples.
 	
-	@details This #AudioObject scales the values within a #Sample or #SampleBundle according to the current value of its gain #Parameter. 
-	<a href="https://en.wikipedia.org/wiki/Gain">Gain</a> is currently represented internally as linear gain using a double.
-	
 	@author Timothy Place, Nathan Wolek
 	
 	@copyright Copyright © 2015 by Jamoma authors and contributors @n
@@ -21,6 +18,10 @@
 
 namespace Jamoma {
 
+	
+	/**	This #AudioObject scales the values within a #Sample or #SampleBundle according to the current value of its gain #Parameter.
+		<a href="https://en.wikipedia.org/wiki/Gain">Gain</a> is currently represented internally as linear gain using a double.
+	 */
 	class Gain : public AudioObject {
 	public:
 		static constexpr Classname classname = { "gain" };

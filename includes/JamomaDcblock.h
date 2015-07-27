@@ -3,10 +3,7 @@
 	@ingroup jamoma2
 	
 	@brief Block DC offset within samples.
-	
-	@details This #AudioObject removes DC offset (sometimes called <a href="https://en.wikipedia.org/wiki/DC_bias">DC bias</a> from a #Sample or #SampleBundle. 
-	The process is acheived by applying a first-order highpass filter to the input.
-	
+		
 	@author Timothy Place, Nathan Wolek
 	
 	@copyright Copyright © 2015 by Jamoma authors and contributors @n
@@ -21,6 +18,10 @@
 
 namespace Jamoma {
 
+	
+	/**	This #AudioObject removes DC offset (sometimes called <a href="https://en.wikipedia.org/wiki/DC_bias">DC bias</a> from a #Sample or #SampleBundle.
+		The process is acheived by applying a first-order highpass filter to the input.
+	 */
 	class Dcblock : public AudioObject {
 		
 		AdaptingSampleBundle	mX = { this };	// input history -- AdaptingSampleBundle type will update channelCount automagically as needed
