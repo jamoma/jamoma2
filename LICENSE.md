@@ -1,4 +1,5 @@
-Copyright (c) 2015, Jamoma authors and contributors
+Copyright (c) 2015, Jamoma authors and contributors:
+Timothy Place, Nathan Wolek, Trond Lossius, Nils Peters, Jan Schacher.
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
