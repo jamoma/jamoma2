@@ -112,7 +112,10 @@ namespace Jamoma {
 		
 		Sample operator()(Sample x, int channel)
 		{
-			Sample y = x;
+			// the original source of this algorithm appears to be here:
+            // http://musicdsp.org/archive.php?classid=3#26
+            
+            Sample y = x;
 			
 			y -= mY4[channel][0] * mCoefficientFB;
 			//TTZeroDenormal(y);
