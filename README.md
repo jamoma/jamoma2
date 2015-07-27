@@ -3,6 +3,13 @@ A header-only C++ library for building dynamic and reflexive systems with an emp
 
 
 
+## Why Are We Doing This?
+
+Jamoma1 and its codebase have grown in a number of exciting and unanticipated directions over the past 10 years.  Additionally, the tools with which we build the codebase (C++11/C++14) and our understanding of computer science and best practices have shifted dramatically.
+
+We desperately need an easier-to-maintain, faster-to-build, quicker-to-debug, and more readily understandable means of coding if we are to further expand the platforms and targets with which we work.
+
+Furthermore, a number of difficult problems have dogged Jamoma1 for many years, leading to the conclusion that parts of the codebase such as the Graph/AudioGraph as they currently exist are dead-ends. These problems include a lack of thread-safety which leads to e.g. audio anomalies that occur only occasionally and are rarely reproducible. We also have complex problems with race conditions leading to both deadlock and memory leaks, especially in the AudioGraph.
 
 
 ## Notable Shifts in Thinking from Jamoma1
