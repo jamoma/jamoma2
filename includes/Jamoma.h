@@ -8,9 +8,9 @@
  *
  * @author Timothy Place, Nathan Wolek
  *
- * @copyright Copyright © 2015 by Timothy Place @n
+ * @copyright Copyright © 2015 by Jamoma authors and contributors @n
  * This code is licensed under the terms of the "BSD 3-Clause License" @n
- * http://opensource.org/licenses/BSD-3-Clause
+ * https://github.com/jamoma/jamoma2/blob/master/LICENSE.md @n
  */
 
 #pragma once
