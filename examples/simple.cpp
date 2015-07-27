@@ -84,19 +84,95 @@ void LowpassFourPoleTest()
     Jamoma::LowpassFourPole my_lowpass;
     
     my_lowpass.sampleRate = 44100;
-    int halfSampleRate = my_lowpass.sampleRate / 2;
-    std::cout << "the sampleRate of my_lowpass is " << halfSampleRate << std::endl;
+    int quarterSampleRate = my_lowpass.sampleRate / 4;
+    std::cout << "the sampleRate of my_lowpass is " << quarterSampleRate << std::endl;
     
-    my_lowpass.frequency = halfSampleRate;
+    my_lowpass.frequency = quarterSampleRate;
     my_lowpass.q = 1.0;
     
     Jamoma::SampleBundle impulse(1, 64);
     impulse[0][0] = 1.0;
     
+    Jamoma::SampleVector expectedImpulse = {
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0, 
+        0.0, 
+        0.0, 
+        0.0, 
+        0.0, 
+        0.0, 
+        0.0, 
+        0.0, 
+        0.0, 
+        0.0, 
+        0.0, 
+        0.0, 
+        0.0, 
+        0.0, 
+        0.0, 
+        0.0, 
+        0.0, 
+        0.0, 
+        0.0, 
+        0.0, 
+        0.0, 
+        0.0, 
+        0.0, 
+        0.0, 
+        0.0, 
+        0.0, 
+        0.0, 
+        0.0, 
+        0.0, 
+        0.0, 
+        0.0, 
+        0.0, 
+        0.0, 
+        0.0, 
+        0.0, 
+        0.0
+    };
+    
+    int badSampleCount = 0;
+    
+    for (int i = 0; i < expectedImpulse.size(); i++)
+    {
+        if (expectedImpulse[i] != impulse[0][i]) badSampleCount++;
+    }
+    
+    std::cout << "the impulse signal has " << badSampleCount << " bad samples" << std::endl;
+    
     auto out_samples = my_lowpass(impulse);
     
     // the following impulse is based on
-    // cutoff = half the sample rate
+    // cutoff = fourth the sample rate
     // q = 1.0
     Jamoma::SampleVector expectedIR = {
         0.0396224419529398,
@@ -165,14 +241,14 @@ void LowpassFourPoleTest()
         -9.067604089159774E-8
     };
     
-    int badSampleCount = 0;
+    badSampleCount = 0;
     Jamoma::Sample temp = 0.0;
 
     for (int i = 0; i < expectedIR.size(); i++)
     {
         temp = out_samples[0][0][i];
         if (expectedIR[i] != temp) badSampleCount++;
-        std::cout << temp - expectedIR[i]  << std::endl;
+        // std::cout << temp - expectedIR[i]  << std::endl; // look at difference
     }
     
     std::cout << "the impulse response of my_lowpass has " << badSampleCount << " bad samples" << std::endl;
