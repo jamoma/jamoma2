@@ -1,10 +1,17 @@
-//
-//  JamomaObject.h
-//  JamomaExperiments
-//
-//  Created by Timothy Place on 3/27/15.
-//  Copyright (c) 2015 jamoma. All rights reserved.
-//
+/** @file
+ *
+ * @ingroup jamoma2
+ *
+ * @brief Store samples in a chunk of memory.
+ *
+ * @details Defines the Sample datatype and several layers of containers for representing the relationship between Samples in memory. These containers in order from lowest to highest level are referred to as Sample, SampleVector, SampleBundle, and SampleBundleGroup.
+ *
+ * @author Timothy Place, Nathan Wolek
+ *
+ * @copyright Copyright © 2015 by Jamoma authors and contributors @n
+ * This code is licensed under the terms of the "BSD 3-Clause License" @n
+ * https://github.com/jamoma/jamoma2/blob/master/LICENSE.md @n
+ */
 
 #pragma once
 
