@@ -970,7 +970,6 @@
 		228D55551B629DE3007024D6 /* JamomaLowpassFourPole.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JamomaLowpassFourPole.h; sourceTree = "<group>"; };
 		228D55561B629DE3007024D6 /* JamomaNoise.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JamomaNoise.h; sourceTree = "<group>"; };
 		228D55571B629DE3007024D6 /* JamomaObject.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = JamomaObject.h; path = ../includes/JamomaObject.h; sourceTree = "<group>"; };
-		228D55581B629DE3007024D6 /* JamomaOverdrive.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JamomaOverdrive.h; sourceTree = "<group>"; };
 		228D55591B629DE3007024D6 /* JamomaSample.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = JamomaSample.h; path = ../includes/JamomaSample.h; sourceTree = "<group>"; };
 		228D555A1B629DE3007024D6 /* JamomaSymbol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = JamomaSymbol.h; path = ../includes/JamomaSymbol.h; sourceTree = "<group>"; };
 		228D555B1B629DE3007024D6 /* JamomaValue.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = JamomaValue.h; path = ../includes/JamomaValue.h; sourceTree = "<group>"; };
@@ -3224,7 +3223,6 @@
 				228D55541B629DE3007024D6 /* JamomaGain.h */,
 				228D55551B629DE3007024D6 /* JamomaLowpassFourPole.h */,
 				228D55561B629DE3007024D6 /* JamomaNoise.h */,
-				228D55581B629DE3007024D6 /* JamomaOverdrive.h */,
 			);
 			name = units;
 			path = ../includes;

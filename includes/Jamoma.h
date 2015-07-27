@@ -1,10 +1,18 @@
-//
-//  JamomaObject.h
-//  JamomaExperiments
-//
-//  Created by Timothy Place on 3/27/15.
-//  Copyright (c) 2015 jamoma. All rights reserved.
-//
+/** @file
+ *
+ * @ingroup jamoma2
+ *
+ * @brief #Jamoma.h is the starting point for the jamoma2 library.
+ *
+ * @details #Jamoma.h can be used to include the entire jamoma2 library in a coding project. 
+ * Using the follow syntax will enable your code to find relevant functions with jamoma2: <CODE>#include "jamoma.h"</CODE>
+ *
+ * @author Timothy Place, Nathan Wolek
+ *
+ * @copyright Copyright © 2015 by Jamoma authors and contributors @n
+ * This code is licensed under the terms of the "BSD 3-Clause License" @n
+ * https://github.com/jamoma/jamoma2/blob/master/LICENSE.md @n
+ */
 
 #pragma once
 
