@@ -1,19 +1,14 @@
 /** @file
- *
- * @ingroup jamoma2
- *
- * @brief Apply a fourth-order low-pass filter to samples.
- *
- * @details This #AudioObject applies a resonant <a href="https://en.wikipedia.org/wiki/Low-pass_filter">low-pass filter</a> to a #Sample or #SampleBundle. 
- * A fourth-order algorithm is used to acheive a relatively flat passband.
- *
- * @warning Note that sudden changes to the cutoff frequency can result in unstable output.
- *
- * @author Timothy Place, Nathan Wolek
- *
- * @copyright Copyright © 2015 by Jamoma authors and contributors @n
- * This code is licensed under the terms of the "BSD 3-Clause License" @n
- * https://github.com/jamoma/jamoma2/blob/master/LICENSE.md @n
+	
+	@ingroup jamoma2
+	
+	@brief Apply a fourth-order low-pass filter to samples.
+	
+	@author Timothy Place, Nathan Wolek
+	
+	@copyright Copyright © 2015 by Jamoma authors and contributors @n
+	This code is licensed under the terms of the "BSD 3-Clause License" @n
+	https://github.com/jamoma/jamoma2/blob/master/LICENSE.md @n
  */
 
 #pragma once
@@ -23,6 +18,11 @@
 namespace Jamoma {
 
 	
+	/**	This #AudioObject applies a resonant <a href="https://en.wikipedia.org/wiki/Low-pass_filter">low-pass filter</a> to a #Sample or #SampleBundle.
+		A fourth-order algorithm is used to acheive a relatively flat passband.
+
+		@warning Note that sudden changes to the cutoff frequency can result in unstable output.
+	 */
 	class LowpassFourPole : public AudioObject {
 		
 		// TODO: change the below to use 2 bundles of 4 frames each

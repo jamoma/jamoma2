@@ -1,16 +1,16 @@
 /** @file
- *
- * @ingroup jamoma2
- *
- * @brief Represents an arbitrary type of value.
- *
- * @details Defines the primary interface used to pass values to and from methods in Jamoma. 
- *
- * @author Timothy Place, Nathan Wolek
- *
- * @copyright Copyright © 2015 by Jamoma authors and contributors @n
- * This code is licensed under the terms of the "BSD 3-Clause License" @n
- * https://github.com/jamoma/jamoma2/blob/master/LICENSE.md @n
+	
+	@ingroup jamoma2
+	
+	@brief Represents an arbitrary type of value.
+	
+	@details Defines the primary interface used to pass values to and from methods in Jamoma. 
+	
+	@author Timothy Place, Nathan Wolek
+	
+	@copyright Copyright © 2015 by Jamoma authors and contributors @n
+	This code is licensed under the terms of the "BSD 3-Clause License" @n
+	https://github.com/jamoma/jamoma2/blob/master/LICENSE.md @n
  */
 
 #pragma once
