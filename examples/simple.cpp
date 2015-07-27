@@ -83,11 +83,15 @@ void LowpassFourPoleTest()
 {
     Jamoma::LowpassFourPole my_lowpass;
     
+    my_lowpass.sampleRate = 44100;
     int halfSampleRate = my_lowpass.sampleRate / 2;
     std::cout << "the sampleRate of my_lowpass is " << halfSampleRate << std::endl;
     
     my_lowpass.frequency = halfSampleRate;
     my_lowpass.q = 1.0;
+    
+    Jamoma::SampleBundle impulse(1, 64);
+    impulse[0][0] = 1.0;
     
     Jamoma::SampleVector expectedIR = {
         0.0396224419529398,
