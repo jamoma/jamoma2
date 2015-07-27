@@ -4,7 +4,8 @@
  *
  * @brief Apply a soft saturation distortion effect to samples.
  *
- * @details This #AudioObject "warms" the signal by applying a small amount of <a href="https://en.wikipedia.org/wiki/Distortion_(music)">distortion</a> to a #Sample or #SampleBundle. It contains two options for the underlying processing algorithm and three options for clipping the initial input.
+ * @details This #AudioObject "warms" the signal by applying a small amount of <a href="https://en.wikipedia.org/wiki/Distortion_(music)">distortion</a> to a #Sample or #SampleBundle. 
+ * It contains two options for the underlying processing algorithm and three options for clipping the initial input.
  *
  * @author Timothy Place, Nathan Wolek
  *

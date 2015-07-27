@@ -4,7 +4,8 @@
  *
  * @brief Apply a fourth-order low-pass filter to samples.
  *
- * @details This #AudioObject applies a resonant <a href="https://en.wikipedia.org/wiki/Low-pass_filter">low-pass filter</a> to a #Sample or #SampleBundle. A fourth-order algorithm is used to acheive a relatively flat passband. 
+ * @details This #AudioObject applies a resonant <a href="https://en.wikipedia.org/wiki/Low-pass_filter">low-pass filter</a> to a #Sample or #SampleBundle. 
+ * A fourth-order algorithm is used to acheive a relatively flat passband.
  *
  * @warning Note that sudden changes to the cutoff frequency can result in unstable output.
  *

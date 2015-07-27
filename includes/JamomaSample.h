@@ -4,7 +4,8 @@
  *
  * @brief Store samples in a chunk of memory.
  *
- * @details Defines the Sample datatype and several layers of containers for representing the relationship between Samples in memory. These containers in order from lowest to highest level are referred to as Sample, SampleVector, SampleBundle, and SampleBundleGroup.
+ * @details Defines the Sample datatype and several layers of containers for representing the relationship between Samples in memory. 
+ * These containers in order from lowest to highest level are referred to as Sample, SampleVector, SampleBundle, and SampleBundleGroup.
  *
  * @author Timothy Place, Nathan Wolek
  *

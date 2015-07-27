@@ -4,7 +4,8 @@
  *
  * @brief #Jamoma.h is the starting point for the jamoma2 library.
  *
- * @details #Jamoma.h can be used to include the entire jamoma2 library in a coding project. Using the follow syntax will enable your code to find relevant functions with jamoma2: <CODE>#include "jamoma.h"</CODE>
+ * @details #Jamoma.h can be used to include the entire jamoma2 library in a coding project. 
+ * Using the follow syntax will enable your code to find relevant functions with jamoma2: <CODE>#include "jamoma.h"</CODE>
  *
  * @author Timothy Place, Nathan Wolek
  *

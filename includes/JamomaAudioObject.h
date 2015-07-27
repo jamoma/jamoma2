@@ -4,7 +4,8 @@
  *
  * @brief Create Jamoma AudioObject instances.
  *
- * @details Parent class for all AudioObjects within the Jamoma library. Defines common features such as frameCount, sampleRate and operator().
+ * @details Parent class for all AudioObjects within the Jamoma library. 
+ * Defines common features such as frameCount, sampleRate and operator().
  *
  * @author Timothy Place, Nathan Wolek
  *

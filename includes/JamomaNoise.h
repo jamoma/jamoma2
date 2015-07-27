@@ -4,7 +4,8 @@
  *
  * @brief Generate random samples to produce noise.
  *
- * @details This #AudioObject generates <a href="https://en.wikipedia.org/wiki/White_noise">white noise</a> by filling a #Sample or #SampleBundle with random values. These values are generated using the <a href="https://en.wikipedia.org/wiki/Mersenne_Twister">Mersenne Twister algorithm</a>.
+ * @details This #AudioObject generates <a href="https://en.wikipedia.org/wiki/White_noise">white noise</a> by filling a #Sample or #SampleBundle with random values. 
+ * These values are generated using the <a href="https://en.wikipedia.org/wiki/Mersenne_Twister">Mersenne Twister algorithm</a>.
  *
  * @author Timothy Place, Nathan Wolek
  *

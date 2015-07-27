@@ -4,7 +4,8 @@
  *
  * @brief Create Jamoma Object instances.
  *
- * @details Parent class for all Objects within the Jamoma library. Defines common features such as Parameters and Messages that are used by all Objects throughout the codebase.
+ * @details Parent class for all Objects within the Jamoma library. 
+ * Defines common features such as Parameters and Messages that are used by all Objects throughout the codebase.
  *
  * @author Timothy Place, Nathan Wolek
  *
