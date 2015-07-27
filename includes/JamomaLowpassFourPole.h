@@ -44,8 +44,8 @@ namespace Jamoma {
 		double		mCoefficientG;			///< filter coefficient
 		
 	public:
-		static constexpr Classname classname = { "gain" };
-		static constexpr auto tags = { "dspEffectsLib", "audio", "processor", "dynamics" };
+		static constexpr Classname classname = { "lowpass.4" };
+		static constexpr auto tags = { "dspEffectsLib", "audio", "processor", "filter", "lowpass" };
 		
 		
 		// filter cutoff frequency
