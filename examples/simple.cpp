@@ -82,8 +82,8 @@ void SampleBundleAndGainTest()
 
 class MyGraph {
 public:
-	Jamoma::Noise					random;
-	Jamoma::Noise					noise;
+	Jamoma::WhiteNoise				random;
+	Jamoma::WhiteNoise				noise;
 	Jamoma::Dcblock					dcblock;
 	Jamoma::LowpassFourPole			lowpass;
 	Jamoma::SharedSampleBundleGroup	output;
