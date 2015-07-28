@@ -19,7 +19,7 @@
 namespace Jamoma {
 
 	
-	/**	This #AudioObject scales the values within a #Sample or #SampleBundle according to the current value of its gain #Parameter.
+	/**	This AudioObject scales the values within a Sample or SampleBundle according to the current value of its gain Parameter.
 		<a href="https://en.wikipedia.org/wiki/Gain">Gain</a> is currently represented internally as linear gain using a double.
 	 */
 	class Gain : public AudioObject {

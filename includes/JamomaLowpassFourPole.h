@@ -18,7 +18,7 @@
 namespace Jamoma {
 
 	
-	/**	This #AudioObject applies a resonant <a href="https://en.wikipedia.org/wiki/Low-pass_filter">low-pass filter</a> to a #Sample or #SampleBundle.
+	/**	This AudioObject applies a resonant <a href="https://en.wikipedia.org/wiki/Low-pass_filter">low-pass filter</a> to a Sample or SampleBundle.
 		A fourth-order algorithm is used to acheive a relatively flat passband.
 
 		@warning Note that sudden changes to the cutoff frequency can result in unstable output.
@@ -112,7 +112,10 @@ namespace Jamoma {
 		
 		Sample operator()(Sample x, int channel)
 		{
-			Sample y = x;
+			// the original source of this algorithm appears to be here:
+            // http://musicdsp.org/archive.php?classid=3#26
+            
+            Sample y = x;
 			
 			y -= mY4[channel][0] * mCoefficientFB;
 			//TTZeroDenormal(y);

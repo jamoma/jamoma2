@@ -19,7 +19,7 @@
 namespace Jamoma {
 
 	
-	/**	This #AudioObject removes DC offset (sometimes called <a href="https://en.wikipedia.org/wiki/DC_bias">DC bias</a> from a #Sample or #SampleBundle.
+	/**	This AudioObject removes DC offset (sometimes called <a href="https://en.wikipedia.org/wiki/DC_bias">DC bias</a> from a Sample or SampleBundle.
 		The process is acheived by applying a first-order highpass filter to the input.
 	 */
 	class Dcblock : public AudioObject {
