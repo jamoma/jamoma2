@@ -72,6 +72,9 @@ namespace Jamoma {
 		/** Default constructor. */
 		AudioObject() = default;
 		
+		virtual ~AudioObject()
+		{}
+		
 		
 		/** The channelCount parameter is universal to all AudioObjects.
 			It is used by any AdaptingSampleBundles and also for generators that don't take an input signal.

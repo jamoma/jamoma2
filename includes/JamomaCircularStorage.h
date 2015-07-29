@@ -42,6 +42,10 @@ namespace Jamoma {
 		{}
 		
 		
+		virtual ~CircularStorage()
+		{}
+		
+		
 		/** Write a block of things into the container. 
 			@param	newInput	A block of things to add. May not be larger than the size of the buffer.
 		 */

@@ -67,6 +67,9 @@ namespace Jamoma {
 		// that way objects can register and add their tags?
 		// how does that all work?
 		
+		virtual ~Object()
+		{}
+		
 		
 		/** send a message to the object dynamically
 		 */
@@ -95,6 +98,9 @@ namespace Jamoma {
 			ParameterBase(Object* owner, const String& name)
 			: mOwner(owner)
 			, mName(name)
+			{}
+			
+			virtual ~ParameterBase()
 			{}
 			
 			String& name()
