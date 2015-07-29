@@ -212,17 +212,22 @@ namespace Jamoma {
 		class Message {
 		public:
 			
-			template <typename F>
-			Message(String name, F fn) {}
+			Message(String name, Function fn)
+			: mFunction(fn)
+			{}
 			
-			template <typename F>
-			Message(String name, Synopsis synopsis, F fn) {}
+			Message(String name, Synopsis synopsis, Function fn)
+			: mFunction(fn)
+			, mSynopsis(synopsis)
+			{}
 			
 			Error operator ()() {
+				mFunction();
 				return Error::none;
 			}
 			
 		private:
+			Function		mFunction;
 			Synopsis		mSynopsis;
 		};
 		
