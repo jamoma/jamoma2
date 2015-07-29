@@ -177,14 +177,45 @@ namespace Jamoma {
 			return(20.0 * (log10(input)));
 	}
 
+	
+	/** A version of pow() that is constexpr friendly. */
+	template <class T>
+	inline constexpr T pow(T const& x, std::size_t n){
+		return n>0 ? x*pow(x,n-1):1;
+	}
+	
+	
 	/** Convert decibels into linear ampliude.
 		@param	input	The decibel value to convert.
 		@return			The converted linear gain value.
 	 */
-	inline double decibelsToLinearGain(double input)
+	inline constexpr double decibelsToLinearGain(double input)
 	{
-		return(pow(10.0, (input / 20.0)));
+		return(Jamoma::pow(10.0, (input / 20.0)));
 	}
+	
+	
+	/** Convert decibels into linear ampliude.
+		@param	input	The decibel value to convert.
+		@return			The converted linear gain value.
+	 */
+	constexpr double operator"" _db ( long double input )
+	{
+		return decibelsToLinearGain(input);
+	}
+	
+
+	/** Convert decibels into linear ampliude.
+		@param	input	The decibel value to convert.
+		@return			The converted linear gain value.
+	 */
+	constexpr double operator"" _db ( unsigned long long int input )
+	{
+		return decibelsToLinearGain(input);
+	}
+
+	
+ 
 
 
 } // namespace Jamoma
