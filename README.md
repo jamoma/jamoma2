@@ -14,6 +14,29 @@ Furthermore, a number of difficult problems have dogged Jamoma1 for many years, 
 
 ## Notable Shifts in Thinking from Jamoma1
 
+### No Symbol Table
+
+Symbols in Jamoma1 were implemented as a string and a compound identifier that reduced comparisons between known symbols to 2 integer comparisons.  This speed improvement was sometimes realized, but typically we ended-up doing lookups into the std::unordered_map prior to doing the comparisons themselves.  Worse, the symbol table could be accessed from multiple threads, so it used mutexes.  In audio perform routines checking the equivalent of an enum (1 int comparison with no mutexes or lookups) this was a big price to pay.
+
+When sending a message, or attribute change, by name the receiving object has to compare the name sent in against a reference name. With a symbol it compares 2 ints or it hashes a string. With static linking in C++ in Jamoma2 you never do this. A dynamic class wrapper would still do this, but the Max class wrapper as it exists is not using cached Symbols generally anyway -- see filter_setFrequency() in j.filter.cpp as an example. So we don't lose much...
+
+For lookup to create a new instance through the factory for new objects. currently this factory isn't implemented in Jamoma2. Even if we do this, the creation of a new object is so expensive that it will dwarf the computational expense of a string comparison, especially a short string comparison.
+
+For setting an attribute whose data is a Symbol. E.g. the mode of an Overdrive object or the name of a file to read.
+
+In the latter case the filename may or may not need a comparison to avoid reading an already loaded file, but who cares -- the expense of reading a file is so massive that it won't be noticed.
+
+In the former case we are more likely to care. Here is a specific scenario: A series of changes to the mode parameter for Overdrive are made. These are queued to be executed in the process method. Now we have a whole series of string comparisons happening in the process method and the CPU usage potentially skyrockets.
+
+So, in a world without a Symbol that compares quickly, what do we do?
+
+First, for any calls made in C++ the idea of passing a string is questionable. It can't be autocompleted when writing the code. Documentation is not available when highlighting it in the IDE. It can't be type-checked at compile-time, meaning you don't know about errors until someone is running the code. And (as mentioned) it is slower than molasses.
+
+An idiomatic solution in C++ would be to use enums for these parameters. Comparisons are then a single int, autocomplete, doc integration, and type-safety are all present.
+
+To make the enum dynamically addressable we assign the values for the enumerators to be a hash of the string version of the key.  See the Limiter class as an example.
+
+
 ### Fewer 'Amenities'
 
 We've eliminated the inherited **bypass** for every object.
