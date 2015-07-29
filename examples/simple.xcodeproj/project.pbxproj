@@ -978,6 +978,8 @@
 		228D555F1B629FBD007024D6 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = /System/Library/Frameworks/Carbon.framework; sourceTree = "<absolute>"; };
 		228D55601B629FBD007024D6 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = /System/Library/Frameworks/CoreAudio.framework; sourceTree = "<absolute>"; };
 		228D55651B62A005007024D6 /* libportaudio.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libportaudio.a; path = portaudio/libportaudio.a; sourceTree = "<group>"; };
+		22EF262A1B66CFA70013FA2E /* JamomaLimiter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JamomaLimiter.h; sourceTree = "<group>"; };
+		22EF26441B684F7D0013FA2E /* Murmur3.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Murmur3.h; path = ../../Jamoma2/dependencies/Murmur3/Murmur3.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1022,6 +1024,7 @@
 				228D52B91B629DD6007024D6 /* Mersenne-1.1 */,
 				228D52E11B629DD6007024D6 /* portaudio */,
 				228D55181B629DD7007024D6 /* readerwriterqueue-master */,
+				22EF26441B684F7D0013FA2E /* Murmur3.h */,
 				228D55651B62A005007024D6 /* libportaudio.a */,
 				228D555D1B629FBD007024D6 /* AudioToolbox.framework */,
 				228D555E1B629FBD007024D6 /* AudioUnit.framework */,
@@ -3219,8 +3222,11 @@
 		228D554F1B629DE3007024D6 /* units */ = {
 			isa = PBXGroup;
 			children = (
-				A7F9FD0A1B67B43500A8BE82 /* effects */,
-				A7F9FD081B67B41400A8BE82 /* generators */,
+				228D55531B629DE3007024D6 /* JamomaDcblock.h */,
+				228D55541B629DE3007024D6 /* JamomaGain.h */,
+				22EF262A1B66CFA70013FA2E /* JamomaLimiter.h */,
+				228D55551B629DE3007024D6 /* JamomaLowpassFourPole.h */,
+				228D55561B629DE3007024D6 /* JamomaWhiteNoise.h */,
 			);
 			name = units;
 			path = ../includes;
@@ -3238,40 +3244,6 @@
 				228D555B1B629DE3007024D6 /* JamomaValue.h */,
 			);
 			name = core;
-			sourceTree = "<group>";
-		};
-		A7F9FD071B67B40400A8BE82 /* filters */ = {
-			isa = PBXGroup;
-			children = (
-				228D55531B629DE3007024D6 /* JamomaDcblock.h */,
-				228D55551B629DE3007024D6 /* JamomaLowpassFourPole.h */,
-			);
-			name = filters;
-			sourceTree = "<group>";
-		};
-		A7F9FD081B67B41400A8BE82 /* generators */ = {
-			isa = PBXGroup;
-			children = (
-				228D55561B629DE3007024D6 /* JamomaWhiteNoise.h */,
-			);
-			name = generators;
-			sourceTree = "<group>";
-		};
-		A7F9FD091B67B42000A8BE82 /* dynamics */ = {
-			isa = PBXGroup;
-			children = (
-				228D55541B629DE3007024D6 /* JamomaGain.h */,
-			);
-			name = dynamics;
-			sourceTree = "<group>";
-		};
-		A7F9FD0A1B67B43500A8BE82 /* effects */ = {
-			isa = PBXGroup;
-			children = (
-				A7F9FD091B67B42000A8BE82 /* dynamics */,
-				A7F9FD071B67B40400A8BE82 /* filters */,
-			);
-			name = effects;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

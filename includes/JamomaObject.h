@@ -26,7 +26,19 @@
 #include <array>
 
 
+#include "Murmur3.h" // used for constexpr hash function
+
+
+
 namespace Jamoma {
+	
+	/** A hash function using the Murmur3 algorithm. */
+	constexpr inline uint32_t Hash(const char *const str, const uint32_t seed = 0xAED123FD) noexcept
+	{
+		return Murmur3_32(str, _StringLength(str), seed);
+	}
+
+	
 	
 	using Synopsis = const char*;
 
@@ -110,6 +122,10 @@ namespace Jamoma {
 			// getter
 			
 		public:
+			
+			// Can't create an unitialized Parameter
+			// TODO: need to do this for specializations of Value too?
+			Parameter() = delete;
 			
 			//template <typename F>
 			//Parameter(Object* owner, String name, T initial, ...)
