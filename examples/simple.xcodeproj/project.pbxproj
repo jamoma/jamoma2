@@ -979,6 +979,7 @@
 		228D55601B629FBD007024D6 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = /System/Library/Frameworks/CoreAudio.framework; sourceTree = "<absolute>"; };
 		228D55651B62A005007024D6 /* libportaudio.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libportaudio.a; path = portaudio/libportaudio.a; sourceTree = "<group>"; };
 		22EF262A1B66CFA70013FA2E /* JamomaLimiter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JamomaLimiter.h; sourceTree = "<group>"; };
+		22EF26441B684F7D0013FA2E /* Murmur3.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Murmur3.h; path = ../../Jamoma2/dependencies/Murmur3/Murmur3.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1023,6 +1024,7 @@
 				228D52B91B629DD6007024D6 /* Mersenne-1.1 */,
 				228D52E11B629DD6007024D6 /* portaudio */,
 				228D55181B629DD7007024D6 /* readerwriterqueue-master */,
+				22EF26441B684F7D0013FA2E /* Murmur3.h */,
 				228D55651B62A005007024D6 /* libportaudio.a */,
 				228D555D1B629FBD007024D6 /* AudioToolbox.framework */,
 				228D555E1B629FBD007024D6 /* AudioUnit.framework */,
