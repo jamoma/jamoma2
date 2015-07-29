@@ -56,9 +56,6 @@ T Limit(T input, T low, T high)
 }  // namespace Jamoma
 
 
-#include "JamomaSymbol.h"
-
-
 #include "readerwriterqueue.h"
 
 #include "JamomaValue.h"
