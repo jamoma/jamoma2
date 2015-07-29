@@ -148,6 +148,8 @@ namespace Jamoma {
 				// need to have a default-setter closure, and default-getter closure to use if none are passed-in
 				
 				owner->parameters[name] = this;
+				if (mSetter)
+					mSetter();
 			}
 			
 			
@@ -165,6 +167,8 @@ namespace Jamoma {
 				// need to have a default-setter closure, and default-getter closure to use if none are passed-in
 				
 				owner->parameters[name] = this;
+				if (mSetter)
+					mSetter();
 			}
 
 			
