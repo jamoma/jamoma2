@@ -52,8 +52,8 @@ namespace Jamoma {
 		Parameter<double>	frequency = { this, "frequency", 1000.0,
 			[this]{
 				double	radians = hertzToRadians(frequency);
-				
-				mCoefficientF = radians * 1.16;
+                double  fNormalizedToNyquist = radians / kPi;
+				mCoefficientF = fNormalizedToNyquist * 1.16;
 				mCoefficientSquaredF = mCoefficientF * mCoefficientF;
 				mOneMinusCoefficientF = 1.0 - mCoefficientF;
 				calculateCoefficients();
