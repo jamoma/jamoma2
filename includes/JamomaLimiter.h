@@ -70,7 +70,7 @@ namespace Jamoma {
 		
 		
 		// linear gain scaling factor prior to limiting (attr setter used dB).
-		Parameter<double>	preamp = {this, "preamp", 0_db,
+		Parameter<double>	preamp = {this, "preamp", 1.0, // TODO: This is supposed to be 0 db
 										[this]{
 											mPreampObject.gain = (double)preamp;
 										}
@@ -104,11 +104,11 @@ namespace Jamoma {
 		
 		
 		//double			attrThreshold;							///< linear amplitude threshold at which the limiting should kick in (attr setter used dB).
-		Parameter<double>	threshold = {this, "threshold", 0_db};
+		Parameter<double>	threshold = {this, "threshold", 1.0 };// TODO: This is supposed to be 0 db
 		
 		
 		//double			attrPostamp;							///< linear gain scaling factor after the limiting (attr setter used dB).
-		Parameter<double>	postamp = {this, "postamp", 0_db};
+		Parameter<double>	postamp = {this, "postamp", 1.0}; // TODO: This is supposed to be 0 db
 	
 		
 		/** Clear the history: reset the limiter. */
