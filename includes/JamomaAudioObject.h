@@ -104,7 +104,7 @@ namespace Jamoma {
 			TODO: need to deliver notifications, e.g. to recalculate filter coefficients in subclasses
 			TODO: should get an intelligent default from the graph that owns this object (if there is a one)
 		 */
-		Parameter<int>	sampleRate = { this, "sampleRate", 0 };
+		Parameter<int>	sampleRate = { this, "sampleRate", 96000 };
 		
 		
 		/** Calculate a single sample.
