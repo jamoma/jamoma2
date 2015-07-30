@@ -49,18 +49,19 @@ namespace Jamoma {
 		
 		
 		// filter cutoff frequency
-		Parameter<double>	frequency = { this, "frequency", 1000.0,
-			[this]{
-				double	radians = hertzToRadians(frequency);
-                double  fNormalizedToNyquist = radians / kPi;
-				mCoefficientF = fNormalizedToNyquist * 1.16;
-				mCoefficientSquaredF = mCoefficientF * mCoefficientF;
-				mOneMinusCoefficientF = 1.0 - mCoefficientF;
-				calculateCoefficients();
-			}
+		Parameter<double, RangeLimit::clip>	frequency = {	this,
+															"frequency",
+															1000.0,
+															Boundaries<double>(20.0, sampleRate * 0.475),
+															[this]{
+																double	radians = hertzToRadians(frequency);
+																double  fNormalizedToNyquist = radians / kPi;
+																mCoefficientF = fNormalizedToNyquist * 1.16;
+																mCoefficientSquaredF = mCoefficientF * mCoefficientF;
+																mOneMinusCoefficientF = 1.0 - mCoefficientF;
+																calculateCoefficients();
+															}
 		};
-		// addAttributeProperty(Frequency,			range,			TTValue(2.0, sr*0.475));
-		// addAttributeProperty(Frequency,			rangeChecking,	TT("clip"));
 		// addAttributeProperty(Frequency,			description,	TT("Cutoff Frequency in Hertz"));
 		
 		

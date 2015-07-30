@@ -255,7 +255,30 @@ void LowpassFourPoleTest()
     }
     
     std::cout << "the impulse response of my_lowpass has " << badSampleCount << " bad samples" << std::endl;
-    
+	
+	
+	
+	
+	// Test range limiting
+	my_lowpass.frequency = 100.0;
+	assert(my_lowpass.frequency == 100.0);
+
+	my_lowpass.frequency = 5.0;
+	assert(my_lowpass.frequency == 20.0);
+	
+	// TODO: boundaries for this object need to change when the sampleRate changes -- currently they don't!
+	// So we do this test with the initial sampleRate instead of with `my_lowpass.sampleRate`
+	my_lowpass.frequency = 100000;
+	assert(my_lowpass.frequency < 96000 * 0.5);
+	
+	// q is not clipped at the moment, so we can do irrational bad things...  we should change this
+	my_lowpass.q = 100.0;
+	assert(my_lowpass.q == 100.0);
+	
+	my_lowpass.q = -5.0;
+	assert(my_lowpass.q == -5.0);
+	
+	
 }
 
 
