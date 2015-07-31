@@ -18,20 +18,19 @@
 namespace Jamoma {
 	
 	
-	// Allows us a unified means for referencing a Parameter of any template-specialization
-	// The bool part is only present as a type of some sort is required -- this trick learned from std::string implementation
-	//template <bool>
-	//class ParameterBase {
+	/** ParameterBase allows us a unified means for referencing a Parameter of any template-specialization.
+		All Parameters must be defined using a Parameter<type> specialization and this base class is for internal use only.
+	 */
 	class ParameterBase {
 	protected:
-		Object*				mOwner;
-		String				mName;
-		Synopsis			mSynopsis;
-		RangeLimit			mRangeLimit;
-		Function			mSetter;
+		Object*				mOwner;			///< The owning Jamoma::Object to which this Parameter belongs.
+		String				mName;			///< The name of this Parameter as it would be addressed dynamically.
+		Synopsis			mSynopsis;		///< A description of what this Parameter represents.
+		RangeLimit			mRangeLimit;	///< The behavior applied to values sent to this parameter if they are outside of the suggested Range.
+		Function			mSetter;		///< A function to be executed after the parameter's value has been set.
 		// getter
 		
-	public:
+
 		ParameterBase(Object* owner, const String& name, const Synopsis& synopsis, const RangeLimit& rangeLimit, const Function& setter)
 		: mOwner(owner)
 		, mName(name)
@@ -43,6 +42,7 @@ namespace Jamoma {
 		virtual ~ParameterBase()
 		{}
 		
+	public:
 		String& name()
 		{
 			return mName;
@@ -54,27 +54,27 @@ namespace Jamoma {
 		}
 		
 		virtual ParameterBase& operator = (const ValueBase& input) = 0;
-		
 	};
 	
 	
+#pragma mark -
+#pragma mark Parameters that Don't Limit
+	
+	
+	/** Defines a Parameter with no special behavior applied if the supplied values are out of range.
+	 */
 	template <class T, RangeLimit rangeLimit = RangeLimit::none>
-	// class Parameter : public ParameterBase<true> {
 	class Parameter : public ParameterBase {
 		T					mValue;
 		Range<T>			mRange;
 		
 	public:
-		
-		// Can't create an unitialized Parameter
-		// TODO: need to do this for specializations of Value too?
-		Parameter() = delete;
+		Parameter() = delete;		// Can't create an unitialized Parameter
 		
 		//template <typename F>
 		//Parameter(Object* owner, String name, T initial, ...)
 		Parameter(Object* owner, String name, T initial)
 		: ParameterBase(owner, name, "", rangeLimit, nullptr)
-		, mValue(initial)
 		{
 			// 1. iterate args
 			// 2. determine their types
@@ -84,14 +84,12 @@ namespace Jamoma {
 			// need to have a default-setter closure, and default-getter closure to use if none are passed-in
 			
 			owner->parameters[name] = this;
-			if (mSetter)
-				mSetter();
+			set(initial);
 		}
 		
 		
 		Parameter(Object* owner, String name, T initial, Function setter)
 		: ParameterBase(owner, name, "", rangeLimit, setter)
-		, mValue(initial)
 		{
 			// 1. iterate args
 			// 2. determine their types
@@ -101,17 +99,21 @@ namespace Jamoma {
 			// need to have a default-setter closure, and default-getter closure to use if none are passed-in
 			
 			owner->parameters[name] = this;
-			if (mSetter)
-				mSetter();
+			set(initial);
 		}
 		
 		
-		// setter
-		Parameter& operator = (T input)
+		void set(T input)
 		{
 			mValue = input;
 			if (mSetter)
 				mSetter();
+		}
+		
+		// setter
+		Parameter& operator = (T input)
+		{
+			set(input);
 			return *this;
 		}
 		
@@ -119,9 +121,7 @@ namespace Jamoma {
 		// setter for case when input is a generic value
 		Parameter& operator = (const ValueBase& input)
 		{
-			mValue = (T)input;
-			if (mSetter)
-				mSetter();
+			set(input);
 			return *this;
 		}
 		
@@ -129,9 +129,7 @@ namespace Jamoma {
 		// assign *values* from one attribute to another
 		Parameter& operator = (Parameter& input)
 		{
-			mValue = input.mvalue;
-			if (mSetter)
-				mSetter();
+			set(input.mValue);
 			return *this;
 		}
 		
@@ -144,24 +142,25 @@ namespace Jamoma {
 	};
 	
 	
-	// Parameters that clip
-	//		template <class T, RangeLimit::clip>
+#pragma mark -
+#pragma mark Parameters that Clip
+	
+
+	/** Defines a Parameter where values are limited (clipped) to the min and max of the suggested Range.
+	 */
 	template<class T>
 	class Parameter<T, RangeLimit::clip> : public ParameterBase {
 		T					mValue;
 		Range<T>			mRange;
 		
 	public:
-		
-		// Can't create an unitialized Parameter
-		// TODO: need to do this for specializations of Value too?
-		Parameter() = delete;
+		Parameter() = delete;		// Can't create an unitialized Parameter
+
 		
 		//template <typename F>
 		//Parameter(Object* owner, String name, T initial, ...)
 		Parameter(Object* owner, String name, T initial)
 		: ParameterBase(owner, name, "", RangeLimit::clip, nullptr)
-		, mValue(initial)
 		{
 			// 1. iterate args
 			// 2. determine their types
@@ -171,14 +170,12 @@ namespace Jamoma {
 			// need to have a default-setter closure, and default-getter closure to use if none are passed-in
 			
 			owner->parameters[name] = this;
-			if (mSetter)
-				mSetter();
+			set(initial);
 		}
 		
 		
 		Parameter(Object* owner, String name, T initial, Function setter)
 		: ParameterBase(owner, name, "", RangeLimit::clip, setter)
-		, mValue(initial)
 		{
 			// 1. iterate args
 			// 2. determine their types
@@ -188,13 +185,11 @@ namespace Jamoma {
 			// need to have a default-setter closure, and default-getter closure to use if none are passed-in
 			
 			owner->parameters[name] = this;
-			if (mSetter)
-				mSetter();
+			set(initial);
 		}
 
 		Parameter(Object* owner, String name, T initial, Range<T> range, Function setter)
 		: ParameterBase(owner, name, "", RangeLimit::clip, setter)
-		, mValue(initial)
 		, mRange(range)
 		{
 			// 1. iterate args
@@ -205,17 +200,22 @@ namespace Jamoma {
 			// need to have a default-setter closure, and default-getter closure to use if none are passed-in
 			
 			owner->parameters[name] = this;
-			if (mSetter)
-				mSetter();
+			set(initial);
 		}
 
 		
-		// setter
-		Parameter& operator = (T input)
+		void set(T input)
 		{
 			mValue = Limit(input, mRange.first, mRange.second);
 			if (mSetter)
 				mSetter();
+		}
+		
+
+		// setter
+		Parameter& operator = (T input)
+		{
+			set(input);
 			return *this;
 		}
 		
@@ -223,9 +223,7 @@ namespace Jamoma {
 		// setter for case when input is a generic value
 		Parameter& operator = (const ValueBase& input)
 		{
-			mValue = (T)input;
-			if (mSetter)
-				mSetter();
+			set(input);
 			return *this;
 		}
 		
@@ -233,7 +231,7 @@ namespace Jamoma {
 		// assign *values* from one attribute to another
 		Parameter& operator = (Parameter& input)
 		{
-			mValue = input.mvalue;
+			set(input.mValue);
 			return *this;
 		}
 		

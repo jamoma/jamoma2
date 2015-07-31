@@ -108,7 +108,7 @@ namespace Jamoma {
 	class Value : public ValueBase {
 	public:
 		/** Create an uninitialized Value.
-			Initializing the value at construction is preferred.
+			Initializing the value at construction is strongly preferred.
 		 */
 		Value()
 		{
