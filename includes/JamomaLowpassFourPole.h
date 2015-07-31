@@ -54,9 +54,9 @@ namespace Jamoma {
 															1000.0,
 															Range<double>(20.0, sampleRate * 0.475),
 															[this]{
-																double	radians = hertzToRadians(frequency);
-																double  fNormalizedToNyquist = radians / kPi;
-																mCoefficientF = fNormalizedToNyquist * 1.16;
+																//double	radians = hertzToRadians(frequency);
+																double  fNormalizedToHalfNyquist = frequency * 4 / sampleRate;
+                                                                mCoefficientF = fNormalizedToHalfNyquist * 1.4716;
 																mCoefficientSquaredF = mCoefficientF * mCoefficientF;
 																mOneMinusCoefficientF = 1.0 - mCoefficientF;
 																calculateCoefficients();
@@ -100,7 +100,7 @@ namespace Jamoma {
 		
 		void calculateCoefficients()
 		{
-			mCoefficientFB = mDeciResonance * (1.0 - 0.15 * mCoefficientSquaredF);
+			mCoefficientFB = mDeciResonance * (1.0 - 0.4 * mCoefficientSquaredF);
 			mCoefficientG = /*TTAntiDenormal*/(0.35013 * (mCoefficientSquaredF * mCoefficientSquaredF));
 		}
 
