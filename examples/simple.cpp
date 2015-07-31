@@ -155,6 +155,9 @@ void UnitImpulseTest()
         0.0,
         0.0
     };
+    
+    //assert(expectedImpulse.size() == my_impulse.size());
+    std::cout << "my_impulse size is " << my_impulse.frameCount() << std::endl;
 
     int badSampleCount = 0;
     

@@ -36,6 +36,8 @@ namespace Jamoma {
         SharedSampleBundleGroup operator()(const SampleBundle& x = kSampleBundleNone)
         {
             auto out = mOutput;
+            out.adapt(x);
+            channelCount = (int)x.channelCount();
             
             for (int channel=0; channel < x.channelCount(); channel++) {
                 out[0][channel][0] = 1.0;
