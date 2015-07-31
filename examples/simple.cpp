@@ -181,86 +181,12 @@ void LowpassFourPoleTest()
     my_lowpass.frequency = 1000.;
     my_lowpass.q = 1.0;
     
-    Jamoma::SampleBundle impulse(1, 64);
-    impulse[0][0] = 1.0;
+    Jamoma::UnitImpulse impulse;
     
-    Jamoma::SampleVector expectedImpulse = {
-        1.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0, 
-        0.0, 
-        0.0, 
-        0.0, 
-        0.0, 
-        0.0, 
-        0.0, 
-        0.0, 
-        0.0, 
-        0.0, 
-        0.0, 
-        0.0, 
-        0.0, 
-        0.0, 
-        0.0, 
-        0.0, 
-        0.0, 
-        0.0, 
-        0.0, 
-        0.0, 
-        0.0, 
-        0.0, 
-        0.0, 
-        0.0, 
-        0.0, 
-        0.0, 
-        0.0, 
-        0.0, 
-        0.0, 
-        0.0, 
-        0.0, 
-        0.0, 
-        0.0, 
-        0.0, 
-        0.0, 
-        0.0
-    };
+    impulse.channelCount = 1;
+    impulse.frameCount = 64;
     
-    int badSampleCount = 0;
-    
-    for (int i = 0; i < expectedImpulse.size(); i++)
-    {
-        if (expectedImpulse[i] != impulse[0][i]) badSampleCount++;
-    }
-    
-    //std::cout << "the impulse signal has " << badSampleCount << " bad samples" << std::endl;
-    
-    auto out_samples = my_lowpass(impulse);
+    auto out_samples = my_lowpass( impulse() );
     
     // the following impulse was created using the code here
     // http://musicdsp.org/archive.php?classid=3#26
@@ -334,7 +260,7 @@ void LowpassFourPoleTest()
         0.009747256187391761
     };
     
-    badSampleCount = 0;
+    int badSampleCount = 0;
     Jamoma::Sample temp = 0.0;
     Jamoma::Sample tempExpected = 0.0;
 
