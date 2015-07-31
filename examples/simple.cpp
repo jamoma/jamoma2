@@ -79,6 +79,99 @@ void SampleBundleAndGainTest()
 	std::cout << "the sample is " << foo << std::endl;
 }
 
+void UnitImpulseTest()
+{
+    Jamoma::UnitImpulse impulseGen;
+    Jamoma::SharedSampleBundleGroup my_impulse;
+    
+    my_impulse.channelCount(1);
+    my_impulse.frameCount(64);
+    
+    my_impulse = impulseGen();
+    
+    Jamoma::SampleVector expectedImpulse = {
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+    };
+
+    int badSampleCount = 0;
+    
+    for (int i = 0; i < expectedImpulse.size(); i++)
+    {
+        if (expectedImpulse[i] != my_impulse[0][0][i])
+        {
+            badSampleCount++;
+            std::cout << "sample " << i << " expected " << expectedImpulse[i] << " but instead was " << my_impulse[0][0][i] << std::endl;
+        }
+        
+    }
+    
+    std::cout << "the impulse signal has " << badSampleCount << " bad samples" << std::endl;
+    
+}
+
 void LowpassFourPoleTest()
 {
     Jamoma::LowpassFourPole my_lowpass;
@@ -164,7 +257,7 @@ void LowpassFourPoleTest()
         if (expectedImpulse[i] != impulse[0][i]) badSampleCount++;
     }
     
-    std::cout << "the impulse signal has " << badSampleCount << " bad samples" << std::endl;
+    //std::cout << "the impulse signal has " << badSampleCount << " bad samples" << std::endl;
     
     auto out_samples = my_lowpass(impulse);
     
@@ -383,6 +476,7 @@ int main(int argc, const char * argv[])
 
 	CircularStorageTest();
 	SampleBundleAndGainTest();
+    UnitImpulseTest();
     LowpassFourPoleTest();
 	PortAudioExample();
 
