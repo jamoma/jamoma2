@@ -57,6 +57,11 @@ namespace Jamoma {
 	};
 	
 	
+	// NOTE: It would be nice to have an intermediate class here that dealt with the type specialization
+	// from which RangeLimit specialization could inherit.
+	// It doesn't work, however, because the operator overloads won't be inherited and thus we have to duplicate all the code anyway.
+	
+	
 #pragma mark -
 #pragma mark Parameters that Don't Limit
 	
@@ -68,47 +73,29 @@ namespace Jamoma {
 		T					mValue;
 		Range<T>			mRange;
 		
-	public:
-		Parameter() = delete;		// Can't create an unitialized Parameter
-		
-		//template <typename F>
-		//Parameter(Object* owner, String name, T initial, ...)
-		Parameter(Object* owner, String name, T initial)
-		: ParameterBase(owner, name, "", rangeLimit, nullptr)
-		{
-			// 1. iterate args
-			// 2. determine their types
-			// 3. do something appropriate for their given type
-			// 4. can we make this whole thing constexpr ?
-			
-			// need to have a default-setter closure, and default-getter closure to use if none are passed-in
-			
-			owner->parameters[name] = this;
-			set(initial);
-		}
-		
-		
-		Parameter(Object* owner, String name, T initial, Function setter)
-		: ParameterBase(owner, name, "", rangeLimit, setter)
-		{
-			// 1. iterate args
-			// 2. determine their types
-			// 3. do something appropriate for their given type
-			// 4. can we make this whole thing constexpr ?
-			
-			// need to have a default-setter closure, and default-getter closure to use if none are passed-in
-			
-			owner->parameters[name] = this;
-			set(initial);
-		}
-		
-		
 		void set(T input)
 		{
 			mValue = input;
 			if (mSetter)
 				mSetter();
 		}
+		
+	public:
+		Parameter() = delete;		// Can't create an unitialized Parameter
+		
+		
+		Parameter(Object* owner, String name, T initial, Function setter = nullptr)
+		: ParameterBase(owner, name, "", rangeLimit, setter)
+		{
+			// 1. iterate args
+			// 2. determine their types
+			// 3. do something appropriate for their given type
+			// 4. can we make this whole process constexpr ?
+			
+			owner->parameters[name] = this;
+			set(initial);
+		}
+		
 		
 		// setter
 		Parameter& operator = (T input)
@@ -152,58 +139,7 @@ namespace Jamoma {
 	class Parameter<T, RangeLimit::clip> : public ParameterBase {
 		T					mValue;
 		Range<T>			mRange;
-		
-	public:
-		Parameter() = delete;		// Can't create an unitialized Parameter
-
-		
-		//template <typename F>
-		//Parameter(Object* owner, String name, T initial, ...)
-		Parameter(Object* owner, String name, T initial)
-		: ParameterBase(owner, name, "", RangeLimit::clip, nullptr)
-		{
-			// 1. iterate args
-			// 2. determine their types
-			// 3. do something appropriate for their given type
-			// 4. can we make this whole thing constexpr ?
-			
-			// need to have a default-setter closure, and default-getter closure to use if none are passed-in
-			
-			owner->parameters[name] = this;
-			set(initial);
-		}
-		
-		
-		Parameter(Object* owner, String name, T initial, Function setter)
-		: ParameterBase(owner, name, "", RangeLimit::clip, setter)
-		{
-			// 1. iterate args
-			// 2. determine their types
-			// 3. do something appropriate for their given type
-			// 4. can we make this whole thing constexpr ?
-			
-			// need to have a default-setter closure, and default-getter closure to use if none are passed-in
-			
-			owner->parameters[name] = this;
-			set(initial);
-		}
-
-		Parameter(Object* owner, String name, T initial, Range<T> range, Function setter)
-		: ParameterBase(owner, name, "", RangeLimit::clip, setter)
-		, mRange(range)
-		{
-			// 1. iterate args
-			// 2. determine their types
-			// 3. do something appropriate for their given type
-			// 4. can we make this whole thing constexpr ?
-			
-			// need to have a default-setter closure, and default-getter closure to use if none are passed-in
-			
-			owner->parameters[name] = this;
-			set(initial);
-		}
-
-		
+	
 		void set(T input)
 		{
 			mValue = Limit(input, mRange.first, mRange.second);
@@ -211,7 +147,21 @@ namespace Jamoma {
 				mSetter();
 		}
 		
+	public:
+		Parameter() = delete;		// Can't create an unitialized Parameter
 
+		
+		Parameter(Object* owner, String name, T initial, Range<T> range, Function setter = nullptr)
+		: ParameterBase(owner, name, "", RangeLimit::clip, setter)
+		, mRange(range)
+		{
+			// see comments above regarding arg parsing
+			
+			owner->parameters[name] = this;
+			set(initial);
+		}
+
+		
 		// setter
 		Parameter& operator = (T input)
 		{
