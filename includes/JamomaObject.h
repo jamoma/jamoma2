@@ -61,30 +61,49 @@ namespace Jamoma {
 	};
 	
 
-	class ParameterBase;
+	class ParameterBase; // forward-declartion needed by Object
 	
+	
+	/**	The base class for all first-class objects in Jamoma.
+		Such classes maybe used with traditional C++ compile-time linking or addressed dynamically my sending messages.
+	 */
 	class Object {
 		template <class T, RangeLimit> friend class Parameter;
 		
 		// we really just care that we have a pointer, not about the type of the attribute
 		// attributes can be raw pointers because they are only accessed and owned by our class
+		// TODO: perhaps these should still be done using STL "smart raw" pointers?
+		// TODO: index should be the return type of the Hash function instead of a String? -- then we would lose all of the names...
 		using ParameterMap = std::unordered_map<String, ParameterBase*>;
 		
+		// Internal: a mapping of parameter names to the parameters themselves.
 		ParameterMap	parameters;
 
 	public:
-		// constructor for users of an object that is created by dynamic lookup, e.g. Jamoma::Object filter("lowpass.4");
+		/** Theoretically: constructor for users of an object that is created by dynamic lookup, e.g. 
+			@code
+			Jamoma::Object filter("lowpass.4");
+			@endcode
+		 
+			TODO: implement
+		 */
 		Object(String name)
 		{}
 		
-		// constructor for users of an object that is created statically/directly
+
+		/**	Inherited constructor for users of an object that is created statically/directly
+			@code
+			Jamoma::LowpassFourpole	my_filter;
+			@endcode
+		 */
 		Object()
 		{}
 		
-		// do we also need a constexpr constructor ?
-		// that way objects can register and add their tags?
-		// how does that all work?
+	
+		// TODO: do we also need a constexpr constructor so that objects can register and add their tags? how does that all work?
+	
 		
+		/** Destructor. */
 		virtual ~Object()
 		{}
 		
