@@ -32,37 +32,35 @@
 
 namespace Jamoma {
 	
-	/** A hash function using the Murmur3 algorithm. */
+	/** A hash function using the Murmur3 algorithm ( https://en.wikipedia.org/wiki/MurmurHash ).
+		This hash function is capable of being executed at compile time,
+		meaning that the compiled binary will have a constant int value and no actually need to execute any code at runtime.
+		@param	str		A c-string to be hashed into an int.
+		@param	seed	An optional seed value.  For most uses you should not override the default.
+		@return			An int (specifically a uint32_t) representing the hash of the string input.
+	 */
 	constexpr inline uint32_t Hash(const char *const str, const uint32_t seed = 0xAED123FD) noexcept
 	{
 		return Murmur3_32(str, _StringLength(str), seed);
 	}
 
-	
-	
-	using Synopsis = const char*;
-
+		
+	/**	Defines the bounds of a Parameter.
+		The low-bound comes first, then the high-bound.
+	 */
 	template <typename T>
-	using Boundaries = std::pair<T, T>;
-	
-	enum class BoundaryBehavior {
-		none,
-		clip,
-		wrap,
-		fold
-	};
+	using Range = std::pair<T, T>;
 	
 
-		// change name to range (was boundaries) because an enum range can be listed in the future potentially
+	/** The behavior of a Parameter when the suggested Range is exceeded. */
 	enum class RangeLimit : uint32_t {
-		none = Hash("none"),
-		clip = Hash("clip"),
-		wrap = Hash("wrap"),
-		fold = Hash("fold")
+		none = Hash("none"),			///< Don't do anything.
+		clip = Hash("clip"),			///< Limit to the min and max values defined by the Range.
+		wrap = Hash("wrap"),			///< Wrap back around to the low/high value if the Range is exceeded.
+		fold = Hash("fold")				///< Mirror the value back down into the defined Range.
 	};
 	
 
-	
 	class ParameterBase;
 	
 	class Object {

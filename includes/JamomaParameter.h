@@ -54,8 +54,8 @@ namespace Jamoma {
 	class Parameter : public ParameterBase {
 		T					mValue;
 		Synopsis			mSynopsis;
-		Boundaries<T>		mBoundaries;
-		BoundaryBehavior	mBoundaryBehavior;
+		Range<T>			mRange;
+		RangeLimit			mRangeLimit;
 		Function			mSetter = { nullptr };
 		// getter
 		
@@ -70,7 +70,7 @@ namespace Jamoma {
 		Parameter(Object* owner, String name, T initial)
 		: ParameterBase(owner, name)
 		, mValue(initial)
-		, mBoundaryBehavior(BoundaryBehavior::none)
+		, mRangeLimit(RangeLimit::none)
 		{
 			// 1. iterate args
 			// 2. determine their types
@@ -88,7 +88,7 @@ namespace Jamoma {
 		Parameter(Object* owner, String name, T initial, Function setter)
 		: ParameterBase(owner, name)
 		, mValue(initial)
-		, mBoundaryBehavior(BoundaryBehavior::none)
+		, mRangeLimit(RangeLimit::none)
 		, mSetter(setter)
 		{
 			// 1. iterate args
@@ -148,8 +148,8 @@ namespace Jamoma {
 	class Parameter<T, RangeLimit::clip> : public ParameterBase {
 		T					mValue;
 		Synopsis			mSynopsis;
-		Boundaries<T>		mBoundaries;
-		BoundaryBehavior	mBoundaryBehavior;
+		Range<T>			mRange;
+		RangeLimit			mRangeLimit;
 		Function			mSetter = { nullptr };
 		// getter
 		
@@ -164,7 +164,7 @@ namespace Jamoma {
 		Parameter(Object* owner, String name, T initial)
 		: ParameterBase(owner, name)
 		, mValue(initial)
-		, mBoundaryBehavior(BoundaryBehavior::clip)
+		, mRangeLimit(RangeLimit::clip)
 		{
 			// 1. iterate args
 			// 2. determine their types
@@ -182,7 +182,7 @@ namespace Jamoma {
 		Parameter(Object* owner, String name, T initial, Function setter)
 		: ParameterBase(owner, name)
 		, mValue(initial)
-		, mBoundaryBehavior(BoundaryBehavior::clip)
+		, mRangeLimit(RangeLimit::clip)
 		, mSetter(setter)
 		{
 			// 1. iterate args
@@ -197,11 +197,11 @@ namespace Jamoma {
 				mSetter();
 		}
 
-		Parameter(Object* owner, String name, T initial, Boundaries<T> range, Function setter)
+		Parameter(Object* owner, String name, T initial, Range<T> range, Function setter)
 		: ParameterBase(owner, name)
 		, mValue(initial)
-		, mBoundaries(range)
-		, mBoundaryBehavior(BoundaryBehavior::clip)
+		, mRange(range)
+		, mRangeLimit(RangeLimit::clip)
 		, mSetter(setter)
 		{
 			// 1. iterate args
@@ -220,7 +220,7 @@ namespace Jamoma {
 		// setter
 		Parameter& operator = (T input)
 		{
-			mValue = Limit(input, mBoundaries.first, mBoundaries.second);
+			mValue = Limit(input, mRange.first, mRange.second);
 			if (mSetter)
 				mSetter();
 			return *this;
