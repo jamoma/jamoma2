@@ -30,6 +30,11 @@ using Text = char[];
 using Classname = Text;
 //using Tags = std::array<Text, 10>; // probably make this a vector of symbols instead
 
+	
+/**	A brief string documenting a Function/Parameter/Message/Notification/Class/Etc.	*/
+using Synopsis = const char*;
+
+
 enum class Error {
 	none,
 	generic
@@ -60,6 +65,8 @@ T Limit(T input, T low, T high)
 
 #include "JamomaValue.h"
 #include "JamomaObject.h"
+#include "JamomaMessage.h"
+#include "JamomaParameter.h"
 #include "JamomaAudioObject.h"
 #include "JamomaSample.h"
 

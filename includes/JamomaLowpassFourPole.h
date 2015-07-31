@@ -52,7 +52,7 @@ namespace Jamoma {
 		Parameter<double, RangeLimit::clip>	frequency = {	this,
 															"frequency",
 															1000.0,
-															Boundaries<double>(20.0, sampleRate * 0.475),
+															Range<double>(20.0, sampleRate * 0.475),
 															[this]{
 																double	radians = hertzToRadians(frequency);
 																double  fNormalizedToNyquist = radians / kPi;
