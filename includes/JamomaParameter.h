@@ -23,13 +23,21 @@ namespace Jamoma {
 	//template <bool>
 	//class ParameterBase {
 	class ParameterBase {
+	protected:
 		Object*				mOwner;
 		String				mName;
+		Synopsis			mSynopsis;
+		RangeLimit			mRangeLimit;
+		Function			mSetter;
+		// getter
 		
 	public:
-		ParameterBase(Object* owner, const String& name)
+		ParameterBase(Object* owner, const String& name, const Synopsis& synopsis, const RangeLimit& rangeLimit, const Function& setter)
 		: mOwner(owner)
 		, mName(name)
+		, mSynopsis(synopsis)
+		, mRangeLimit(rangeLimit)
+		, mSetter(setter)
 		{}
 		
 		virtual ~ParameterBase()
@@ -49,15 +57,12 @@ namespace Jamoma {
 		
 	};
 	
+	
 	template <class T, RangeLimit rangeLimit = RangeLimit::none>
 	// class Parameter : public ParameterBase<true> {
 	class Parameter : public ParameterBase {
 		T					mValue;
-		Synopsis			mSynopsis;
 		Range<T>			mRange;
-		RangeLimit			mRangeLimit;
-		Function			mSetter = { nullptr };
-		// getter
 		
 	public:
 		
@@ -68,9 +73,8 @@ namespace Jamoma {
 		//template <typename F>
 		//Parameter(Object* owner, String name, T initial, ...)
 		Parameter(Object* owner, String name, T initial)
-		: ParameterBase(owner, name)
+		: ParameterBase(owner, name, "", rangeLimit, nullptr)
 		, mValue(initial)
-		, mRangeLimit(RangeLimit::none)
 		{
 			// 1. iterate args
 			// 2. determine their types
@@ -86,10 +90,8 @@ namespace Jamoma {
 		
 		
 		Parameter(Object* owner, String name, T initial, Function setter)
-		: ParameterBase(owner, name)
+		: ParameterBase(owner, name, "", rangeLimit, setter)
 		, mValue(initial)
-		, mRangeLimit(RangeLimit::none)
-		, mSetter(setter)
 		{
 			// 1. iterate args
 			// 2. determine their types
@@ -147,11 +149,7 @@ namespace Jamoma {
 	template<class T>
 	class Parameter<T, RangeLimit::clip> : public ParameterBase {
 		T					mValue;
-		Synopsis			mSynopsis;
 		Range<T>			mRange;
-		RangeLimit			mRangeLimit;
-		Function			mSetter = { nullptr };
-		// getter
 		
 	public:
 		
@@ -162,9 +160,8 @@ namespace Jamoma {
 		//template <typename F>
 		//Parameter(Object* owner, String name, T initial, ...)
 		Parameter(Object* owner, String name, T initial)
-		: ParameterBase(owner, name)
+		: ParameterBase(owner, name, "", RangeLimit::clip, nullptr)
 		, mValue(initial)
-		, mRangeLimit(RangeLimit::clip)
 		{
 			// 1. iterate args
 			// 2. determine their types
@@ -180,10 +177,8 @@ namespace Jamoma {
 		
 		
 		Parameter(Object* owner, String name, T initial, Function setter)
-		: ParameterBase(owner, name)
+		: ParameterBase(owner, name, "", RangeLimit::clip, setter)
 		, mValue(initial)
-		, mRangeLimit(RangeLimit::clip)
-		, mSetter(setter)
 		{
 			// 1. iterate args
 			// 2. determine their types
@@ -198,11 +193,9 @@ namespace Jamoma {
 		}
 
 		Parameter(Object* owner, String name, T initial, Range<T> range, Function setter)
-		: ParameterBase(owner, name)
+		: ParameterBase(owner, name, "", RangeLimit::clip, setter)
 		, mValue(initial)
 		, mRange(range)
-		, mRangeLimit(RangeLimit::clip)
-		, mSetter(setter)
 		{
 			// 1. iterate args
 			// 2. determine their types
