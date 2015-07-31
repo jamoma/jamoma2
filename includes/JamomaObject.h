@@ -63,11 +63,17 @@ namespace Jamoma {
 	
 
 	
-	
-	
 	class ParameterBase;
 	
 	class Object {
+		template <class T, RangeLimit> friend class Parameter;
+		
+		// we really just care that we have a pointer, not about the type of the attribute
+		// attributes can be raw pointers because they are only accessed and owned by our class
+		using ParameterMap = std::unordered_map<String, ParameterBase*>;
+		
+		ParameterMap	parameters;
+
 	public:
 		// constructor for users of an object that is created by dynamic lookup, e.g. Jamoma::Object filter("lowpass.4");
 		Object(String name)
@@ -89,295 +95,16 @@ namespace Jamoma {
 		 */
 		ValueBase send(const String& name, const ValueBase& input)
 		{
-			return Value<int>(0);	// stub
-		};
+			return Value<int>(0);	// TODO: stub
+		}
 		
 		/** send a message to the object dynamically 
 		 */
 		ValueBase send(const String& name)
 		{
-			return Value<int>(0);	// stub
-		};
-		
-		
-		
-		
-		
-		
-		
-		// we really just care that we have a pointer, not about the type of the attribute
-		// attributes can be raw pointers because they are only accessed and owned by our class
-		using ParameterMap = std::unordered_map<String, ParameterBase*>;
-		
-		ParameterMap	parameters;
-		
-
-		class Message {
-		public:
-			
-			Message(String name, Function fn)
-			: mFunction(fn)
-			{}
-			
-			Message(String name, Synopsis synopsis, Function fn)
-			: mFunction(fn)
-			, mSynopsis(synopsis)
-			{}
-			
-			Error operator ()() {
-				mFunction();
-				return Error::none;
-			}
-			
-		private:
-			Function		mFunction;
-			Synopsis		mSynopsis;
-		};
-		
-	};
-	
-	
-	
-	
-	
-	
-	// Allows us a unified means for referencing a Parameter of any template-specialization
-	// The bool part is only present as a type of some sort is required -- this trick learned from std::string implementation
-	//template <bool>
-	//class ParameterBase {
-	class ParameterBase {
-		Object*				mOwner;
-		String				mName;
-		
-	public:
-		ParameterBase(Object* owner, const String& name)
-		: mOwner(owner)
-		, mName(name)
-		{}
-		
-		virtual ~ParameterBase()
-		{}
-		
-		String& name()
-		{
-			return mName;
-		}
-		
-		friend bool operator == (const ParameterBase& lhs, const char* rhs)
-		{
-			return lhs.mName == rhs;
-		}
-		
-		virtual ParameterBase& operator = (const ValueBase& input) = 0;
-		
-	};
-	
-	template <class T, RangeLimit rangeLimit = RangeLimit::none>
-	// class Parameter : public ParameterBase<true> {
-	class Parameter : public ParameterBase {
-		T					mValue;
-		Synopsis			mSynopsis;
-		Boundaries<T>		mBoundaries;
-		BoundaryBehavior	mBoundaryBehavior;
-		Function			mSetter = { nullptr };
-		// getter
-		
-	public:
-		
-		// Can't create an unitialized Parameter
-		// TODO: need to do this for specializations of Value too?
-		Parameter() = delete;
-		
-		//template <typename F>
-		//Parameter(Object* owner, String name, T initial, ...)
-		Parameter(Object* owner, String name, T initial)
-		: ParameterBase(owner, name)
-		, mValue(initial)
-		, mBoundaryBehavior(BoundaryBehavior::none)
-		{
-			// 1. iterate args
-			// 2. determine their types
-			// 3. do something appropriate for their given type
-			// 4. can we make this whole thing constexpr ?
-			
-			// need to have a default-setter closure, and default-getter closure to use if none are passed-in
-			
-			owner->parameters[name] = this;
-			if (mSetter)
-				mSetter();
-		}
-		
-		
-		Parameter(Object* owner, String name, T initial, Function setter)
-		: ParameterBase(owner, name)
-		, mValue(initial)
-		, mBoundaryBehavior(BoundaryBehavior::none)
-		, mSetter(setter)
-		{
-			// 1. iterate args
-			// 2. determine their types
-			// 3. do something appropriate for their given type
-			// 4. can we make this whole thing constexpr ?
-			
-			// need to have a default-setter closure, and default-getter closure to use if none are passed-in
-			
-			owner->parameters[name] = this;
-			if (mSetter)
-				mSetter();
-		}
-		
-		
-		// setter
-		Parameter& operator = (T input)
-		{
-			mValue = input;
-			if (mSetter)
-				mSetter();
-			return *this;
-		}
-		
-		
-		// setter for case when input is a generic value
-		Parameter& operator = (const ValueBase& input)
-		{
-			mValue = (T)input;
-			if (mSetter)
-				mSetter();
-			return *this;
-		}
-		
-		
-		// assign *values* from one attribute to another
-		Parameter& operator = (Parameter& input)
-		{
-			mValue = input.mvalue;
-			if (mSetter)
-				mSetter();
-			return *this;
-		}
-		
-		
-		// getter
-		operator T() const
-		{
-			return mValue;
+			return Value<int>(0);	// TODO: stub
 		}
 	};
-	
-	
-	// Parameters that clip
-	//		template <class T, RangeLimit::clip>
-	template<class T>
-	class Parameter<T, RangeLimit::clip> : public ParameterBase {
-		T					mValue;
-		Synopsis			mSynopsis;
-		Boundaries<T>		mBoundaries;
-		BoundaryBehavior	mBoundaryBehavior;
-		Function			mSetter = { nullptr };
-		// getter
-		
-	public:
-		
-		// Can't create an unitialized Parameter
-		// TODO: need to do this for specializations of Value too?
-		Parameter() = delete;
-		
-		//template <typename F>
-		//Parameter(Object* owner, String name, T initial, ...)
-		Parameter(Object* owner, String name, T initial)
-		: ParameterBase(owner, name)
-		, mValue(initial)
-		, mBoundaryBehavior(BoundaryBehavior::clip)
-		{
-			// 1. iterate args
-			// 2. determine their types
-			// 3. do something appropriate for their given type
-			// 4. can we make this whole thing constexpr ?
-			
-			// need to have a default-setter closure, and default-getter closure to use if none are passed-in
-			
-			owner->parameters[name] = this;
-			if (mSetter)
-				mSetter();
-		}
-		
-		
-		Parameter(Object* owner, String name, T initial, Function setter)
-		: ParameterBase(owner, name)
-		, mValue(initial)
-		, mBoundaryBehavior(BoundaryBehavior::clip)
-		, mSetter(setter)
-		{
-			// 1. iterate args
-			// 2. determine their types
-			// 3. do something appropriate for their given type
-			// 4. can we make this whole thing constexpr ?
-			
-			// need to have a default-setter closure, and default-getter closure to use if none are passed-in
-			
-			owner->parameters[name] = this;
-			if (mSetter)
-				mSetter();
-		}
 
-		Parameter(Object* owner, String name, T initial, Boundaries<T> range, Function setter)
-		: ParameterBase(owner, name)
-		, mValue(initial)
-		, mBoundaries(range)
-		, mBoundaryBehavior(BoundaryBehavior::clip)
-		, mSetter(setter)
-		{
-			// 1. iterate args
-			// 2. determine their types
-			// 3. do something appropriate for their given type
-			// 4. can we make this whole thing constexpr ?
-			
-			// need to have a default-setter closure, and default-getter closure to use if none are passed-in
-			
-			owner->parameters[name] = this;
-			if (mSetter)
-				mSetter();
-		}
-
-		
-		// setter
-		Parameter& operator = (T input)
-		{
-			mValue = Limit(input, mBoundaries.first, mBoundaries.second);
-			if (mSetter)
-				mSetter();
-			return *this;
-		}
-		
-		
-		// setter for case when input is a generic value
-		Parameter& operator = (const ValueBase& input)
-		{
-			mValue = (T)input;
-			if (mSetter)
-				mSetter();
-			return *this;
-		}
-		
-		
-		// assign *values* from one attribute to another
-		Parameter& operator = (Parameter& input)
-		{
-			mValue = input.mvalue;
-			return *this;
-		}
-		
-		
-		// getter
-		operator T() const
-		{
-			return mValue;
-		}
-	};
-	
-
-	
-	
-	
 
 } // namespace Jamoma

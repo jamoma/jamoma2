@@ -60,6 +60,8 @@ T Limit(T input, T low, T high)
 
 #include "JamomaValue.h"
 #include "JamomaObject.h"
+#include "JamomaMessage.h"
+#include "JamomaParameter.h"
 #include "JamomaAudioObject.h"
 #include "JamomaSample.h"
 
