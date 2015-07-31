@@ -19,9 +19,11 @@ namespace Jamoma {
 
 	
 	/**	This AudioObject applies a resonant <a href="https://en.wikipedia.org/wiki/Low-pass_filter">low-pass filter</a> to a Sample or SampleBundle.
-		A fourth-order algorithm is used to acheive a relatively flat passband.
+		A fourth-order algorithm based on the Moog VCF is used to acheive a relatively flat passband.
+        Subtle modifications from <a href="http://www.musicdsp.org/archive.php?classid=3#26">the original source</a> to improve control of the frequency cutoff.
 
-		@warning Note that sudden changes to the cutoff frequency can result in unstable output.
+		@warning The cutoff frequency is only stable below about one-fourth the sampling rate.
+        In addition, it will tend to sound flat below 1000 Hz and go sharp above 1000 Hz.
 	 */
 	class LowpassFourPole : public AudioObject {
 		
@@ -48,7 +50,11 @@ namespace Jamoma {
 		static constexpr auto tags = { "dspEffectsLib", "audio", "processor", "filter", "lowpass" };
 		
 		
-		// filter cutoff frequency
+		/** Filter cutoff frequency.
+            Controls the boundary between low frequency pass band and high frequency stop band.
+            The frequency setting will tend to sound flat below 1000 Hz and goes sharp above 1000 Hz.
+            In addition, the cutoff frequency is only stable below about one-fourth the sampling rate.
+         */
 		Parameter<double, RangeLimit::clip>	frequency = {	this,
 															"frequency",
 															1000.0,
@@ -65,7 +71,10 @@ namespace Jamoma {
 		// addAttributeProperty(Frequency,			description,	TT("Cutoff Frequency in Hertz"));
 		
 		
-		// filter resonance -- range is best between 1.0 and 16.0
+		/** Filter resonance.
+            Controls the prominence of the cutoff frequency.
+            The usable range for this parameter is between 0.0 and 40.0.
+         */
 		Parameter<double>	q = { this, "q", 1.0,
 			[this]{
 				mDeciResonance = q * 0.1;
