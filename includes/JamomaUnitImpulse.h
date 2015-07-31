@@ -22,7 +22,29 @@ namespace Jamoma {
         This function is typically used to test the <a href="https://en.wikipedia.org/wiki/Impulse_response">impulse response</a> of a time-invariant filter.
      */
     class UnitImpulse : public AudioObject {
+    
         
+    public:
+        static constexpr Classname classname = { "unitimpulse" };
+        static constexpr auto tags = { "dspGeneratorLib, audio, generator, impulse" };
+        
+        Sample operator()(Sample x)
+        {
+            return 1.0;
+        }
+        
+        SharedSampleBundleGroup operator()(const SampleBundle& x = kSampleBundleNone)
+        {
+            auto out = mOutput;
+            
+            for (int channel=0; channel < out.channelCount(); channel++)
+            {
+                for (auto& sample : out[0][channel])
+                    sample = 0.0;
+                out[0][channel][0] = 1.0;
+            }
+            return out;
+        }
     };
     
 
