@@ -979,6 +979,7 @@
 		228D55651B62A005007024D6 /* libportaudio.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libportaudio.a; path = portaudio/libportaudio.a; sourceTree = "<group>"; };
 		22EF262A1B66CFA70013FA2E /* JamomaLimiter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JamomaLimiter.h; sourceTree = "<group>"; };
 		22EF26441B684F7D0013FA2E /* Murmur3.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Murmur3.h; path = ../../Jamoma2/dependencies/Murmur3/Murmur3.h; sourceTree = "<group>"; };
+		8E89B8221B6B0622007371C2 /* JamomaUnitImpulse.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JamomaUnitImpulse.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -3226,6 +3227,7 @@
 				22EF262A1B66CFA70013FA2E /* JamomaLimiter.h */,
 				228D55551B629DE3007024D6 /* JamomaLowpassFourPole.h */,
 				228D55561B629DE3007024D6 /* JamomaWhiteNoise.h */,
+				8E89B8221B6B0622007371C2 /* JamomaUnitImpulse.h */,
 			);
 			name = units;
 			path = ../includes;
