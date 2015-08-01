@@ -77,6 +77,7 @@ T Limit(T input, T low, T high)
 
 #include "JamomaLimiter.h"
 
+#include "JamomaLowpassOnePole.h"
 #include "JamomaLowpassFourPole.h"
 #include "JamomaWhiteNoise.h"
 #include "JamomaUnitImpulse.h"
