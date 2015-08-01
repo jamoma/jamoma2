@@ -21,9 +21,9 @@ namespace Jamoma {
      */
     class LowpassOnePole : public AudioObject {
         
-        AdaptingSampleBundle		mY1 = {this};					///< previous output sample for each channel
-        double		mCoefficientF;			///< filter coefficient
-        double		mOneMinusCoefficientF;	///< 1 - mCoefficientF
+        AdaptingSampleBundle		mY1 = {this};           ///< previous output sample for each channel
+        double                      mCoefficientF;			///< filter coefficient
+        double                      mOneMinusCoefficientF;	///< 1 - mCoefficientF
         
     public:
         static constexpr Classname classname = { "lowpass.1" };
