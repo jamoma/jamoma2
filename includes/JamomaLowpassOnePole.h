@@ -21,6 +21,31 @@ namespace Jamoma {
      */
     class LowpassOnePole : public AudioObject {
         
+        AdaptingSampleBundle		mY1 = {this};					///< previous output sample for each channel
+        double		mCoefficientF;			///< filter coefficient
+        double		mOneMinusCoefficientF;	///< 1 - mCoefficientF
+        
+    public:
+        static constexpr Classname classname = { "lowpass.1" };
+        static constexpr auto tags = { "dspEffectsLib", "audio", "processor", "filter", "lowpass" };
+        
+        /** Filter coefficient.
+         */
+        Parameter<double, RangeLimit::clip> coefficient = { this,
+                                                            "coefficient",
+                                                            0.5,
+                                                            Range<double>(0.0, 1.0),
+                                                            [this]{
+                                                                mCoefficientF = coefficient;
+                                                                mOneMinusCoefficientF = 1 - coefficient;
+                                                            }
+        };
+        
+        Sample operator()(Sample x, int channel)
+        {
+            
+        };
+        
     };
     
     
