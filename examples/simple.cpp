@@ -79,16 +79,14 @@ void SampleBundleAndGainTest()
 	std::cout << "the sample is " << foo << std::endl;
 }
 
-void LowpassFourPoleTest()
+void UnitImpulseTest()
 {
-    Jamoma::LowpassFourPole my_lowpass;
+    Jamoma::UnitImpulse my_impulse;
     
-    my_lowpass.sampleRate = 44100;
-    my_lowpass.frequency = 1000.;
-    my_lowpass.q = 1.0;
+    my_impulse.channelCount = 1;
+    my_impulse.frameCount = 64;
     
-    Jamoma::SampleBundle impulse(1, 64);
-    impulse[0][0] = 1.0;
+    auto output = my_impulse();
     
     Jamoma::SampleVector expectedImpulse = {
         1.0,
@@ -119,128 +117,264 @@ void LowpassFourPoleTest()
         0.0,
         0.0,
         0.0,
-        0.0, 
-        0.0, 
-        0.0, 
-        0.0, 
-        0.0, 
-        0.0, 
-        0.0, 
-        0.0, 
-        0.0, 
-        0.0, 
-        0.0, 
-        0.0, 
-        0.0, 
-        0.0, 
-        0.0, 
-        0.0, 
-        0.0, 
-        0.0, 
-        0.0, 
-        0.0, 
-        0.0, 
-        0.0, 
-        0.0, 
-        0.0, 
-        0.0, 
-        0.0, 
-        0.0, 
-        0.0, 
-        0.0, 
-        0.0, 
-        0.0, 
-        0.0, 
-        0.0, 
-        0.0, 
-        0.0, 
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
         0.0
     };
-    
+
     int badSampleCount = 0;
     
     for (int i = 0; i < expectedImpulse.size(); i++)
     {
-        if (expectedImpulse[i] != impulse[0][i]) badSampleCount++;
+        if (expectedImpulse[i] != output[0][0][i])
+        {
+            badSampleCount++;
+            std::cout << "sample " << i << " expected " << expectedImpulse[i] << " but instead was " << output[0][0][i] << std::endl;
+        }
+        
     }
     
-    std::cout << "the impulse signal has " << badSampleCount << " bad samples" << std::endl;
+    std::cout << "unit impulse has " << badSampleCount << " bad samples" << std::endl;
     
-    auto out_samples = my_lowpass(impulse);
+    assert(badSampleCount == 0);
     
-    // the following impulse was created using the code here
-    // http://musicdsp.org/archive.php?classid=3#26
-    // within Processing
-    // cutoff = 1000
-    // q = 1.0
+}
+
+void LowpassOnePoleTest()
+{
+    Jamoma::LowpassOnePole my_lowpass;
+    
+    my_lowpass.coefficient = 0.5;
+    
+    Jamoma::UnitImpulse impulse;
+    
+    impulse.channelCount = 1;
+    impulse.frameCount = 64;
+    
+    auto out_samples = my_lowpass( impulse() );
+    
+    // The following impulse was based on the code from jamoma
+    // implemented in Processing by NW
     Jamoma::SampleVector expectedIR = {
-        2.681802833344647E-6,
-        1.3381033668168877E-5,
-        3.7714134294038155E-5,
-        8.027046605044782E-5,
-        1.4446236531090402E-4,
-        2.3266652549250506E-4,
-        3.4637395387999775E-4,
-        4.863232608379854E-4,
-        6.52618864392983E-4,
-        8.448355631598002E-4,
-        0.001062110809309293,
-        0.001303225900357731,
-        0.0015666772036194987,
-        0.0018507384298140377,
-        0.0021535148821610743,
-        0.002472990523942391,
-        0.0028070686305651303,
-        0.0031536067212494284,
-        0.0035104464002100612,
-        0.0038754386772468273,
-        0.00424646528265345,
-        0.004621456440965131,
-        0.004998405521970396,
-        0.0053753809453081,
-        0.005750535676565311,
-        0.006122114617811144,
-        0.006488460163685845,
-        0.006848016165268556,
-        0.00719933051774118,
-        0.007541056564133758,
-        0.007871953485976737,
-        0.008190885832308944,
-        0.00849682232102107,
-        0.0087888340307896,
-        0.0090660920877235,
-        0.009327864938164877,
-        0.009573515287725065,
-        0.009802496776478823,
-        0.010014350451170672,
-        0.010208701087206644,
-        0.010385253406017963,
-        0.010543788227004214,
-        0.010684158587613332,
-        0.010806285860121976,
-        0.010910155889276336,
-        0.010995815171080003,
-        0.011063367089617093,
-        0.011112968225825411,
-        0.011144824749540717, 
-        0.01115918890387774, 
-        0.011156355589059313, 
-        0.01113665905111804, 
-        0.011100469679444743, 
-        0.01104819091591722, 
-        0.01098025627728667, 
-        0.010897126491605477, 
-        0.010799286748728779, 
-        0.010687244064295689, 
-        0.010561524756078145, 
-        0.010422672031161895, 
-        0.010271243682082553, 
-        0.010107809889768535, 
-        0.0099329511309322, 
-        0.009747256187391761
+        0.5,
+        0.25,
+        0.125,
+        0.0625,
+        0.03125,
+        0.015625,
+        0.0078125,
+        0.00390625,
+        0.001953125,
+        9.765625E-4,
+        4.8828125E-4,
+        2.44140625E-4,
+        1.220703125E-4,
+        6.103515625E-5,
+        3.0517578125E-5,
+        1.52587890625E-5,
+        7.62939453125E-6,
+        3.814697265625E-6,
+        1.9073486328125E-6,
+        9.5367431640625E-7,
+        4.76837158203125E-7,
+        2.384185791015625E-7,
+        1.1920928955078125E-7,
+        5.9604644775390625E-8,
+        2.9802322387695312E-8,
+        1.4901161193847656E-8,
+        7.450580596923828E-9,
+        3.725290298461914E-9,
+        1.862645149230957E-9,
+        9.313225746154785E-10,
+        4.6566128730773926E-10,
+        2.3283064365386963E-10,
+        1.1641532182693481E-10,
+        5.820766091346741E-11,
+        2.9103830456733704E-11,
+        1.4551915228366852E-11,
+        7.275957614183426E-12,
+        3.637978807091713E-12,
+        1.8189894035458565E-12,
+        9.094947017729282E-13,
+        4.547473508864641E-13,
+        2.2737367544323206E-13,
+        1.1368683772161603E-13,
+        5.6843418860808015E-14,
+        2.8421709430404007E-14,
+        1.4210854715202004E-14,
+        7.105427357601002E-15,
+        3.552713678800501E-15,
+        1.7763568394002505E-15,
+        8.881784197001252E-16, 
+        4.440892098500626E-16, 
+        2.220446049250313E-16, 
+        1.1102230246251565E-16, 
+        5.551115123125783E-17, 
+        2.7755575615628914E-17, 
+        1.3877787807814457E-17, 
+        6.938893903907228E-18, 
+        3.469446951953614E-18, 
+        1.734723475976807E-18, 
+        8.673617379884035E-19, 
+        4.3368086899420177E-19, 
+        2.1684043449710089E-19, 
+        1.0842021724855044E-19, 
+        5.421010862427522E-20
     };
     
-    badSampleCount = 0;
+    int badSampleCount = 0;
+    Jamoma::Sample temp = 0.0;
+    Jamoma::Sample tempExpected = 0.0;
+    
+    for (int i = 0; i < expectedIR.size(); i++)
+    {
+        temp = out_samples[0][0][i];
+        tempExpected = expectedIR[i];
+        if (std::fabs(temp - tempExpected) > 0.000000005) { // TODO: implement proper double comparison - issue #26
+            badSampleCount++;
+            std::cout << "sample " << i << " had a difference of " << std::fabs(temp - tempExpected) << std::endl;
+            //" expected " << expectedIR[i] << " but instead was " << temp << std::endl;
+        }
+    }
+    
+    std::cout << "the impulse response of my_lowpass (1 pole) has " << badSampleCount << " bad samples" << std::endl;
+    
+    assert(badSampleCount == 0);
+    
+    // testing range limitations
+    my_lowpass.coefficient = 0.7;
+    assert(my_lowpass.coefficient == 0.7);
+    
+    my_lowpass.coefficient = -1.0;
+    assert(my_lowpass.coefficient == 0.0);
+    
+    my_lowpass.coefficient = 1.2;
+    assert(my_lowpass.coefficient == 1.0);
+    
+}
+
+void LowpassFourPoleTest()
+{
+    Jamoma::LowpassFourPole my_lowpass;
+    
+    my_lowpass.sampleRate = 44100;
+    my_lowpass.frequency = 1000.;
+    my_lowpass.q = 10.0;
+    
+    Jamoma::UnitImpulse impulse;
+    
+    impulse.channelCount = 1;
+    impulse.frameCount = 64;
+    
+    auto out_samples = my_lowpass( impulse() );
+    
+    // The following impulse was based on the code found here
+    // http://musicdsp.org/archive.php?classid=3#26
+    // implemented in Processing by NW, adopting tweaks made in jamoma2.
+    // It should correspond to the following settings:
+    // cutoff = 1000
+    // q = 10.0
+    Jamoma::SampleVector expectedIR = {
+        1.1114094966912524E-4,
+        5.185809867004247E-4,
+        0.0013566830733495131,
+        0.00266711884609515,
+        0.004419756543933562,
+        0.006540995119517765,
+        0.008934880451193566,
+        0.011497619575988889,
+        0.014127212462044219,
+        0.016729524194462317,
+        0.01922180477418673,
+        0.021534415062963778,
+        0.02361132349572916,
+        0.025409788493738057,
+        0.026899527152547734,
+        0.028061584347418934,
+        0.028887051817754188,
+        0.02937573913186519,
+        0.029534863739063902,
+        0.029377802449531133,
+        0.02892292917914669,
+        0.02819255174120884,
+        0.0272119523870212,
+        0.026008531572689723,
+        0.0246110512183134,
+        0.023048971903299378,
+        0.021351877550629245,
+        0.019548980864406137,
+        0.01766870286642576,
+        0.015738320168397234,
+        0.013783674009326336,
+        0.01182893551333184,
+        0.009896422039881662,
+        0.008006459883080358,
+        0.006177288918901074,
+        0.004425005097042377,
+        0.002763536930312534,
+        0.0012046523547523686,
+        -2.4200747504493246E-4,
+        -0.0015688707217329722,
+        -0.002770356844647906,
+        -0.003842780991240676,
+        -0.004784243629542635,
+        -0.005594508112436378,
+        -0.006274868724514015,
+        -0.006828011618719647,
+        -0.00725787090172078,
+        -0.007569481973642979,
+        -0.0077688340695979425,
+        -0.007862723787941745, 
+        -0.007858611224353948, 
+        -0.007764480162803003, 
+        -0.007588703605585956, 
+        -0.007339915756309998, 
+        -0.007026891403352279, 
+        -0.006658433488399313, 
+        -0.0062432694864702305, 
+        -0.00578995707161646, 
+        -0.005306799397393739, 
+        -0.004801770184216497, 
+        -0.0042824486776811615, 
+        -0.0037559644235848214, 
+        -0.0032289516972181694, 
+        -0.0027075133269751014
+    };
+    
+    int badSampleCount = 0;
     Jamoma::Sample temp = 0.0;
     Jamoma::Sample tempExpected = 0.0;
 
@@ -248,16 +382,16 @@ void LowpassFourPoleTest()
     {
         temp = out_samples[0][0][i];
         tempExpected = expectedIR[i];
-        if (temp != tempExpected) {
+        if (std::fabs(temp - tempExpected) > 0.000000005) { // TODO: implement proper double comparison - issue #26
             badSampleCount++;
-            std::cout << "sample " << i << " expected " << expectedIR[i] << " but instead was " << temp << std::endl;
+            std::cout << "sample " << i << " had a difference of " << std::fabs(temp - tempExpected) << std::endl;
+            //" expected " << expectedIR[i] << " but instead was " << temp << std::endl;
         }
     }
     
-    std::cout << "the impulse response of my_lowpass has " << badSampleCount << " bad samples" << std::endl;
+    std::cout << "the impulse response of my_lowpass (4 pole) has " << badSampleCount << " bad samples" << std::endl;
 	
-	
-	
+	assert(badSampleCount == 0);
 	
 	// Test range limiting
 	my_lowpass.frequency = 100.0;
@@ -279,6 +413,107 @@ void LowpassFourPoleTest()
 	assert(my_lowpass.q == -5.0);
 	
 	
+}
+
+void DcblockTest() {
+    
+    Jamoma::Dcblock my_dcblock;
+    
+    Jamoma::UnitImpulse impulse;
+    
+    impulse.channelCount = 1;
+    impulse.frameCount = 64;
+    
+    auto out_samples = my_dcblock( impulse() );
+    
+    // The following impulse was based on the code from jamoma
+    // implemented in Processing by NW
+    Jamoma::SampleVector expectedIR = {
+        1.0,
+        -2.99990177154541E-4,
+        -2.999001830481518E-4,
+        -2.998102159391105E-4,
+        -2.997202758193182E-4,
+        -2.9963036268067835E-4,
+        -2.995404765150969E-4,
+        -2.994506173144822E-4,
+        -2.99360785070745E-4,
+        -2.992709797757985E-4,
+        -2.9918120142155834E-4,
+        -2.9909144999994256E-4,
+        -2.9900172550287167E-4,
+        -2.9891202792226853E-4,
+        -2.988223572500585E-4,
+        -2.987327134781693E-4,
+        -2.986430965985311E-4,
+        -2.9855350660307656E-4,
+        -2.984639434837406E-4,
+        -2.9837440723246066E-4,
+        -2.9828489784117663E-4,
+        -2.9819541530183075E-4,
+        -2.981059596063677E-4,
+        -2.9801653074673455E-4,
+        -2.9792712871488084E-4,
+        -2.978377535027585E-4,
+        -2.9774840510232194E-4,
+        -2.9765908350552783E-4,
+        -2.9756978870433537E-4,
+        -2.9748052069070613E-4,
+        -2.973912794566041E-4,
+        -2.973020649939957E-4,
+        -2.972128772948497E-4,
+        -2.971237163511374E-4,
+        -2.970345821548324E-4,
+        -2.9694547469791076E-4,
+        -2.968563939723509E-4,
+        -2.9676733997013367E-4,
+        -2.9667831268324234E-4,
+        -2.9658931210366256E-4,
+        -2.9650033822338246E-4,
+        -2.964113910343924E-4,
+        -2.963224705286854E-4,
+        -2.9623357669825666E-4,
+        -2.961447095351038E-4,
+        -2.96055869031227E-4,
+        -2.959670551786287E-4,
+        -2.9587826796931375E-4,
+        -2.9578950739528944E-4,
+        -2.957007734485655E-4, 
+        -2.956120661211539E-4, 
+        -2.955233854050692E-4, 
+        -2.954347312923282E-4, 
+        -2.953461037749502E-4, 
+        -2.9525750284495686E-4, 
+        -2.951689284943722E-4, 
+        -2.9508038071522267E-4, 
+        -2.9499185949953706E-4, 
+        -2.949033648393467E-4, 
+        -2.9481489672668505E-4, 
+        -2.947264551535882E-4, 
+        -2.9463804011209453E-4, 
+        -2.9454965159424483E-4, 
+        -2.944612895920823E-4
+    };
+    
+    int badSampleCount = 0;
+    Jamoma::Sample temp = 0.0;
+    Jamoma::Sample tempExpected = 0.0;
+    
+    for (int i = 0; i < expectedIR.size(); i++)
+    {
+        temp = out_samples[0][0][i];
+        tempExpected = expectedIR[i];
+        if (std::fabs(temp - tempExpected) > 0.00000001) { // TODO: implement proper double comparison - issue #26
+            badSampleCount++;
+            std::cout << "sample " << i << " had a difference of " << std::fabs(temp - tempExpected) << std::endl;
+            //" expected " << expectedIR[i] << " but instead was " << temp << std::endl;
+        }
+    }
+    
+    std::cout << "the impulse response of my_dcblock has " << badSampleCount << " bad samples" << std::endl;
+    
+    assert(badSampleCount == 0);
+    
 }
 
 
@@ -383,7 +618,10 @@ int main(int argc, const char * argv[])
 
 	CircularStorageTest();
 	SampleBundleAndGainTest();
+    UnitImpulseTest();
+    LowpassOnePoleTest();
     LowpassFourPoleTest();
+    DcblockTest();
 	PortAudioExample();
 
 	return 0;
