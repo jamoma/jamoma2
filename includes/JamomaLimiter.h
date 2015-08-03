@@ -223,13 +223,9 @@ namespace Jamoma {
 		
 		SharedSampleBundleGroup operator()(const SharedSampleBundleGroup x) override
 		{
-			SharedSampleBundleGroup out = mOutput;
+			SharedSampleBundleGroup out = adapt(x);
 			SharedSampleBundleGroup temp;
 			
-			// Adapt to the source channels and blocksize
-			channelCount = (int)x.channelCount();
-			out.adapt(x);
-
 			// Pre-Process the input
 			if (blockdc) {
 				out = mDcblockerObject(x);

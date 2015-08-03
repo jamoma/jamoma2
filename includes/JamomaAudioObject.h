@@ -106,6 +106,18 @@ namespace Jamoma {
 		 */
 		Parameter<int>	sampleRate = { this, "sampleRate", 96000 };
 		
+
+		/** Convenience wrapper for adapting an AudioObject and it's output.
+			@param		x	The SampleBundle whose dimensions will be used to set this AudioObject's dimensions.
+			@return			This AudioObject's output bundle.
+		 */
+		auto adapt(const SampleBundle& x)
+		{
+			mOutput.adapt(x);
+			channelCount = (int)x.channelCount();
+			return mOutput;
+		}
+		
 		
 		/** Calculate a single sample.
 			Subclasses must override this.
