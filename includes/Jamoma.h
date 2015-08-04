@@ -61,7 +61,13 @@ T Limit(T input, T low, T high)
 }  // namespace Jamoma
 
 
+
+// Dependencies
+
 #include "readerwriterqueue.h"
+
+
+// Core
 
 #include "JamomaValue.h"
 #include "JamomaObject.h"
@@ -71,6 +77,10 @@ T Limit(T input, T low, T high)
 #include "JamomaSample.h"
 
 #include "JamomaCircularStorage.h"
+#include "JamomaUnitTest.h"
+
+
+// Units
 
 #include "JamomaDcblock.h"
 #include "JamomaGain.h"
