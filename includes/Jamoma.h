@@ -50,14 +50,6 @@ constexpr double kTwoPi	= kPi * 2.0;
 
 
 
-
-template <typename T>
-T Limit(T input, T low, T high)
-{
-	return std::min(std::max(input, low), high);
-}
-
-
 }  // namespace Jamoma
 
 
@@ -69,6 +61,7 @@ T Limit(T input, T low, T high)
 
 // Core
 
+#include "JamomaLimits.h"
 #include "JamomaValue.h"
 #include "JamomaObject.h"
 #include "JamomaMessage.h"
