@@ -75,15 +75,15 @@ namespace Jamoma {
             Controls the prominence of the cutoff frequency.
             The usable range for this parameter is between 0.0 and 40.0.
          */
-		Parameter<double>	q = { this, "q", 1.0,
+		Parameter<double>	resonance = { this, "resonance", 1.0,
 			[this]{
-				mDeciResonance = q * 0.1;
+				mDeciResonance = resonance * 0.1;
 				calculateCoefficients();
 			}
 		};
-		// addAttributeProperty(Q,			range,			TTValue(0.01, 100.0));
-		// addAttributeProperty(Q,			rangeChecking,	TT("cliplow"));
-		// addAttributeProperty(Q,			description,	TT("Strength of Resonance Near the Cutoff Frequency"));
+		// addAttributeProperty(resonance,			range,			TTValue(0.01, 100.0));
+		// addAttributeProperty(resonance,			rangeChecking,	TT("cliplow"));
+		// addAttributeProperty(resonance,			description,	TT("Strength of Resonance Near the Cutoff Frequency"));
 		
 		
 		/**	This algorithm uses an IIR filter, meaning that it relies on feedback.  If the filter should

@@ -292,7 +292,7 @@ void LowpassFourPoleTest()
     
     my_lowpass.sampleRate = 44100;
     my_lowpass.frequency = 1000.;
-    my_lowpass.q = 10.0;
+    my_lowpass.resonance = 10.0;
     
     Jamoma::UnitImpulse impulse;
     
@@ -406,11 +406,11 @@ void LowpassFourPoleTest()
 	assert(my_lowpass.frequency < 96000 * 0.5);
 	
 	// q is not clipped at the moment, so we can do irrational bad things...  we should change this
-	my_lowpass.q = 100.0;
-	assert(my_lowpass.q == 100.0);
+	my_lowpass.resonance = 100.0;
+	assert(my_lowpass.resonance == 100.0);
 	
-	my_lowpass.q = -5.0;
-	assert(my_lowpass.q == -5.0);
+	my_lowpass.resonance = -5.0;
+	assert(my_lowpass.resonance == -5.0);
 	
 	
 }
@@ -432,7 +432,7 @@ public:
 		
 		lowpass.sampleRate = 44100;
 		lowpass.frequency = 1000.0;
-		lowpass.q = 38.0;
+		lowpass.resonance = 38.0;
 	}
 
 	
