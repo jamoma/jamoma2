@@ -982,6 +982,8 @@
 		22EF26E41B6AF1720013FA2E /* JamomaMessage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = JamomaMessage.h; path = ../../Jamoma2/includes/JamomaMessage.h; sourceTree = "<group>"; };
 		22EF26E51B6AF1720013FA2E /* JamomaParameter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = JamomaParameter.h; path = ../../Jamoma2/includes/JamomaParameter.h; sourceTree = "<group>"; };
 		8E5CD52F1B70565E00886E08 /* JamomaDelay.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JamomaDelay.h; sourceTree = "<group>"; };
+		22EF26E61B7046590013FA2E /* JamomaUnitTest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = JamomaUnitTest.h; path = ../../Jamoma2/includes/JamomaUnitTest.h; sourceTree = "<group>"; };
+		22EF27731B707A0F0013FA2E /* JamomaLimits.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = JamomaLimits.h; path = ../../Jamoma2/includes/JamomaLimits.h; sourceTree = "<group>"; };
 		8E89B8221B6B0622007371C2 /* JamomaUnitImpulse.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JamomaUnitImpulse.h; sourceTree = "<group>"; };
 		8E8B83901B6C5D0800F0F4D8 /* JamomaLowpassOnePole.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JamomaLowpassOnePole.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -3245,11 +3247,13 @@
 				228D55501B629DE3007024D6 /* Jamoma.h */,
 				228D55511B629DE3007024D6 /* JamomaAudioObject.h */,
 				228D55521B629DE3007024D6 /* JamomaCircularStorage.h */,
+				22EF27731B707A0F0013FA2E /* JamomaLimits.h */,
 				22EF26E41B6AF1720013FA2E /* JamomaMessage.h */,
 				228D55571B629DE3007024D6 /* JamomaObject.h */,
 				22EF26E51B6AF1720013FA2E /* JamomaParameter.h */,
 				228D55591B629DE3007024D6 /* JamomaSample.h */,
 				228D555B1B629DE3007024D6 /* JamomaValue.h */,
+				22EF26E61B7046590013FA2E /* JamomaUnitTest.h */,
 			);
 			name = core;
 			sourceTree = "<group>";
