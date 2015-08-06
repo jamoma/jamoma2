@@ -12,8 +12,8 @@ language: cpp
 #before_install:
 #- "./script/depinstall.sh"
 #
-#script:
-#- "./script/build.sh"
+script:
+- "make test"
 #
 #after_success:
 #- "./script/deploy-git.sh"
