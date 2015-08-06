@@ -1,7 +1,11 @@
 # script to build Jamoma on Travis-ci.org
 # see : https://travis-ci.org/jamoma/jamoma2/
 
-language: c++
+# calling it objective-c, which is a lie, to trick travis into building it on a mac
+language: 
+  - objective-c
+  - c++
+  
 compiler:
  # - gcc
   - clang
