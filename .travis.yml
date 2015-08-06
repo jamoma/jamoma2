@@ -2,6 +2,8 @@
 # see : https://travis-ci.org/jamoma/jamoma2/
 
 language: cpp
+compiler: clang
+
 #sudo: false
 #env:
 #  matrix:

@@ -1,6 +1,5 @@
 
 NAME = JamomaTest_Dcblocker
-CC = /usr/bin/clang++
 SRC = $(NAME).cpp
 
 INCLUDES = -I../../includes
@@ -17,7 +16,7 @@ OPTIONS += -std=c++14 -stdlib=libc++
 
 
 debug:
-	$(CC) $(SRC) -g ${OPTIONS} ${INCLUDES} -o $(NAME)
+	$(CXX) $(SRC) -g ${OPTIONS} ${INCLUDES} -o $(NAME)
 
 test: | debug
 	./$(NAME)
