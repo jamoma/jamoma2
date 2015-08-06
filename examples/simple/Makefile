@@ -21,7 +21,7 @@ FRAMEWORKS += /System/Library/Frameworks/AudioUnit.framework/Versions/A/AudioUni
 FRAMEWORKS += /System/Library/Frameworks/AudioToolbox.framework/Versions/A/AudioToolbox
 
 
-OPTIONS += -std=c++14 -stdlib=libc++
+OPTIONS += -std=c++1y -stdlib=libc++
 
 
 debug:
