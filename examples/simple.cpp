@@ -17,36 +17,6 @@
 #include "portaudio.h"
 
 
-void CircularStorageTest()
-{
-	Jamoma::CircularStorage<Jamoma::Sample>		circ(8);	// 8 samples
-	Jamoma::SampleVector						samples = {1,2,3,4,5};
-	
-	// write tests
-	circ.write(samples);
-	
-	samples = {6,7,8,9,10};
-	circ.write(samples);
-
-	// read tests
-	
-	Jamoma::SampleVector	foo(3);
-	circ.read(foo);
-	circ.read(foo);
-	
-	samples = {20, 21, 22};
-	circ.write(samples);
-	circ.read(foo);
-	
-	samples = {100, 101, 102};
-	circ.write(samples);
-	circ.read(foo);
-	
-	foo.resize(5);
-	circ.read(foo);
-}
-
-
 void SampleBundleAndGainTest()
 {
 	// gain -- single sample
@@ -515,7 +485,6 @@ int main(int argc, const char * argv[])
 {
 	std::cout << "Hello, World!\n";
 
-	CircularStorageTest();
 	SampleBundleAndGainTest();
     UnitImpulseTest();
     LowpassOnePoleTest();

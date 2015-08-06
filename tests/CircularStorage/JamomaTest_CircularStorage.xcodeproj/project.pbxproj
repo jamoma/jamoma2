@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		22EF26E81B7052760013FA2E /* JamomaTest_Dcblocker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 22EF26E71B7052760013FA2E /* JamomaTest_Dcblocker.cpp */; };
+		22EF29021B73EAB90013FA2E /* JamomaTest_CircularStorage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 22EF29011B73EAB90013FA2E /* JamomaTest_CircularStorage.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -24,7 +24,6 @@
 
 /* Begin PBXFileReference section */
 		2271EAF71AC5C97C00F1B0C0 /* JamomaExperiments */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; name = JamomaExperiments; path = UnitTest; sourceTree = BUILT_PRODUCTS_DIR; };
-		22EF26E71B7052760013FA2E /* JamomaTest_Dcblocker.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = JamomaTest_Dcblocker.cpp; sourceTree = "<group>"; };
 		22EF26FC1B7054680013FA2E /* example.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = example.cpp; sourceTree = "<group>"; };
 		22EF26FD1B7054680013FA2E /* Makefile */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
 		22EF26FE1B7054680013FA2E /* MersenneTwister.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MersenneTwister.h; sourceTree = "<group>"; };
@@ -109,6 +108,7 @@
 		22EF276F1B7054680013FA2E /* unittests.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = unittests.cpp; sourceTree = "<group>"; };
 		22EF28751B73DD440013FA2E /* gtest-internal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "gtest-internal.h"; sourceTree = "<group>"; };
 		22EF28FF1B73E7CB0013FA2E /* includes */ = {isa = PBXFileReference; lastKnownFileType = folder; name = includes; path = ../../includes; sourceTree = "<group>"; };
+		22EF29011B73EAB90013FA2E /* JamomaTest_CircularStorage.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = JamomaTest_CircularStorage.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -125,7 +125,7 @@
 		2271EAEE1AC5C97C00F1B0C0 = {
 			isa = PBXGroup;
 			children = (
-				22EF26E71B7052760013FA2E /* JamomaTest_Dcblocker.cpp */,
+				22EF29011B73EAB90013FA2E /* JamomaTest_CircularStorage.cpp */,
 				22EF28FF1B73E7CB0013FA2E /* includes */,
 				22EF26FA1B7054680013FA2E /* dependencies */,
 				2271EAF81AC5C97C00F1B0C0 /* Products */,
@@ -505,7 +505,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 2271EAF21AC5C97C00F1B0C0 /* Build configuration list for PBXProject "JamomaTest_Dcblocker" */;
+			buildConfigurationList = 2271EAF21AC5C97C00F1B0C0 /* Build configuration list for PBXProject "JamomaTest_CircularStorage" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -527,7 +527,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				22EF26E81B7052760013FA2E /* JamomaTest_Dcblocker.cpp in Sources */,
+				22EF29021B73EAB90013FA2E /* JamomaTest_CircularStorage.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -639,7 +639,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		2271EAF21AC5C97C00F1B0C0 /* Build configuration list for PBXProject "JamomaTest_Dcblocker" */ = {
+		2271EAF21AC5C97C00F1B0C0 /* Build configuration list for PBXProject "JamomaTest_CircularStorage" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				2271EAFC1AC5C97C00F1B0C0 /* Debug */,

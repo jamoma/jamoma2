@@ -15,16 +15,6 @@
 		22EF28FE1B73E73B0013FA2E /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22EF28FD1B73E73B0013FA2E /* Carbon.framework */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXContainerItemProxy section */
-		22EF28F21B73E5930013FA2E /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 22EF28A81B73E5930013FA2E /* foooo.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 22EF26371B684CCE0013FA2E;
-			remoteInfo = foooo;
-		};
-/* End PBXContainerItemProxy section */
-
 /* Begin PBXCopyFilesBuildPhase section */
 		2271EAF51AC5C97C00F1B0C0 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
@@ -71,8 +61,6 @@
 		22EF28A01B73E5930013FA2E /* Wagner.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Wagner.cpp; sourceTree = "<group>"; };
 		22EF28A21B73E5930013FA2E /* mtrnd.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = mtrnd.h; sourceTree = "<group>"; };
 		22EF28A31B73E5930013FA2E /* Yang.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Yang.cpp; sourceTree = "<group>"; };
-		22EF28A71B73E5930013FA2E /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
-		22EF28A81B73E5930013FA2E /* foooo.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = foooo.xcodeproj; sourceTree = "<group>"; };
 		22EF28AB1B73E5930013FA2E /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		22EF28AC1B73E5930013FA2E /* Murmur3.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Murmur3.h; sourceTree = "<group>"; };
 		22EF28AF1B73E5930013FA2E /* pa_asio.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = pa_asio.h; sourceTree = "<group>"; };
@@ -310,36 +298,10 @@
 		22EF28A41B73E5930013FA2E /* Murmur3 */ = {
 			isa = PBXGroup;
 			children = (
-				22EF28A51B73E5930013FA2E /* foooo */,
 				22EF28AB1B73E5930013FA2E /* main.cpp */,
 				22EF28AC1B73E5930013FA2E /* Murmur3.h */,
 			);
 			path = Murmur3;
-			sourceTree = "<group>";
-		};
-		22EF28A51B73E5930013FA2E /* foooo */ = {
-			isa = PBXGroup;
-			children = (
-				22EF28A61B73E5930013FA2E /* foooo */,
-				22EF28A81B73E5930013FA2E /* foooo.xcodeproj */,
-			);
-			path = foooo;
-			sourceTree = "<group>";
-		};
-		22EF28A61B73E5930013FA2E /* foooo */ = {
-			isa = PBXGroup;
-			children = (
-				22EF28A71B73E5930013FA2E /* main.cpp */,
-			);
-			path = foooo;
-			sourceTree = "<group>";
-		};
-		22EF28A91B73E5930013FA2E /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				22EF28F31B73E5930013FA2E /* foooo */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		22EF28AD1B73E5930013FA2E /* portaudio */ = {
@@ -571,28 +533,12 @@
 			mainGroup = 2271EAEE1AC5C97C00F1B0C0;
 			productRefGroup = 2271EAF81AC5C97C00F1B0C0 /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = 22EF28A91B73E5930013FA2E /* Products */;
-					ProjectRef = 22EF28A81B73E5930013FA2E /* foooo.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				2271EAF61AC5C97C00F1B0C0 /* JamomaExperiments */,
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXReferenceProxy section */
-		22EF28F31B73E5930013FA2E /* foooo */ = {
-			isa = PBXReferenceProxy;
-			fileType = "compiled.mach-o.executable";
-			path = foooo;
-			remoteRef = 22EF28F21B73E5930013FA2E /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
 
 /* Begin PBXSourcesBuildPhase section */
 		2271EAF31AC5C97C00F1B0C0 /* Sources */ = {

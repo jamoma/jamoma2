@@ -28,6 +28,7 @@ namespace Jamoma {
 	 */
 	template <class T>
 	class CircularStorage {
+		friend class CircularStorageTest;
 		
 		std::vector<T>		mItems;										///< storage for the circular buffer's data
 		std::size_t			mIndex = { 0 };								///< location of the record head
