@@ -14,6 +14,7 @@
 #pragma once
 
 #include "JamomaObject.h"
+#include "gtest-internal.h"
 
 namespace Jamoma {
 
@@ -104,52 +105,28 @@ namespace Jamoma {
 			std::cerr << fullstr << std::endl;
 		}
 
-		
-		
-		/*
-		 std::fabs(temp - temp) > 0.00000001
-		 */
-		
+
 		/**	Determine if two floating-point numbers (32- or 64-bit) are equivalent in value, tolerant of floating-point precision.
+			Internally using the FloatingPoint comparison developed by Google for GTest.
 			@param	a			The first value to test
 			@param	b			The second value to test
-			@param	equivalent	The expected result when comparing the two floats a and b. Defaults to TRUE
-			@param	epsilon		Error tolerance when comparing the numbers. Defaults to 0.0000000000001. Use 0.000001 for 32-bit floats.
+			@param	equivalent	The expected result when comparing the two floats a and b. Defaults to TRUE.
 			@return				Returns true if a is equivalent to b, otherwise returns false.
 		 */
 		template <class U>
-		bool compare(U a, U b, bool equivalent = true, U epsilon = 0.00000001)
+		bool compare(U a, U b, bool equivalent = true)
 		{
-			assert(epsilon > 0.0);	// must be positive
+			testing::internal::FloatingPoint<U> aa(a);
+			testing::internal::FloatingPoint<U> bb(b);
 			
-			bool	result;
-			U		infinity = std::numeric_limits<U>::infinity();
+			bool result = aa.AlmostEquals(bb);
 			
-			if ((a == infinity)||(b == infinity)) {
-				if (a == b)
-					result = true;
-				else
-					result = false;
-			}
-			else {
-				auto aAbs = fabs(a);
-				auto bAbs = fabs(b);
-				auto absoluteOrRelative = (1.0 > aAbs ? 1.0 : aAbs);
-				
-				absoluteOrRelative = (absoluteOrRelative > bAbs ? absoluteOrRelative : bAbs);
-				if (fabs(a - b) <= epsilon * absoluteOrRelative)
-					result = true;
-				else
-					result = false;
-			}
-			
-			// Was this the expected result?
-			if (result == equivalent)
+			if (result == equivalent) // Was this the expected result?
 				return true;
 			else
 				return false;
 		}
-		
+
 		
 	private:
 		

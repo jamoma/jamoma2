@@ -981,9 +981,10 @@
 		22EF26441B684F7D0013FA2E /* Murmur3.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Murmur3.h; path = ../../Jamoma2/dependencies/Murmur3/Murmur3.h; sourceTree = "<group>"; };
 		22EF26E41B6AF1720013FA2E /* JamomaMessage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = JamomaMessage.h; path = ../../Jamoma2/includes/JamomaMessage.h; sourceTree = "<group>"; };
 		22EF26E51B6AF1720013FA2E /* JamomaParameter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = JamomaParameter.h; path = ../../Jamoma2/includes/JamomaParameter.h; sourceTree = "<group>"; };
-		8E5CD52F1B70565E00886E08 /* JamomaDelay.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JamomaDelay.h; sourceTree = "<group>"; };
 		22EF26E61B7046590013FA2E /* JamomaUnitTest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = JamomaUnitTest.h; path = ../../Jamoma2/includes/JamomaUnitTest.h; sourceTree = "<group>"; };
 		22EF27731B707A0F0013FA2E /* JamomaLimits.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = JamomaLimits.h; path = ../../Jamoma2/includes/JamomaLimits.h; sourceTree = "<group>"; };
+		22EF28721B73DCAF0013FA2E /* gtest-internal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "gtest-internal.h"; sourceTree = "<group>"; };
+		8E5CD52F1B70565E00886E08 /* JamomaDelay.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JamomaDelay.h; sourceTree = "<group>"; };
 		8E89B8221B6B0622007371C2 /* JamomaUnitImpulse.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JamomaUnitImpulse.h; sourceTree = "<group>"; };
 		8E8B83901B6C5D0800F0F4D8 /* JamomaLowpassOnePole.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JamomaLowpassOnePole.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -1026,6 +1027,7 @@
 		228D510D1B629DD5007024D6 /* dependencies */ = {
 			isa = PBXGroup;
 			children = (
+				22EF28711B73DCAF0013FA2E /* gtest */,
 				228D510E1B629DD5007024D6 /* civetweb-master */,
 				228D52B91B629DD6007024D6 /* Mersenne-1.1 */,
 				228D52E11B629DD6007024D6 /* portaudio */,
@@ -3256,6 +3258,14 @@
 				22EF26E61B7046590013FA2E /* JamomaUnitTest.h */,
 			);
 			name = core;
+			sourceTree = "<group>";
+		};
+		22EF28711B73DCAF0013FA2E /* gtest */ = {
+			isa = PBXGroup;
+			children = (
+				22EF28721B73DCAF0013FA2E /* gtest-internal.h */,
+			);
+			path = gtest;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

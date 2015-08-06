@@ -116,7 +116,7 @@ public:
 			tempExpected = expectedIR[i];
 			if ( ! mTest->compare(temp, tempExpected ) ) {
 				badSampleCount++;
-				mTest->log("sample %i had a difference of %f", i, std::fabs(temp - tempExpected));
+				mTest->log("sample %i had a difference of %.10f", i, std::fabs(temp - tempExpected));
 			}
 		}
 		

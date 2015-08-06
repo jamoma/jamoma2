@@ -135,6 +135,7 @@
 		22EF276D1B7054680013FA2E /* unittests.vcxproj */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = unittests.vcxproj; sourceTree = "<group>"; };
 		22EF276E1B7054680013FA2E /* unittests.vcxproj.filters */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = unittests.vcxproj.filters; sourceTree = "<group>"; };
 		22EF276F1B7054680013FA2E /* unittests.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = unittests.cpp; sourceTree = "<group>"; };
+		22EF28751B73DD440013FA2E /* gtest-internal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "gtest-internal.h"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -193,6 +194,7 @@
 		22EF26FA1B7054680013FA2E /* dependencies */ = {
 			isa = PBXGroup;
 			children = (
+				22EF28741B73DD440013FA2E /* gtest */,
 				22EF26FB1B7054680013FA2E /* Mersenne-1.1 */,
 				22EF27231B7054680013FA2E /* Murmur3 */,
 				22EF272C1B7054680013FA2E /* portaudio */,
@@ -538,6 +540,14 @@
 			path = msvc12;
 			sourceTree = "<group>";
 		};
+		22EF28741B73DD440013FA2E /* gtest */ = {
+			isa = PBXGroup;
+			children = (
+				22EF28751B73DD440013FA2E /* gtest-internal.h */,
+			);
+			path = gtest;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -696,10 +706,6 @@
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "c++14";
 				CLANG_ENABLE_OBJC_ARC = NO;
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/../dependencies/portaudio",
-				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -709,10 +715,6 @@
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "c++14";
 				CLANG_ENABLE_OBJC_ARC = NO;
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/../dependencies/portaudio",
-				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
