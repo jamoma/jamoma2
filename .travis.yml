@@ -21,7 +21,7 @@ script:
 #- "./script/deploy-git.sh"
 #
 matrix:
-	include:
+    include:
     - env: COMPILER=clang++-3.6
       addons: &clang36
         apt:
