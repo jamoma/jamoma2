@@ -6,8 +6,10 @@ compiler:
  # - gcc
   - clang
 sudo: false
+
 os: osx
 
+osx_image: xcode6.4
 
 #addons:
 #  apt:
