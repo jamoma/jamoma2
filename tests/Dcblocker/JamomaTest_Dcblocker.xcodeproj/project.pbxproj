@@ -35,22 +35,6 @@
 /* Begin PBXFileReference section */
 		2271EAF71AC5C97C00F1B0C0 /* JamomaExperiments */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = JamomaExperiments; sourceTree = BUILT_PRODUCTS_DIR; };
 		22EF26E71B7052760013FA2E /* JamomaTest_Dcblocker.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = JamomaTest_Dcblocker.cpp; sourceTree = "<group>"; };
-		22EF26EA1B7054570013FA2E /* Jamoma.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Jamoma.h; sourceTree = "<group>"; };
-		22EF26EB1B7054570013FA2E /* JamomaAudioObject.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JamomaAudioObject.h; sourceTree = "<group>"; };
-		22EF26EC1B7054570013FA2E /* JamomaCircularStorage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JamomaCircularStorage.h; sourceTree = "<group>"; };
-		22EF26ED1B7054570013FA2E /* JamomaDcblock.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JamomaDcblock.h; sourceTree = "<group>"; };
-		22EF26EE1B7054570013FA2E /* JamomaGain.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JamomaGain.h; sourceTree = "<group>"; };
-		22EF26EF1B7054570013FA2E /* JamomaLimiter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JamomaLimiter.h; sourceTree = "<group>"; };
-		22EF26F01B7054570013FA2E /* JamomaLowpassFourPole.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JamomaLowpassFourPole.h; sourceTree = "<group>"; };
-		22EF26F11B7054570013FA2E /* JamomaLowpassOnePole.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JamomaLowpassOnePole.h; sourceTree = "<group>"; };
-		22EF26F21B7054570013FA2E /* JamomaMessage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JamomaMessage.h; sourceTree = "<group>"; };
-		22EF26F31B7054570013FA2E /* JamomaObject.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JamomaObject.h; sourceTree = "<group>"; };
-		22EF26F41B7054570013FA2E /* JamomaParameter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JamomaParameter.h; sourceTree = "<group>"; };
-		22EF26F51B7054570013FA2E /* JamomaSample.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JamomaSample.h; sourceTree = "<group>"; };
-		22EF26F61B7054570013FA2E /* JamomaUnitImpulse.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JamomaUnitImpulse.h; sourceTree = "<group>"; };
-		22EF26F71B7054570013FA2E /* JamomaUnitTest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JamomaUnitTest.h; sourceTree = "<group>"; };
-		22EF26F81B7054570013FA2E /* JamomaValue.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JamomaValue.h; sourceTree = "<group>"; };
-		22EF26F91B7054570013FA2E /* JamomaWhiteNoise.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JamomaWhiteNoise.h; sourceTree = "<group>"; };
 		22EF26FC1B7054680013FA2E /* example.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = example.cpp; sourceTree = "<group>"; };
 		22EF26FD1B7054680013FA2E /* Makefile */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
 		22EF26FE1B7054680013FA2E /* MersenneTwister.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MersenneTwister.h; sourceTree = "<group>"; };
@@ -136,6 +120,7 @@
 		22EF276E1B7054680013FA2E /* unittests.vcxproj.filters */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = unittests.vcxproj.filters; sourceTree = "<group>"; };
 		22EF276F1B7054680013FA2E /* unittests.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = unittests.cpp; sourceTree = "<group>"; };
 		22EF28751B73DD440013FA2E /* gtest-internal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "gtest-internal.h"; sourceTree = "<group>"; };
+		22EF28FF1B73E7CB0013FA2E /* includes */ = {isa = PBXFileReference; lastKnownFileType = folder; name = includes; path = ../../includes; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -153,7 +138,7 @@
 			isa = PBXGroup;
 			children = (
 				22EF26E71B7052760013FA2E /* JamomaTest_Dcblocker.cpp */,
-				22EF26E91B7054570013FA2E /* includes */,
+				22EF28FF1B73E7CB0013FA2E /* includes */,
 				22EF26FA1B7054680013FA2E /* dependencies */,
 				2271EAF81AC5C97C00F1B0C0 /* Products */,
 			);
@@ -165,30 +150,6 @@
 				2271EAF71AC5C97C00F1B0C0 /* JamomaExperiments */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		22EF26E91B7054570013FA2E /* includes */ = {
-			isa = PBXGroup;
-			children = (
-				22EF26EA1B7054570013FA2E /* Jamoma.h */,
-				22EF26EB1B7054570013FA2E /* JamomaAudioObject.h */,
-				22EF26EC1B7054570013FA2E /* JamomaCircularStorage.h */,
-				22EF26ED1B7054570013FA2E /* JamomaDcblock.h */,
-				22EF26EE1B7054570013FA2E /* JamomaGain.h */,
-				22EF26EF1B7054570013FA2E /* JamomaLimiter.h */,
-				22EF26F01B7054570013FA2E /* JamomaLowpassFourPole.h */,
-				22EF26F11B7054570013FA2E /* JamomaLowpassOnePole.h */,
-				22EF26F21B7054570013FA2E /* JamomaMessage.h */,
-				22EF26F31B7054570013FA2E /* JamomaObject.h */,
-				22EF26F41B7054570013FA2E /* JamomaParameter.h */,
-				22EF26F51B7054570013FA2E /* JamomaSample.h */,
-				22EF26F61B7054570013FA2E /* JamomaUnitImpulse.h */,
-				22EF26F71B7054570013FA2E /* JamomaUnitTest.h */,
-				22EF26F81B7054570013FA2E /* JamomaValue.h */,
-				22EF26F91B7054570013FA2E /* JamomaWhiteNoise.h */,
-			);
-			name = includes;
-			path = ../../includes;
 			sourceTree = "<group>";
 		};
 		22EF26FA1B7054680013FA2E /* dependencies */ = {
@@ -706,6 +667,11 @@
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "c++14";
 				CLANG_ENABLE_OBJC_ARC = NO;
+				HEADER_SEARCH_PATHS = (
+					"$(SRCROOT)/../../includes/**",
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -715,6 +681,11 @@
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "c++14";
 				CLANG_ENABLE_OBJC_ARC = NO;
+				HEADER_SEARCH_PATHS = (
+					"$(SRCROOT)/../../includes/**",
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
