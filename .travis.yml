@@ -1,10 +1,10 @@
 # script to build Jamoma on Travis-ci.org
 # see : https://travis-ci.org/jamoma/jamoma2/
 
-language: cpp
+language: c++
 compiler: clang
+sudo: false
 
-#sudo: false
 #env:
 #  matrix:
 #  - ARCH=
@@ -20,7 +20,17 @@ script:
 #after_success:
 #- "./script/deploy-git.sh"
 #
-#addons:
+matrix:
+	include:
+    - env: COMPILER=clang++-3.6
+      addons: &clang36
+        apt:
+          packages:
+            - clang-3.6
+            - valgrind
+          sources:
+            - ubuntu-toolchain-r-test
+            - llvm-toolchain-precise-3.6
 #  apt:
 #    sources:
 #    - ubuntu-toolchain-r-test
