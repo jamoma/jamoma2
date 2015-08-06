@@ -35,3 +35,7 @@ JamomaTest_*
 !JamomaTest_*.*
 
 *.dSYM
+
+
+#Examples
+examples/simple/simple
