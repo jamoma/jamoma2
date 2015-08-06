@@ -109,6 +109,7 @@
 		22EF276F1B7054680013FA2E /* unittests.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = unittests.cpp; sourceTree = "<group>"; };
 		22EF28751B73DD440013FA2E /* gtest-internal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "gtest-internal.h"; sourceTree = "<group>"; };
 		22EF28FF1B73E7CB0013FA2E /* includes */ = {isa = PBXFileReference; lastKnownFileType = folder; name = includes; path = ../../includes; sourceTree = "<group>"; };
+		22EF29081B7408850013FA2E /* Makefile */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -125,6 +126,7 @@
 		2271EAEE1AC5C97C00F1B0C0 = {
 			isa = PBXGroup;
 			children = (
+				22EF29081B7408850013FA2E /* Makefile */,
 				22EF26E71B7052760013FA2E /* JamomaTest_Dcblocker.cpp */,
 				22EF28FF1B73E7CB0013FA2E /* includes */,
 				22EF26FA1B7054680013FA2E /* dependencies */,
@@ -473,6 +475,23 @@
 		};
 /* End PBXGroup section */
 
+/* Begin PBXLegacyTarget section */
+		22EF29091B74089F0013FA2E /* UnitTest-Make */ = {
+			isa = PBXLegacyTarget;
+			buildArgumentsString = test;
+			buildConfigurationList = 22EF290A1B74089F0013FA2E /* Build configuration list for PBXLegacyTarget "UnitTest-Make" */;
+			buildPhases = (
+			);
+			buildToolPath = /usr/bin/make;
+			buildWorkingDirectory = "";
+			dependencies = (
+			);
+			name = "UnitTest-Make";
+			passBuildSettingsInEnvironment = 1;
+			productName = "UnitTest-Make";
+		};
+/* End PBXLegacyTarget section */
+
 /* Begin PBXNativeTarget section */
 		2271EAF61AC5C97C00F1B0C0 /* UnitTest */ = {
 			isa = PBXNativeTarget;
@@ -503,6 +522,9 @@
 					2271EAF61AC5C97C00F1B0C0 = {
 						CreatedOnToolsVersion = 6.1.1;
 					};
+					22EF29091B74089F0013FA2E = {
+						CreatedOnToolsVersion = 6.4;
+					};
 				};
 			};
 			buildConfigurationList = 2271EAF21AC5C97C00F1B0C0 /* Build configuration list for PBXProject "JamomaTest_Dcblocker" */;
@@ -517,6 +539,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
+				22EF29091B74089F0013FA2E /* UnitTest-Make */,
 				2271EAF61AC5C97C00F1B0C0 /* UnitTest */,
 			);
 		};
@@ -636,6 +659,35 @@
 			};
 			name = Release;
 		};
+		22EF290B1B74089F0013FA2E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEBUGGING_SYMBOLS = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		22EF290C1B74089F0013FA2E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -656,6 +708,14 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
+		};
+		22EF290A1B74089F0013FA2E /* Build configuration list for PBXLegacyTarget "UnitTest-Make" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				22EF290B1B74089F0013FA2E /* Debug */,
+				22EF290C1B74089F0013FA2E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
 		};
 /* End XCConfigurationList section */
 	};

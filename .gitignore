@@ -30,3 +30,8 @@
 xcuserdata
 project.xcworkspace
 .DS_Store
+
+JamomaTest_*
+!JamomaTest_*.*
+
+*.dSYM
