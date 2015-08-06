@@ -118,5 +118,5 @@ namespace Jamoma {
 int main(int argc, const char * argv[])
 {
 	Jamoma::UnitTest<Jamoma::CircularStorageTest>	aUnitTestInstance;
-	return 0;
+	return aUnitTestInstance.failureCount();
 }

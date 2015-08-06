@@ -128,6 +128,11 @@ namespace Jamoma {
 		}
 
 		
+		auto failureCount()
+		{
+			return mFailedAssertions;
+		}
+		
 	private:
 		
 		

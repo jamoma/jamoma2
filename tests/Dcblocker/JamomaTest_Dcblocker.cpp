@@ -131,5 +131,5 @@ public:
 int main(int argc, const char * argv[])
 {
 	Jamoma::UnitTest<DcblockTest>	aUnitTestInstance;
-	return 0;
+	return aUnitTestInstance.failureCount();
 }
