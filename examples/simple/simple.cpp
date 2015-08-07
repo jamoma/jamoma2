@@ -17,39 +17,6 @@
 #include "portaudio.h"
 
 
-void SampleBundleAndGainTest()
-{
-	// gain -- single sample
-	
-	Jamoma::Gain	my_gain;
-	Jamoma::Sample	x = 1.0;
-	Jamoma::Sample	y = 0.0;
-	
-	my_gain.gain = 0.5;
-	y = my_gain(x);
-	
-	// gain -- vector
-	
-	Jamoma::SampleBundle	in_samples(2, 8);
-	
-	in_samples.fill(1.0);
-	auto out_samples = my_gain(in_samples);
-	
-	my_gain.gain = 0.25;
-	in_samples = out_samples;
-	out_samples = my_gain(in_samples);
-	
-	// samplebundle
-	
-	auto bar = in_samples[0][0];
-	std::cout << "the sample is " << bar << std::endl;
-	
-	in_samples[0][0] = 2.0;
-	auto foo = in_samples[0][0];
-	std::cout << "the sample is " << foo << std::endl;
-}
-
-
 class MyGraph {
 public:
 	Jamoma::WhiteNoise				random;
@@ -147,10 +114,7 @@ error:
 
 int main(int argc, const char * argv[])
 {
-	std::cout << "Hello, World!\n";
-
-	SampleBundleAndGainTest();
+	std::cout << "Hello, Noisy World!\n";
 	PortAudioExample();
-
 	return 0;
 }
