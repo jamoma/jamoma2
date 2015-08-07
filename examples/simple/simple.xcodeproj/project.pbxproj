@@ -640,8 +640,7 @@
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/../dependencies/portaudio",
-					/Users/tim/Code/Jamoma2/dependencies/portaudio,
+					"$(PROJECT_DIR)/../../dependencies/portaudio",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -659,8 +658,7 @@
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/../dependencies/portaudio",
-					/Users/tim/Code/Jamoma2/dependencies/portaudio,
+					"$(PROJECT_DIR)/../../dependencies/portaudio",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
