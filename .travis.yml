@@ -32,4 +32,5 @@ before_install:
 
 
 script:
+- "make"
 - "make test"
