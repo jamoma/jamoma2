@@ -1,6 +1,7 @@
-# jamoma2
-A header-only C++ library for building dynamic and reflexive systems with an emphasis on audio and media.
+# Jamoma2
+[![Build Status](https://travis-ci.org/jamoma/jamoma2.svg?branch=master)](https://travis-ci.org/jamoma/jamoma2)
 
+A header-only C++ library for building dynamic and reflexive systems with an emphasis on audio and media.
 
 
 ## Why Are We Doing This?
