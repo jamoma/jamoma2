@@ -49,100 +49,6 @@ void SampleBundleAndGainTest()
 	std::cout << "the sample is " << foo << std::endl;
 }
 
-void UnitImpulseTest()
-{
-    Jamoma::UnitImpulse my_impulse;
-    
-    my_impulse.channelCount = 1;
-    my_impulse.frameCount = 64;
-    
-    auto output = my_impulse();
-    
-    Jamoma::SampleVector expectedImpulse = {
-        1.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0
-    };
-
-    int badSampleCount = 0;
-    
-    for (int i = 0; i < expectedImpulse.size(); i++)
-    {
-        if (expectedImpulse[i] != output[0][0][i])
-        {
-            badSampleCount++;
-            std::cout << "sample " << i << " expected " << expectedImpulse[i] << " but instead was " << output[0][0][i] << std::endl;
-        }
-        
-    }
-    
-    std::cout << "unit impulse has " << badSampleCount << " bad samples" << std::endl;
-    
-    assert(badSampleCount == 0);
-    
-}
-
 
 class MyGraph {
 public:
@@ -244,7 +150,6 @@ int main(int argc, const char * argv[])
 	std::cout << "Hello, World!\n";
 
 	SampleBundleAndGainTest();
-    UnitImpulseTest();
 	PortAudioExample();
 
 	return 0;
