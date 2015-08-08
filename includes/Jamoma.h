@@ -81,9 +81,6 @@ const double kTTGainMidiPowerInv	= 1.0/kTTGainMidiPower;
 
 #include "JamomaDcblock.h"
 #include "JamomaGain.h"
-
-#include "JamomaDelay.h"
-
 #include "JamomaLowpassOnePole.h"
 #include "JamomaLowpassFourPole.h"
 #include "JamomaWhiteNoise.h"
