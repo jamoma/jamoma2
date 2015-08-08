@@ -28,10 +28,11 @@ namespace Jamoma {
     public:
         static constexpr Classname classname = { "lowpass.1" };
         static constexpr auto tags = { "dspEffectsLib", "audio", "processor", "filter", "lowpass" };
-        
+		
+		
         /** Filter coefficient.
          */
-        Parameter<double, RangeLimit::clip> coefficient = { this,
+		Parameter<double, NativeUnit::None<double>, RangeLimit::clip> coefficient = { this,
                                                             "coefficient",
                                                             0.5,
                                                             Range<double>(0.0, 1.0),

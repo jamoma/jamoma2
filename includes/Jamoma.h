@@ -61,17 +61,33 @@ const double kTTGainMidiPowerInv	= 1.0/kTTGainMidiPower;
 #include "readerwriterqueue.h"
 
 
+
+#include "Murmur3.h" // used for constexpr hash function
+
+/** A hash function using the Murmur3 algorithm ( https://en.wikipedia.org/wiki/MurmurHash ).
+ This hash function is capable of being executed at compile time,
+ meaning that the compiled binary will have a constant int value and no actually need to execute any code at runtime.
+ @param	str		A c-string to be hashed into an int.
+ @param	seed	An optional seed value.  For most uses you should not override the default.
+ @return			An int (specifically a uint32_t) representing the hash of the string input.
+ */
+constexpr inline uint32_t Hash(const char *const str, const uint32_t seed = 0xAED123FD) noexcept
+{
+	return Murmur3_32(str, _StringLength(str), seed);
+}
+
+
 // Core
 
 #include "JamomaLimits.h"
 #include "JamomaValue.h"
+#include "JamomaDataspace.h"
 #include "JamomaObject.h"
 #include "JamomaMessage.h"
 #include "JamomaParameter.h"
 #include "JamomaAudioObject.h"
 #include "JamomaSample.h"
 
-#include "JamomaGainDataspace.h"
 
 #include "JamomaCircularStorage.h"
 #include "JamomaUnitTest.h"

@@ -35,7 +35,7 @@ namespace Jamoma {
 		
 		// Linear is the neutral unit, so it is a pass-through
 		template <class T>
-		class LinearGain : public Unit<T> {
+		class LinearGain : public UnitBase<T> {
 		public:
 			T toNeutral(const T input) const
 			{
@@ -50,7 +50,7 @@ namespace Jamoma {
 		
 		
 		template <class T>
-		class MidiGain : public Unit<T> {
+		class MidiGain : public UnitBase<T> {
 		public:
 			T toNeutral(const T input) const
 			{
@@ -65,7 +65,7 @@ namespace Jamoma {
 		
 		
 		template <class T>
-		class DbGain : public Unit<T> {
+		class DbGain : public UnitBase<T> {
 		public:
 			T toNeutral(const T input) const
 			{
@@ -84,7 +84,7 @@ namespace Jamoma {
 		};
 		
 		
-		/*	The Gain Dataspace.
+		/**	The Gain Dataspace.
 		 
 			In Jamoma1 you would create a Gain Dataspace object and then it would do all possible conversions as you.
 			In Jamoma2 we create an instance that is specialized for the "native" unit that you want to convert to/from.
@@ -105,12 +105,12 @@ namespace Jamoma {
 			superior and branch-free conversions.
 		 */
 		template <class T, GainUnit U>
-		class Gain {
+		class Gain /*: public Dataspace*/ {
 			
 			/**	Mapping from unit names to actual unit converter objects.
 				TODO: make this a static so that we don't have to spend resources on it for all instances
 			 */
-			std::unordered_map<GainUnit, Unit<T>*>	sUnits = {
+			std::unordered_map<GainUnit, UnitBase<T>*>	sUnits = {
 				{GainUnit::linear, new LinearGain<T>()},
 				{GainUnit::midi, new MidiGain<T>()},
 				{GainUnit::db, new DbGain<T>()}
@@ -118,7 +118,7 @@ namespace Jamoma {
 
 			
 			/**	The native unit to/from which we perform conversions.	*/
-			const Unit<T>* mUnit = sUnits[U];
+			const UnitBase<T>* mUnit = sUnits[U];
 
 			
 		public:
@@ -129,7 +129,11 @@ namespace Jamoma {
 				return mUnit->fromNeutral( sUnits[unit]->toNeutral(x) );
 			}
 
-			
+			T operator()(const T x, uint32_t unit)
+			{
+				return (*this)(x, (GainUnit)unit);
+			}
+		
 			/**	Conversion function where the unit is passed as a string.	*/
 			T operator()(const T x, const char* str)
 			{

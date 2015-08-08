@@ -28,7 +28,6 @@ namespace Jamoma {
 		Synopsis			mSynopsis;		///< A description of what this Parameter represents.
 		RangeLimit			mRangeLimit;	///< The behavior applied to values sent to this parameter if they are outside of the suggested Range.
 		Function			mSetter;		///< A function to be executed after the parameter's value has been set.
-		// getter
 		
 
 		ParameterBase(Object* owner, const String& name, const Synopsis& synopsis, const RangeLimit& rangeLimit, const Function& setter)
@@ -68,17 +67,28 @@ namespace Jamoma {
 	
 	/** Defines a Parameter with no special behavior applied if the supplied values are out of range.
 	 */
-	template <class T, RangeLimit rangeLimit = RangeLimit::none>
+	template <class T, class Dataspace_Class = Dataspace::None<T, Dataspace::NoneUnit::nothing>, RangeLimit rangeLimit = RangeLimit::none>
 	class Parameter : public ParameterBase {
 		T					mValue;
 		Range<T>			mRange;
+		Dataspace_Class		mDataspace;
 		
+		
+		// naked values have no dataspace unit specified, so set them directly
 		void set(T input)
 		{
 			mValue = input;
 			if (mSetter)
 				mSetter();
 		}
+		
+
+		// set values using a dataspace conversion
+		void set(T input, Unit unit)
+		{
+			set(mDataspace(input, (uint32_t)unit));
+		}
+		
 		
 	public:
 		Parameter() = delete;		// Can't create an unitialized Parameter
@@ -105,7 +115,16 @@ namespace Jamoma {
 		}
 		
 		
+		// setter w/ unit
+		Parameter& operator = (const std::pair<T, Unit> input)
+		{
+			set(input.first, input.second);
+			return *this;
+		}
+		
+		
 		// setter for case when input is a generic value
+		// TODO: if a value has 2 members then do we use the last one as a unit? perhaps it needs some metadata so that we know?
 		Parameter& operator = (const ValueBase& input)
 		{
 			set(input);
@@ -127,26 +146,37 @@ namespace Jamoma {
 			return mValue;
 		}
 	};
-	
+
 	
 #pragma mark -
 #pragma mark Parameters that Clip
-	
+
 
 	/** Defines a Parameter where values are limited (clipped) to the min and max of the suggested Range.
 	 */
-	template<class T>
-	class Parameter<T, RangeLimit::clip> : public ParameterBase {
+	template<class T, class Dataspace_Class>
+	class Parameter<T, Dataspace_Class, RangeLimit::clip> : public ParameterBase {
 		T					mValue;
 		Range<T>			mRange;
-	
+		Dataspace_Class		mDataspace;
+
+
+		// naked values have no dataspace unit specified, so set them directly
 		void set(T input)
 		{
 			mValue = Limit(input, mRange.first, mRange.second);
 			if (mSetter)
 				mSetter();
 		}
+
 		
+		// set values using a dataspace conversion
+		void set(T input, Unit unit)
+		{
+			set(mDataspace(input, (uint32_t)unit));
+		}
+		
+
 	public:
 		Parameter() = delete;		// Can't create an unitialized Parameter
 
@@ -170,7 +200,16 @@ namespace Jamoma {
 		}
 		
 		
+		// setter w/ unit
+		Parameter& operator = (const std::pair<T, Unit> input)
+		{
+			set(input.first, input.second);
+			return *this;
+		}
+		
+		
 		// setter for case when input is a generic value
+		// TODO: if a value has 2 members then do we use the last one as a unit? perhaps it needs some metadata so that we know?
 		Parameter& operator = (const ValueBase& input)
 		{
 			set(input);

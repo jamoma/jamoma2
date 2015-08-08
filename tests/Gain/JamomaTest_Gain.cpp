@@ -66,7 +66,21 @@ namespace Jamoma {
 		
 		void testParameterSetting()
 		{
-			;
+			Jamoma::Gain	g;
+			
+			using namespace Dataspace;
+			using namespace std;
+
+			g.gain = make_pair(0.25, Unit::LinearGain);
+			mTest->TEST_ASSERT("setting gain param linearly", mTest->compare( g(1.0), 0.25) );
+
+			g.gain = make_pair(-6.0, Unit::Db);
+			mTest->TEST_ASSERT("setting gain param in db", mTest->compare( g(1.0), 0.50118723362727224) );
+
+			g.gain = make_pair(110.0, Unit::MidiGain);
+			mTest->TEST_ASSERT("setting gain param with midi", mTest->compare( g(1.0), 1.5826306885735968) );
+			
+
 		}
 	};
 

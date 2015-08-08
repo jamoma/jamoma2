@@ -55,7 +55,7 @@ namespace Jamoma {
             The frequency setting will tend to sound flat below 1000 Hz and goes sharp above 1000 Hz.
             In addition, the cutoff frequency is only stable below about one-fourth the sampling rate.
          */
-		Parameter<double, RangeLimit::clip>	frequency = {	this,
+		Parameter<double, NativeUnit::None<double>, RangeLimit::clip>	frequency = {	this,
 															"frequency",
 															1000.0,
 															Range<double>(20.0, sampleRate * 0.475),
