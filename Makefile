@@ -5,7 +5,9 @@ debug:
 
 test:
 	cd tests/CircularStorage; make test
+	cd tests/Dataspace; make test
 	cd tests/Dcblocker; make test
+	cd tests/Gain; make test
 	cd tests/LowpassFourPole; make test
 	cd tests/LowpassOnePole; make test
 	cd tests/SampleBundle; make test
