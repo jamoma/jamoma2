@@ -32,8 +32,8 @@ namespace Jamoma {
 
 		
 		/** Process one sample.
-		 @param x					Sample to be processed.
-		 @return					Processed sample
+			@param	x	Sample to be processed.
+			@return		Processed sample
 		 */
 		Sample operator()(const Sample x)
 		{
@@ -42,8 +42,8 @@ namespace Jamoma {
 		
 		
 		/** Process a SharedSampleBundleGroup.
-		 @param x					SharedSampleBundleGroup to be processed.
-		 @return					Processed SharedSampleBundleGroup.
+			@param	x	SharedSampleBundleGroup to be processed.
+			@return		Processed SharedSampleBundleGroup.
 		 */
 		SharedSampleBundleGroup operator()(const SampleBundle& x)
 		{

@@ -106,11 +106,10 @@ namespace Jamoma {
 		
 		
 		/**	This algorithm uses an IIR filter, meaning that it relies on feedback.  If the filter should
-		 *	not be producing any signal (such as turning audio off and then back on in a host) or if the
-		 *	feedback has become corrupted (such as might happen if a NaN is fed in) then it may be
-		 *	neccesary to clear the filter by calling this method.
-		 *	@return Returns a TTErr error code.												*/
-
+			not be producing any signal (such as turning audio off and then back on in a host) or if the
+			feedback has become corrupted (such as might happen if a NaN is fed in) then it may be
+			neccesary to clear the filter by calling this method.											
+		 */
 		Message			clear = { "clear",
 									Synopsis("Reset the Filter History"),
 									[this]{
@@ -129,7 +128,8 @@ namespace Jamoma {
 		void calculateCoefficients()
 		{
 			mCoefficientFB = mDeciResonance * (1.0 - 0.4 * mCoefficientSquaredF);
-			mCoefficientG = /*TTAntiDenormal*/(0.35013 * (mCoefficientSquaredF * mCoefficientSquaredF));
+			mCoefficientG = 0.35013 * (mCoefficientSquaredF * mCoefficientSquaredF);
+			ZeroDenormal(mCoefficientG);
 		}
 
 		
@@ -147,20 +147,21 @@ namespace Jamoma {
             Sample y = x;
 			
 			y -= mY4[channel][0] * mCoefficientFB;
-			//TTZeroDenormal(y);
+			ZeroDenormal(y);
 			y *= mCoefficientG;
+			ZeroDenormal(y);
 			
 			mY1[channel][0] = y + 0.3 * mX1[channel][0] + mOneMinusCoefficientF * mY1[channel][0];
-			//TTZeroDenormal(mY1[channel]);
+			ZeroDenormal(mY1[channel]);
 			mX1[channel][0] = y;
 			mY2[channel][0] = mY1[channel][0] + 0.3 * mX2[channel][0] + mOneMinusCoefficientF * mY2[channel][0];
-			//TTZeroDenormal(mY2[channel]);
+			ZeroDenormal(mY2[channel]);
 			mX2[channel][0] = mY1[channel][0];
 			mY3[channel][0] = mY2[channel][0] + 0.3 * mX3[channel][0] + mOneMinusCoefficientF * mY3[channel][0];
-			//TTZeroDenormal(mY3[channel] );
+			ZeroDenormal(mY3[channel] );
 			mX3[channel][0] = mY2[channel][0];
 			mY4[channel][0] = mY3[channel][0] + 0.3 * mX4[channel][0] + mOneMinusCoefficientF * mY4[channel][0];
-			//TTZeroDenormal(mY4[channel]);
+			ZeroDenormal(mY4[channel]);
 			mX4[channel][0] = mY3[channel][0];
 			y = mY4[channel][0];
 			
