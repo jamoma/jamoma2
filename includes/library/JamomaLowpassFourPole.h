@@ -19,11 +19,24 @@ namespace Jamoma {
 
 	
 	/**	This AudioObject applies a resonant <a href="https://en.wikipedia.org/wiki/Low-pass_filter">low-pass filter</a> to a Sample or SampleBundle.
+	
+		This object was originally the tap.fourpole~ external in TapTools for Max and used extensively in the Hipno plug-ins.
+	
 		A fourth-order algorithm based on the Moog VCF is used to acheive a relatively flat passband.
         Subtle modifications from <a href="http://www.musicdsp.org/archive.php?classid=3#26">the original source</a> to improve control of the frequency cutoff.
+	
+		The conclusion of the Stilson/Smith paper ( https://ccrma.stanford.edu/~stilti/papers/moogvcf.pdf ) concludes: 
+		"Implementability issues make the conversion of the Moog VCF to a digital form nontrivial." 
+		Basically digital versions of this filter are either going to get good frequency control or resonance, but not both.
+	
+		Also see related research at http://www.acoustics.ed.ac.uk/wp-content/uploads/AMT_MSc_FinalProjects/2012__Daly__AMT_MSc_FinalProject_MoogVCF.pdf
+		Specifically: "it is possible to create a very accurate model of the Moog VCF but at considerable costs to either cut-off frequency range or input signal amplitude and computational expense. 
+						Any further investigations should not seek to improve the accuracy of the model but focus on the problems of stability and computational time."
 
 		@warning The cutoff frequency is only stable below about one-fourth the sampling rate.
         In addition, it will tend to sound flat below 1000 Hz and go sharp above 1000 Hz.
+	
+		TODO: limit the freq to 1/4 SR
 	 */
 	class LowpassFourPole : public AudioObject {
 		
@@ -72,8 +85,14 @@ namespace Jamoma {
 		
 		
 		/** Filter resonance.
-            Controls the prominence of the cutoff frequency.
+            Controls the prominence of the filter's frequency.
             The usable range for this parameter is between 0.0 and 40.0.
+		
+			Note: the Moog VCF range was between flat and self-oscillating (no numbers were given on the panel). See #27.
+			
+			The following formula ( from https://www.native-instruments.com/forum/threads/filter-q-vs-resonance.234219/ ) may or may not be relevant:
+				1/Q=2(1-resonance)
+			TODO: determine if the above is indeed relevant to this filter.
          */
 		Parameter<double>	resonance = { this, "resonance", 1.0,
 			[this]{
