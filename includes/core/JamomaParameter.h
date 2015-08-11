@@ -62,13 +62,112 @@ namespace Jamoma {
 	
 	
 #pragma mark -
+#pragma mark Parameters that Fold or Wrap
+	
+	
+	/** Defines a Parameter where values are limited (clipped) to the min and max of the suggested Range.
+	 */
+	template <class T, class Dataspace_Class = Dataspace::None<T, Dataspace::NoneUnit::nothing>, RangeLimit rangeLimit = RangeLimit::none>
+	class Parameter : public ParameterBase {
+		
+		T					mValue;
+		Range<T>			mRange;
+		Dataspace_Class		mDataspace;
+		
+		
+		// naked values have no dataspace unit specified, so set them directly
+		void set(T input)
+		{
+			switch (mRangeLimit) {
+				case RangeLimit::wrap:
+					mValue = Wrap(input, mRange.first, mRange.second);
+					break;
+				case RangeLimit::fold:
+					mValue = Fold(input, mRange.first, mRange.second);
+					break;
+				case RangeLimit::clip:
+					mValue = Limit(input, mRange.first, mRange.second);
+					break;
+				default:
+					mValue = input;
+					break;
+			}
+			if (mSetter)
+				mSetter();
+		}
+		
+		
+		// set values using a dataspace conversion
+		void set(T input, Unit unit)
+		{
+			set(mDataspace(input, (uint32_t)unit));
+		}
+		
+		
+	public:
+		Parameter() = delete;		// Can't create an unitialized Parameter
+		
+		
+		Parameter(Object* owner, String name, T initial, Range<T> range, Function setter = nullptr)
+		: ParameterBase(owner, name, "", rangeLimit, setter)
+		, mRange(range)
+		{
+			// see comments above regarding arg parsing
+			
+			owner->parameters[name] = this;
+			set(initial);
+		}
+		
+		
+		// setter
+		Parameter& operator = (T input)
+		{
+			set(input);
+			return *this;
+		}
+		
+		
+		// setter w/ unit
+		Parameter& operator = (const std::pair<T, Unit> input)
+		{
+			set(input.first, input.second);
+			return *this;
+		}
+		
+		
+		// setter for case when input is a generic value
+		// TODO: if a value has 2 members then do we use the last one as a unit? perhaps it needs some metadata so that we know?
+		Parameter& operator = (const ValueBase& input)
+		{
+			set(input);
+			return *this;
+		}
+		
+		
+		// assign *values* from one attribute to another
+		Parameter& operator = (Parameter& input)
+		{
+			set(input.mValue);
+			return *this;
+		}
+		
+		
+		// getter
+		operator T() const
+		{
+			return mValue;
+		}
+	};
+	
+	
+#pragma mark -
 #pragma mark Parameters that Don't Limit
 	
 	
 	/** Defines a Parameter with no special behavior applied if the supplied values are out of range.
 	 */
-	template <class T, class Dataspace_Class = Dataspace::None<T, Dataspace::NoneUnit::nothing>, RangeLimit rangeLimit = RangeLimit::none>
-	class Parameter : public ParameterBase {
+	template <class T, class Dataspace_Class>
+	class Parameter<T, Dataspace_Class, RangeLimit::none> : public ParameterBase {
 		T					mValue;
 		Range<T>			mRange;
 		Dataspace_Class		mDataspace;
@@ -94,8 +193,8 @@ namespace Jamoma {
 		Parameter() = delete;		// Can't create an unitialized Parameter
 		
 		
-		Parameter(Object* owner, String name, T initial, Function setter = nullptr)
-		: ParameterBase(owner, name, "", rangeLimit, setter)
+		Parameter(Object* owner, String name, T initial,  Function setter = nullptr)
+		: ParameterBase(owner, name, "", RangeLimit::none, setter)
 		{
 			// 1. iterate args
 			// 2. determine their types
@@ -232,5 +331,6 @@ namespace Jamoma {
 		}
 	};
 
-
+	
+	
 } // namespace Jamoma

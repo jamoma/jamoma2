@@ -28,7 +28,7 @@ namespace Jamoma {
 		
 	public:
 		static constexpr Classname classname = { "noise" };
-		static constexpr auto tags = { "dspGeneratorLib, audio, generator, noise" };
+		static constexpr auto tags = { "dspGeneratorLib", "audio", "generator", "noise" };
 		
 		
 		Sample operator()(Sample x)
