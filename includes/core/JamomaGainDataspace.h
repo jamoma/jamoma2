@@ -101,8 +101,7 @@ namespace Jamoma {
 			the performance of the new implementation should exceed that of the Jamoma1 implementation.
 			TODO: perform actual benchmarks and publish the results.
 		
-			Cases where there are specific performance concerns we can further specialize the templates to offer
-			superior and branch-free conversions.
+			Cases where there are specific performance concerns we can further specialize the templates.
 		 */
 		template <class T, GainUnit U>
 		class Gain /*: public Dataspace*/ {
@@ -141,31 +140,6 @@ namespace Jamoma {
 			}
 
 		};
-		
-		
-		/*
-		// specialization for linear gain because it is so common and we would like to optimize for this case
-		template <class T>
-		class Gain<T, GainUnit::linear> {
-			
-		public:
-			
-			static std::unordered_map<const uint32_t, Unit<T>>	sUnits2 = {
-				{GainUnit::linear, LinearGain<T>()},
-				{GainUnit::midi, MidiGain<T>()},
-				{GainUnit::db, DbGain<T>()}
-			};
-			
-			
-			T operator()(const T x, GainUnit unit = GainUnit::linear)
-			{
-				return sUnits2[unit].toNeutral(x);
-			}
-			
-		};
-
-		*/
-		
 	
 	} // namespace Dataspace
 } // namespace Jamoma
