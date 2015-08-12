@@ -22,8 +22,8 @@ namespace Jamoma {
 		template <class T>
 		class UnitBase {
 		public:
-			virtual T toNeutral(const T input) const = 0;
-			virtual T fromNeutral(const T input) const = 0;
+			virtual T toNeutral(const T& input) const = 0;
+			virtual T fromNeutral(const T& input) const = 0;
 		};
 		
 		

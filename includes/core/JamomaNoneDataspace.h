@@ -32,12 +32,12 @@ namespace Jamoma {
 		template <class T>
 		class Nothing : public UnitBase<T> {
 		public:
-			T toNeutral(const T input) const
+			T toNeutral(const T& input) const
 			{
 				return input;
 			}
 			
-			T fromNeutral(const T input) const
+			T fromNeutral(const T& input) const
 			{
 				return input;
 			}
@@ -52,15 +52,20 @@ namespace Jamoma {
 		class None /*: public Dataspace*/ {
 		public:
 			
+			T operator()(const T& x)
+			{
+				return x;
+			}
+			
 			/**	Conversion function where the unit is passed as enum selection.	*/
-			T operator()(const T x, NoneUnit unit = NoneUnit::nothing)
+			T operator()(const T& x, NoneUnit& unit)
 			{
 				return x;
 			}
 
 			
 			/**	Conversion function where the unit is passed as a string.	*/
-			T operator()(const T x, const char* str)
+			T operator()(const T& x, const char* str)
 			{
 				return x;
 			}

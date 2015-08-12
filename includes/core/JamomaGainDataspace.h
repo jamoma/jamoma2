@@ -37,12 +37,12 @@ namespace Jamoma {
 		template <class T>
 		class LinearGain : public UnitBase<T> {
 		public:
-			T toNeutral(const T input) const
+			T toNeutral(const T& input) const
 			{
 				return input;
 			}
 			
-			T fromNeutral(const T input) const
+			T fromNeutral(const T& input) const
 			{
 				return input;
 			}
@@ -52,12 +52,12 @@ namespace Jamoma {
 		template <class T>
 		class MidiGain : public UnitBase<T> {
 		public:
-			T toNeutral(const T input) const
+			T toNeutral(const T& input) const
 			{
 				return pow(input*0.01, kTTGainMidiPower);
 			}
 			
-			T fromNeutral(const T input) const
+			T fromNeutral(const T& input) const
 			{
 				return 100.0 * pow(input, kTTGainMidiPowerInv);
 			}
@@ -67,12 +67,12 @@ namespace Jamoma {
 		template <class T>
 		class DbGain : public UnitBase<T> {
 		public:
-			T toNeutral(const T input) const
+			T toNeutral(const T& input) const
 			{
 				return pow(10.0, input * 0.05);
 			}
 			
-			T fromNeutral(const T input) const
+			T fromNeutral(const T& input) const
 			{
 				T temp = log10(input) * 20.0;
 				
@@ -124,12 +124,12 @@ namespace Jamoma {
 		public:
 			
 			/**	Conversion function where the unit is passed as enum selection.	*/
-			T operator()(const T x, GainUnit unit = U)
+			T operator()(const T& x, const GainUnit& unit = U)
 			{
 				return mUnit->fromNeutral( sUnits[unit]->toNeutral(x) );
 			}
 
-			T operator()(const T x, uint32_t unit)
+			T operator()(const T& x, uint32_t& unit)
 			{
 				return (*this)(x, (GainUnit)unit);
 			}

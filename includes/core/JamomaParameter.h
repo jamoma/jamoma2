@@ -183,9 +183,9 @@ namespace Jamoma {
 		
 
 		// set values using a dataspace conversion
-		void set(T input, Unit unit)
+		void set(const T& input, const Unit& unit)
 		{
-			set(mDataspace(input, (uint32_t)unit));
+			set(mDataspace(input, (uint32_t&)unit));
 		}
 		
 		
@@ -215,7 +215,7 @@ namespace Jamoma {
 		
 		
 		// setter w/ unit
-		Parameter& operator = (const std::pair<T, Unit> input)
+		Parameter& operator = (const std::pair<T, Unit>& input)
 		{
 			set(input.first, input.second);
 			return *this;
