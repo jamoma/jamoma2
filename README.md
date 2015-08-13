@@ -3,6 +3,12 @@
 
 A header-only C++ library for building dynamic and reflexive systems with an emphasis on audio and media.
 
+## How to Build
+
+As a header-only library there is nothing to build for Jamoma itself. You only build your project that uses Jamoma.  You can investigate examples to build in the **examples** folder or build and run tests in the **tests** folder.
+
+For a quick sanity check, you can build everything by running `make` in the top-level folder or `make test` to build and run all of the tests.
+
 
 ## Why Are We Doing This?
 

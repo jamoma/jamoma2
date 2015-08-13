@@ -28,10 +28,10 @@ namespace Jamoma {
     public:
         static constexpr Classname classname = { "lowpass.1" };
         static constexpr auto tags = { "dspEffectsLib", "audio", "processor", "filter", "lowpass" };
-        
-        /** Filter coefficient.
-         */
-        Parameter<double, RangeLimit::clip> coefficient = { this,
+		
+		
+        /** Filter coefficient. */
+		Parameter<double, NativeUnit::None<double>, RangeLimit::clip> coefficient = { this,
                                                             "coefficient",
                                                             0.5,
                                                             Range<double>(0.0, 1.0),
@@ -40,24 +40,24 @@ namespace Jamoma {
                                                                 mOneMinusCoefficientF = 1 - coefficient;
                                                             }
         };
-        
+		
+		
         Sample operator()(Sample x)
         {
             return (*this)(x,0);
         }
-        
+		
+		
         Sample operator()(Sample x, int channel)
         {
-            // compute next output sample
-            Sample y =      x                   *   mCoefficientF +
-                            mY1[channel][0]     *   mOneMinusCoefficientF;
-            
-            // update history
-            mY1[channel][0] = y;
-            
+            Sample y = (x * mCoefficientF) + (mY1[channel][0] * mOneMinusCoefficientF); // compute next output sample
+
+			ZeroDenormal(y);
+			mY1[channel][0] = y; // update history
             return y;
         }
-        
+		
+		
         SharedSampleBundleGroup operator()(const SampleBundle& x)
         {
             auto out = adapt(x);

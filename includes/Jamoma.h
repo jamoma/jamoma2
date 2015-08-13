@@ -24,31 +24,63 @@
 
 namespace Jamoma {
 
-using String = std::string;
-using Function = std::function<void(void)>;
-using Text = char[];
-using Classname = Text;
-//using Tags = std::array<Text, 10>; // probably make this a vector of symbols instead
+	using String = std::string;
+	using Function = std::function<void(void)>;
+	using Text = char[];
+	using Classname = Text;
+	//using Tags = std::array<Text, 10>; // probably make this a vector of symbols instead
+
+		
+	/**	A brief string documenting a Function/Parameter/Message/Notification/Class/Etc.	*/
+	using Synopsis = const char*;
+
+
+	enum class Error {
+		none,
+		generic
+	};
+
+		
+		
+		
+		
+	constexpr double kPi				= 3.141592653589793238462643383279502884197169399375105820974944592307816406286208998628034825342117068;
+	constexpr double kTwoPi				= kPi * 2.0;
+	const double kTTGainMidiPower		= log(pow(10.0, 10.0/20.0)) / log(127.0/100.0);
+	const double kTTGainMidiPowerInv	= 1.0/kTTGainMidiPower;
+
 
 	
-/**	A brief string documenting a Function/Parameter/Message/Notification/Class/Etc.	*/
-using Synopsis = const char*;
-
-
-enum class Error {
-	none,
-	generic
-};
-
 	
 	
-	
-	
-constexpr double kPi				= 3.141592653589793238462643383279502884197169399375105820974944592307816406286208998628034825342117068;
-constexpr double kTwoPi				= kPi * 2.0;
-const double kTTGainMidiPower		= log(pow(10.0, 10.0/20.0)) / log(127.0/100.0);
-const double kTTGainMidiPowerInv	= 1.0/kTTGainMidiPower;
+	/** Filter out denormaled values, which can make processing extremely slow when present.
+		Calculation is performed in-place.
+		Calculation is only performed if JAMOMA_SQUASH_DENORMALS is defined as a preprocessor symbol.
+		
+		We do this so that we can easily change the behavior of the routines for squashing denormals.
+		* On the PPC we don't want to waste cycles unneccessarily;
+		* On the Intel processors we can use SSE intrinsics as suggested by Nils Peters (see redmine ticket #799)
+		* or we can use SSE intrinsics to disable denormals on a processor completely, in which case these functions should not waste cycles doing anything;
+		* On ARM processors what happens?  We might still need to squash denormals, or maybe there is an option as indicated @ http://gcc.gnu.org/onlinedocs/gcc/ARM-Options.html
 
+		Implementation Note:  The __SSE3__ symbol is always defined in Xcode despite any changes you make to compiler settings
+		On Linux, the __SSE3__ symbol is toggled based on passing the -msse3 flag to GCC
+		On Windows, the __SSE3__ symbol is always UNdefined, despite any changes you make to compiler settings
+		So this symbol is completely useless.
+	 
+		When SSE3 is available, then we rely on the denormals being turned-off using a bit in the processor's control register
+		http://software.intel.com/sites/products/documentation/studio/composer/en-us/2011/compiler_c/fpops/common/fpops_set_ftz_daz.htm
+	 
+		For example, anything running the Max environment will be setting this bit on every thread and so we don't need to do anything at all.
+	 */
+	template<class T>
+	static void ZeroDenormal(T& value)
+	{
+#ifdef JAMOMA_SQUASH_DENORMALS
+		if (!std::isnormal(value))
+			value = 0;
+#endif
+	}
 
 
 
@@ -61,17 +93,33 @@ const double kTTGainMidiPowerInv	= 1.0/kTTGainMidiPower;
 #include "readerwriterqueue.h"
 
 
+
+#include "Murmur3.h" // used for constexpr hash function
+
+/** A hash function using the Murmur3 algorithm ( https://en.wikipedia.org/wiki/MurmurHash ).
+ This hash function is capable of being executed at compile time,
+ meaning that the compiled binary will have a constant int value and no actually need to execute any code at runtime.
+ @param	str		A c-string to be hashed into an int.
+ @param	seed	An optional seed value.  For most uses you should not override the default.
+ @return			An int (specifically a uint32_t) representing the hash of the string input.
+ */
+constexpr inline uint32_t Hash(const char *const str, const uint32_t seed = 0xAED123FD) noexcept
+{
+	return Murmur3_32(str, _StringLength(str), seed);
+}
+
+
 // Core
 
 #include "JamomaLimits.h"
 #include "JamomaValue.h"
+#include "JamomaDataspace.h"
 #include "JamomaObject.h"
 #include "JamomaMessage.h"
 #include "JamomaParameter.h"
 #include "JamomaAudioObject.h"
 #include "JamomaSample.h"
 
-#include "JamomaGainDataspace.h"
 
 #include "JamomaCircularStorage.h"
 #include "JamomaUnitTest.h"
@@ -81,11 +129,9 @@ const double kTTGainMidiPowerInv	= 1.0/kTTGainMidiPower;
 
 #include "JamomaDcblock.h"
 #include "JamomaGain.h"
-
-#include "JamomaDelay.h"
-
 #include "JamomaLimiter.h"
 #include "JamomaLowpassOnePole.h"
 #include "JamomaLowpassFourPole.h"
+#include "JamomaPhasor.h"
 #include "JamomaWhiteNoise.h"
 #include "JamomaUnitImpulse.h"
