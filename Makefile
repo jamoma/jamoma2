@@ -10,5 +10,6 @@ test:
 	cd tests/Gain; make test
 	cd tests/LowpassFourPole; make test
 	cd tests/LowpassOnePole; make test
+	cd tests/Phasor; make test
 	cd tests/SampleBundle; make test
 	cd tests/UnitImpulse; make test
