@@ -39,3 +39,10 @@ JamomaTest_*
 
 #Examples
 examples/simple/simple
+
+# Coverage Tools
+*.gcda
+*.gcno
+cov.info
+
+

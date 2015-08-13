@@ -1,5 +1,5 @@
 
-NAME = JamomaTest_Gain
+NAME = JamomaTest_Phasor
 SRC = $(NAME).cpp
 
 INCLUDES = -I../../includes
@@ -12,7 +12,8 @@ INCLUDES += -I../../dependencies/Murmur3
 INCLUDES += -I../../dependencies/portaudio
 INCLUDES += -I../../dependencies/readerwriterqueue-master
 
-OPTIONS += -std=c++1y -stdlib=libc++
+OPTIONS = -std=c++1y -stdlib=libc++
+OPTIONS += -fprofile-arcs -ftest-coverage
 
 
 debug:

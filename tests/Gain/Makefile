@@ -12,7 +12,8 @@ INCLUDES += -I../../dependencies/Murmur3
 INCLUDES += -I../../dependencies/portaudio
 INCLUDES += -I../../dependencies/readerwriterqueue-master
 
-OPTIONS += -std=c++1y -stdlib=libc++
+OPTIONS = -std=c++1y -stdlib=libc++
+OPTIONS += -fprofile-arcs -ftest-coverage
 
 
 debug:
