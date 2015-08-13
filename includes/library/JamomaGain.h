@@ -28,12 +28,12 @@ namespace Jamoma {
 		static constexpr auto tags = { "dspEffectsLib", "audio", "processor", "dynamics" };
 		
 
-		Parameter<double>	gain = { this, "gain", 1.0 /*, Dataspace::Gain */ };	///< Linear gain to be applied to the input signal.
+		Parameter<double, NativeUnit::LinearGain>	gain = { this, "gain", 1.0 };	///< Linear gain to be applied to the input signal.
 
 		
 		/** Process one sample.
-		 @param x					Sample to be processed.
-		 @return					Processed sample
+			@param	x	Sample to be processed.
+			@return		Processed sample
 		 */
 		Sample operator()(const Sample x)
 		{
@@ -42,8 +42,8 @@ namespace Jamoma {
 		
 		
 		/** Process a SharedSampleBundleGroup.
-		 @param x					SharedSampleBundleGroup to be processed.
-		 @return					Processed SharedSampleBundleGroup.
+			@param	x	SharedSampleBundleGroup to be processed.
+			@return		Processed SharedSampleBundleGroup.
 		 */
 		SharedSampleBundleGroup operator()(const SampleBundle& x)
 		{

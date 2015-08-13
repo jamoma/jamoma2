@@ -25,24 +25,11 @@
 #include <vector>
 #include <array>
 
-
-#include "Murmur3.h" // used for constexpr hash function
-
+#include "JamomaDataspace.h"
 
 
 namespace Jamoma {
 	
-	/** A hash function using the Murmur3 algorithm ( https://en.wikipedia.org/wiki/MurmurHash ).
-		This hash function is capable of being executed at compile time,
-		meaning that the compiled binary will have a constant int value and no actually need to execute any code at runtime.
-		@param	str		A c-string to be hashed into an int.
-		@param	seed	An optional seed value.  For most uses you should not override the default.
-		@return			An int (specifically a uint32_t) representing the hash of the string input.
-	 */
-	constexpr inline uint32_t Hash(const char *const str, const uint32_t seed = 0xAED123FD) noexcept
-	{
-		return Murmur3_32(str, _StringLength(str), seed);
-	}
 
 		
 	/**	Defines the bounds of a Parameter.
@@ -68,7 +55,7 @@ namespace Jamoma {
 		Such classes maybe used with traditional C++ compile-time linking or addressed dynamically my sending messages.
 	 */
 	class Object {
-		template <class T, RangeLimit> friend class Parameter;
+		template <class T, class U, RangeLimit> friend class Parameter;
 		
 		// we really just care that we have a pointer, not about the type of the attribute
 		// attributes can be raw pointers because they are only accessed and owned by our class

@@ -35,14 +35,14 @@ namespace Jamoma {
 		
 		// Linear is the neutral unit, so it is a pass-through
 		template <class T>
-		class LinearGain : public Unit<T> {
+		class LinearGain : public UnitBase<T> {
 		public:
-			T toNeutral(const T input) const
+			T toNeutral(const T& input) const
 			{
 				return input;
 			}
 			
-			T fromNeutral(const T input) const
+			T fromNeutral(const T& input) const
 			{
 				return input;
 			}
@@ -50,14 +50,14 @@ namespace Jamoma {
 		
 		
 		template <class T>
-		class MidiGain : public Unit<T> {
+		class MidiGain : public UnitBase<T> {
 		public:
-			T toNeutral(const T input) const
+			T toNeutral(const T& input) const
 			{
 				return pow(input*0.01, kTTGainMidiPower);
 			}
 			
-			T fromNeutral(const T input) const
+			T fromNeutral(const T& input) const
 			{
 				return 100.0 * pow(input, kTTGainMidiPowerInv);
 			}
@@ -65,14 +65,14 @@ namespace Jamoma {
 		
 		
 		template <class T>
-		class DbGain : public Unit<T> {
+		class DbGain : public UnitBase<T> {
 		public:
-			T toNeutral(const T input) const
+			T toNeutral(const T& input) const
 			{
 				return pow(10.0, input * 0.05);
 			}
 			
-			T fromNeutral(const T input) const
+			T fromNeutral(const T& input) const
 			{
 				T temp = log10(input) * 20.0;
 				
@@ -84,7 +84,7 @@ namespace Jamoma {
 		};
 		
 		
-		/*	The Gain Dataspace.
+		/**	The Gain Dataspace.
 		 
 			In Jamoma1 you would create a Gain Dataspace object and then it would do all possible conversions as you.
 			In Jamoma2 we create an instance that is specialized for the "native" unit that you want to convert to/from.
@@ -101,16 +101,15 @@ namespace Jamoma {
 			the performance of the new implementation should exceed that of the Jamoma1 implementation.
 			TODO: perform actual benchmarks and publish the results.
 		
-			Cases where there are specific performance concerns we can further specialize the templates to offer
-			superior and branch-free conversions.
+			Cases where there are specific performance concerns we can further specialize the templates.
 		 */
 		template <class T, GainUnit U>
-		class Gain {
+		class Gain /*: public Dataspace*/ {
 			
 			/**	Mapping from unit names to actual unit converter objects.
 				TODO: make this a static so that we don't have to spend resources on it for all instances
 			 */
-			std::unordered_map<GainUnit, Unit<T>*>	sUnits = {
+			std::unordered_map<GainUnit, UnitBase<T>*>	sUnits = {
 				{GainUnit::linear, new LinearGain<T>()},
 				{GainUnit::midi, new MidiGain<T>()},
 				{GainUnit::db, new DbGain<T>()}
@@ -118,18 +117,22 @@ namespace Jamoma {
 
 			
 			/**	The native unit to/from which we perform conversions.	*/
-			const Unit<T>* mUnit = sUnits[U];
+			const UnitBase<T>* mUnit = sUnits[U];
 
 			
 		public:
 			
 			/**	Conversion function where the unit is passed as enum selection.	*/
-			T operator()(const T x, GainUnit unit = U)
+			T operator()(const T& x, const GainUnit& unit = U)
 			{
 				return mUnit->fromNeutral( sUnits[unit]->toNeutral(x) );
 			}
 
-			
+			T operator()(const T& x, uint32_t& unit)
+			{
+				return (*this)(x, (GainUnit)unit);
+			}
+		
 			/**	Conversion function where the unit is passed as a string.	*/
 			T operator()(const T x, const char* str)
 			{
@@ -137,31 +140,6 @@ namespace Jamoma {
 			}
 
 		};
-		
-		
-		/*
-		// specialization for linear gain because it is so common and we would like to optimize for this case
-		template <class T>
-		class Gain<T, GainUnit::linear> {
-			
-		public:
-			
-			static std::unordered_map<const uint32_t, Unit<T>>	sUnits2 = {
-				{GainUnit::linear, LinearGain<T>()},
-				{GainUnit::midi, MidiGain<T>()},
-				{GainUnit::db, DbGain<T>()}
-			};
-			
-			
-			T operator()(const T x, GainUnit unit = GainUnit::linear)
-			{
-				return sUnits2[unit].toNeutral(x);
-			}
-			
-		};
-
-		*/
-		
 	
 	} // namespace Dataspace
 } // namespace Jamoma
