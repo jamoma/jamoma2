@@ -204,7 +204,20 @@ namespace Jamoma {
 			owner->parameters[name] = this;
 			set(initial);
 		}
+	
 		
+		Parameter(Object* owner, String name, std::pair<T, Unit>initial,  Function setter = nullptr)
+		: ParameterBase(owner, name, "", RangeLimit::none, setter)
+		{
+			// 1. iterate args
+			// 2. determine their types
+			// 3. do something appropriate for their given type
+			// 4. can we make this whole process constexpr ?
+			
+			owner->parameters[name] = this;
+			set(initial.first, initial.second);
+		}
+
 		
 		// setter
 		Parameter& operator = (T input)
