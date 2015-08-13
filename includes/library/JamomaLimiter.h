@@ -59,80 +59,80 @@ namespace Jamoma {
 			linear			= Hash("linear"),
 			exponential		= Hash("exponential")
 		};
-		Parameter<Mode>		mode = {this, "mode", Mode::linear,
-									[this] {
-										setRecover();
-									}
-		};	///< may be one of two symbols: "linear" or "exponential".
+		
+		/** may be one of two symbols: "linear" or "exponential". */
+		Parameter<Mode>								mode = {this, "mode", Mode::linear,
+															[this] {
+																setRecover();
+															}
+		};
 		
 
 		// TODO: we need a listener to receive notifications for sample rate changes -- it needs to call setRecover();
 		
 		
 		// linear gain scaling factor prior to limiting (attr setter used dB).
-		Parameter<double>	preamp = {this, "preamp", 1.0, // TODO: This is supposed to be 0 db
-										[this]{
-											mPreampObject.gain = (double)preamp;
-										}
+		Parameter<double, NativeUnit::LinearGain>	preamp = {	this,
+																"preamp",
+																Tag(0.0, Unit::Db),
+																[this]{
+																	mPreampObject.gain = (double)preamp;
+																}
 		};
 		
 		
-//		bool			isLinear;				///< is attrMode set to linear?
-//		AudioObject		dcBlocker;				///< #TTDCBlock object
-//		AudioObject		preamp;					///< #TTGain object to apply preamp
-		
-//		bool			attrDCBlocker;								///< If toggled to NO, the internal DC Blocker will be turned off.
-		Parameter<bool>		blockdc = {this, "blockdc", true};		///< If toggled to NO, the internal DC Blocker will be turned off.
+		/** If toggled to NO, the internal DC Blocker will be turned off. */
+		Parameter<bool>								blockdc = { this, "blockdc", true };
 		
 		
-		// TODO: make this a chrono-based parameter
-		//double			attrRelease;							///< number of seconds for the release to recover after a peak in the audio signal.
-		Parameter<double>	release = {this, "release", 1000.0,
-			[this]{
-				setRecover();
-			}
+		/** number of seconds for the release to recover after a peak in the audio signal. */
+		Parameter<double>							release = { this, "release", 1000.0,
+																[this]{
+																	setRecover();
+																}
 		};
 		
 		
-		//int				attrLookahead;							///< number of samples by which to look forward.
-		Parameter<int>		lookahead = {this, "lookahead", 100,
-			[this]{
-				lookahead = Limit<int>(lookahead, 1, maxBufferSize-1);
-				lookaheadInv = 1.0 / double(lookahead);
-			}
+		/** number of samples by which to look forward. */
+		Parameter<int>								lookahead = {this, "lookahead", 100,
+																[this]{
+																	lookahead = Limit<int>(lookahead, 1, maxBufferSize-1);
+																	lookaheadInv = 1.0 / double(lookahead);
+																}
 		};
 		
 		
-		//double			attrThreshold;							///< linear amplitude threshold at which the limiting should kick in (attr setter used dB).
-		Parameter<double>	threshold = {this, "threshold", 1.0 };// TODO: This is supposed to be 0 db
+		/** amplitude threshold at which the limiting should kick in */
+		Parameter<double, NativeUnit::LinearGain>	threshold = { this, "threshold", Tag(0.0, Unit::Db) };
 		
 		
-		//double			attrPostamp;							///< linear gain scaling factor after the limiting (attr setter used dB).
-		Parameter<double>	postamp = {this, "postamp", 1.0}; // TODO: This is supposed to be 0 db
+		/** Gain applied after the limiting (attr setter used dB). */
+		Parameter<double, NativeUnit::LinearGain>	postamp = { this, "postamp", Tag(0.0, Unit::Db) };
 	
 		
 		/** Clear the history: reset the limiter. */
-		Message			clear = { "clear",
-									Synopsis("Reset the Filter History"),
-									[this]{
-										for (int i=0; i<maxBufferSize; i++) {
-											for (int channel=0; channel < channelCount; channel++)
-												mLookaheadBuffer[channel][i] = 0.0;
-											mGain[0][i] = 1.0;		// gain is shared across channels
-										}
-										
-										lookaheadBufferIndex = 0;	// was bp
-										last = 1.0;
-										setRecover();
-										
-										mDcblockerObject.clear();
-									}
+		Message										clear = {	"clear",
+																Synopsis("Reset the Filter History"),
+																[this]{
+																	for (int i=0; i<maxBufferSize; i++) {
+																		for (int channel=0; channel < channelCount; channel++)
+																			mLookaheadBuffer[channel][i] = 0.0;
+																		mGain[0][i] = 1.0;		// gain is shared across channels
+																	}
+																	
+																	lookaheadBufferIndex = 0;	// was bp
+																	last = 1.0;
+																	setRecover();
+																	
+																	mDcblockerObject.clear();
+																}
 		};
 
 
 		Sample operator()(Sample x)
 		{
-			assert(false); // single-sample function is inappropriate for the Limiter
+			assert(false);	// single-sample function is inappropriate for the Limiter
+							// TODO: find a way for this fail at **compile-time**
 			return 0.0;
 		}
 
