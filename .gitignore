@@ -44,5 +44,5 @@ examples/simple/simple
 *.gcda
 *.gcno
 cov.info
-
+build
 
