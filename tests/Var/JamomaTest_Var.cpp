@@ -29,21 +29,21 @@ namespace Jamoma {
 		void testBasic()
 		{
 			
-			Jamoma::Value val0;
-			Jamoma::Value val1 = 3.14;
-			Jamoma::Value val2(3.14);
+//			Jamoma::Value val0;
+//			Jamoma::Value val1 = 3.14;
+//			Jamoma::Value val2(3.14);
 			
-			val0 = 3.14;
+//			val0 = 3.14;
 			
 //			bool equal = (val1 == val2);
 
 //			mTest->TEST_ASSERT("comparison", equal);
 		
-			double f1 = val1;
-			double f2 = val2;
+//			double f1 = val1;
+//			double f2 = val2;
 			
-			if (f1 == f2)
-				;
+//			if (f1 == f2)
+//				;
 			
 			
 /*
