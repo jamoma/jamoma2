@@ -13,3 +13,4 @@ test:
 	cd tests/Phasor; make test
 	cd tests/SampleBundle; make test
 	cd tests/UnitImpulse; make test
+	cd tests/Var; make test

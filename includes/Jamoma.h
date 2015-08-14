@@ -16,10 +16,13 @@
 
 #pragma once
 
+#include <array>
 #include <cassert>
 #include <iostream>
 #include <string>
+#include <typeinfo>
 #include <unordered_map>
+#include <vector>
 
 
 namespace Jamoma {

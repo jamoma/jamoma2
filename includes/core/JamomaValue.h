@@ -15,12 +15,119 @@
 
 #pragma once
 
-#include <string>
-#include <typeinfo>
-#include <cassert>
-#include <array>
+//#include "eggs/variant.hpp"
 
 namespace Jamoma {
+	
+//#define VARIANT_BASED_VALUE
+#ifdef VARIANT_BASED_VALUE
+	
+	
+	
+// how to make a template class...
+//	template <>
+//	class variant<>
+//	{
+
+	/*
+
+		This implementation is uses Egg.Variant ( https://github.com/eggs-cpp/variant ) which internally is a discriminated union.
+		The downside to this implementation is that all types that are going to be used by the union must be declared in advance.
+		The upside is that all instances of the Value use C++ value semantics and are created/destroyed on the stack.
+		Specific to the Eggs.Variant implementation is that much of this is a constexpr and calls can be executed at compile time.
+	 
+		@see http://stackoverflow.com/questions/18856824/ad-hoc-polymorphism-and-heterogeneous-containers-with-value-semantics
+		@see http://boost.2283326.n4.nabble.com/Another-variant-type-was-peer-review-queue-tardiness-was-Cleaning-out-the-Boost-review-queue-Review--td4674046.html
+		@see http://talesofcpp.fusionfenix.com/post-20/eggs.variant---part-ii-the-constexpr-experience
+	 */
+	
+	using namespace eggs;
+
+
+	using Value		= eggs::variant<int, double, Function>;
+	using Vector	= std::vector<Value>;
+	using Var		= eggs::variant<Value, Vector>;
+	
+	
+	// Actually, a vector won't work in a variant -- maybe a shared_ptr to a vector would?  sigh...
+	// One of the explicit limitations of a variant is that it doesn't support types with heap-allocated memory.
+	
+	
+	
+	
+
+	//	template<>
+//	class Value : public eggs::variant<int, double, Function> {
+	
+
+	
+	template <typename ...Ts>
+	class Variant : public eggs::variant<Ts...> {
+	public:
+		// TODO: is there a downside to accessing values like this?
+		// It seems strange it would not have been implemented in eggs already?
+		template<typename U>
+		constexpr operator U() const {
+//			U temp;
+//			variants::get<U>(temp);
+//			return temp;
+			return variants::get<U>(*this);
+		}
+		
+		
+		constexpr Variant() noexcept
+		{}
+		
+/*
+		template<typename U>
+		Variant(U arg)
+		: eggs::variant<Ts...>(arg)
+		{}
+*/
+		
+		
+		/**	Assignment operator.
+			@param	value	The value from which to assign.
+		 Type conversions will be done prior to assignment.
+		 */
+//		template<typename U>
+//		Variant& operator = (const U& rhs) {
+//			return eggs::variant<Ts...>::operator=(rhs);
+//		}
+
+		
+		template<typename U>
+		constexpr Variant& operator = (U rhs) {
+			return eggs::variant<Ts...>::operator=(rhs);
+		}
+
+	
+	};
+	
+	
+	
+	// this is how we typically pass values around generically in Jamoma
+	// vector's storage is on the heap, so it's fine to include here without ballooning the mem footprint
+//	using Var = eggs::variant<Value, Vector>;
+/*	template<>
+	class Var : public eggs::variant<Value, Vector> {
+		
+		// TODO: is there a downside to accessing values like this?
+		// It seems strange it would not have been implemented in eggs already?
+		template<typename U>
+		operator U() const {
+			U temp;
+			variants::get<U>(temp);
+			return temp;
+		}
+		
+	};
+*/	// TODO: the above is duplicated -- so maybe it should be one class...  a Jamoma::Variant
+	
+	
+#else
+	
+	
 	
 	template <class T> class Value;
 	
@@ -222,5 +329,8 @@ namespace Jamoma {
 		}
 	};
 	
+	using Var = ValueBase;
+	
+#endif
 
 } // namespace Jamoma

@@ -52,7 +52,7 @@ namespace Jamoma {
 			return lhs.mName == rhs;
 		}
 		
-		virtual ParameterBase& operator = (const ValueBase& input) = 0;
+		virtual ParameterBase& operator = (const Var& input) = 0;
 	};
 	
 	
