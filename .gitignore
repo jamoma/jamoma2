@@ -27,8 +27,8 @@
 *.out
 *.app
 
-xcuserdata
-project.xcworkspace
+Makefile
+*.xcodeproj
 .DS_Store
 
 JamomaTest_*
@@ -53,3 +53,4 @@ CMakeScripts
 *--.*
 *.build
 CMakeCache.txt
+cmake_install.cmake
