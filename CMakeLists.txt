@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.0)
 
-#add_subdirectory(examples/simple)
+add_subdirectory(examples/simple)
 
 add_subdirectory(tests/CircularStorage)
 add_subdirectory(tests/Dataspace)
