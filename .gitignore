@@ -31,14 +31,14 @@ Makefile
 *.xcodeproj
 .DS_Store
 
-JamomaTest_*
-!JamomaTest_*.*
-
+# Debug Symbols
 *.dSYM
 
-
-#Examples
+# Examples
 examples/simple/simple
+
+# Unit Test Binaries
+*.test
 
 # Coverage Tools
 *.gcda
@@ -46,11 +46,15 @@ examples/simple/simple
 cov.info
 build
 
-
+# CMake Temporaries
 CMakeFiles
 CMakeScripts
-*--
-*--.*
 *.build
 CMakeCache.txt
 cmake_install.cmake
+CTestTestfile.cmake
+Testing
+
+# Explicitly Ignored by ending in --
+*--
+*--.*
