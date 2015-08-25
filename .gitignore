@@ -46,3 +46,10 @@ examples/simple/simple
 cov.info
 build
 
+
+CMakeFiles
+CMakeScripts
+*--
+*--.*
+*.build
+CMakeCache.txt
