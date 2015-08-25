@@ -5,10 +5,31 @@ A header-only C++ library for building dynamic and reflexive systems with an emp
 
 ## How to Build
 
-As a header-only library there is nothing to build for Jamoma itself. You only build your project that uses Jamoma.  You can investigate examples to build in the **examples** folder or build and run tests in the **tests** folder.
+As a header-only library there is nothing to build for Jamoma itself. You only build your project that uses Jamoma.  You can investigate examples to build in the **examples** folder or build and run tests in the **tests** folder. To build everything, here are a couple of example console sessions:
 
-For a quick sanity check, you can build everything by running `make` in the top-level folder or `make test` to build and run all of the tests.
+### Building on the command line (Mac or Linux)
 
+```
+	$ cd jamoma2
+	$ mkdir build
+	$ cd build
+	$ cmake ..
+	$ make
+	$ make test
+```
+
+### Building on a Mac using Xcode
+
+```
+	$ cd jamoma2
+	$ mkdir build-xcode
+	$ cd build-xcode
+	$ cmake ..
+```
+
+Now open an individual Xcode project from `examples` or `tests`.  Alternatively open the Xcode project at the top level to build everything and run all unit tests.
+
+If you don't have CMake you can get it from http://www.cmake.org/ .
 
 ## Why Are We Doing This?
 
