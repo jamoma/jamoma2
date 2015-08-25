@@ -97,14 +97,14 @@ namespace Jamoma {
 		
 		/** send a message to the object dynamically
 		 */
-		Var send(const String& name, const Var& input)
+		VarBase send(const String& name, const VarBase& input)
 		{
 			return 0;	// TODO: stub
 		}
 		
 		/** send a message to the object dynamically 
 		 */
-		Var send(const String& name)
+		VarBase send(const String& name)
 		{
 			return 0;	// TODO: stub
 		}

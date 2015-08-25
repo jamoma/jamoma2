@@ -52,7 +52,7 @@ namespace Jamoma {
 			return lhs.mName == rhs;
 		}
 		
-		virtual ParameterBase& operator = (const Var& input) = 0;
+		virtual ParameterBase& operator = (const VarBase& input) = 0;
 	};
 	
 	
@@ -137,7 +137,7 @@ namespace Jamoma {
 		
 		// setter for case when input is a generic value
 		// TODO: if a value has 2 members then do we use the last one as a unit? perhaps it needs some metadata so that we know?
-		Parameter& operator = (const ValueBase& input)
+		Parameter& operator = (const VarBase& input)
 		{
 			set(input);
 			return *this;
@@ -237,7 +237,7 @@ namespace Jamoma {
 		
 		// setter for case when input is a generic value
 		// TODO: if a value has 2 members then do we use the last one as a unit? perhaps it needs some metadata so that we know?
-		Parameter& operator = (const ValueBase& input)
+		Parameter& operator = (const VarBase& input)
 		{
 			set(input);
 			return *this;
@@ -322,7 +322,7 @@ namespace Jamoma {
 		
 		// setter for case when input is a generic value
 		// TODO: if a value has 2 members then do we use the last one as a unit? perhaps it needs some metadata so that we know?
-		Parameter& operator = (const ValueBase& input)
+		Parameter& operator = (const VarBase& input)
 		{
 			set(input);
 			return *this;

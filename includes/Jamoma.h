@@ -28,10 +28,10 @@
 namespace Jamoma {
 
 	using String = std::string;
-	using Function = std::function<void(void)>;
 	using Text = char[];
 	using Classname = Text;
 	//using Tags = std::array<Text, 10>; // probably make this a vector of symbols instead
+	using TimePoint = std::chrono::high_resolution_clock::time_point;
 
 		
 	/**	A brief string documenting a Function/Parameter/Message/Notification/Class/Etc.	*/
@@ -43,16 +43,6 @@ namespace Jamoma {
 		generic
 	};
 
-	
-	/**	Tag a value with some sort of marker such as a unit of measure, a label, etc.
-		@param	a		The value
-		@param	tag		The tag
-		@return			A pair containing both the value and the tag.
-	 */
-	template<typename T, typename U>
-	auto Tag(T a, U tag) {
-		return std::make_pair(a, tag);
-	}
 	
 		
 		
@@ -124,8 +114,10 @@ constexpr inline uint32_t Hash(const char *const str, const uint32_t seed = 0xAE
 // Core
 
 #include "JamomaLimits.h"
-#include "JamomaValue.h"
 #include "JamomaDataspace.h"
+#include "JamomaVar.h"
+#include "JamomaFunction.h"
+
 #include "JamomaObject.h"
 #include "JamomaMessage.h"
 #include "JamomaParameter.h"
