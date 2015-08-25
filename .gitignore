@@ -30,6 +30,7 @@
 Makefile
 *.xcodeproj
 .DS_Store
+build-xcode
 
 # Debug Symbols
 *.dSYM
