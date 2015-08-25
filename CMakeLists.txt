@@ -29,5 +29,5 @@ foreach(testdir ${TESTDIRS})
 	MESSAGE("Generating Unit Test: ${testdir}")
 	add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/tests/${testdir})
 	add_test(NAME ${testdir}
-	         COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/tests/${testdir}/${testdir}.test)
+	         COMMAND ${CMAKE_CURRENT_BINARY_DIR}/tests/${testdir}/${testdir}.test)
 endforeach()
