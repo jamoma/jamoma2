@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 3.3)
 
 
 project(simple)
@@ -42,11 +42,9 @@ set(CMAKE_CXX_FLAGS "-std=c++1y -stdlib=libc++")
 add_executable(${PROJECT_NAME} ${PROJECT_NAME}.cpp)
 
 
-find_library(LIB_PORTAUDIO NAMES "portaudio" PATHS "${PROJECT_SOURCE_DIR}/../../dependencies/portaudio/build/lib")
-target_link_libraries(${PROJECT_NAME} PUBLIC ${LIB_PORTAUDIO})
-#target_link_libraries(${PROJECT_NAME} PUBLIC "${PROJECT_SOURCE_DIR}/../../dependencies/portaudio/build/lib/libportaudio.so")
-
 if (APPLE)
+	target_link_libraries(${PROJECT_NAME} PUBLIC "${PROJECT_SOURCE_DIR}/../../dependencies/portaudio/build/lib/libportaudio.a")	
+	
 	find_library(THE_LIBRARY "Carbon")
 	target_link_libraries(${PROJECT_NAME} PUBLIC ${THE_LIBRARY})
 
@@ -58,4 +56,7 @@ if (APPLE)
 
 	find_library(THE_LIBRARY4 "AudioToolbox")
 	target_link_libraries(${PROJECT_NAME} PUBLIC ${THE_LIBRARY4})
+else() # Assume Linux
+	# NOTE: can't use find_library() because we haven't built it yet
+	target_link_libraries(${PROJECT_NAME} PUBLIC "${PROJECT_SOURCE_DIR}/../../dependencies/portaudio/build/lib/libportaudio.so")
 endif()
