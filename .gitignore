@@ -59,3 +59,23 @@ Testing
 # Explicitly Ignored by ending in --
 *--
 *--.*
+
+# temp/backup files from unix text editors
+*.txt~
+*.cmake~
+*.h~
+*.c~
+.gitignore~
+
+# detritus from portaudio build
+dependencies/portaudio/bin-stamp
+dependencies/portaudio/bin
+dependencies/portaudio/config.log
+dependencies/portaudio/config.status
+dependencies/portaudio/lib-stamp
+dependencies/portaudio/lib
+dependencies/portaudio/libtool
+dependencies/portaudio/portaudio-2.0.pc
+dependencies/portaudio/src/portaudio-stamp
+dependencies/portaudio/tmp
+

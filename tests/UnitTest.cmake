@@ -4,6 +4,10 @@ cmake_minimum_required(VERSION 3.0)
 enable_testing()
 
 
+SET(CMAKE_C_COMPILER clang)
+SET(CMAKE_CXX_COMPILER clang++)
+
+
 include_directories( 
 	"${PROJECT_SOURCE_DIR}/../../includes"
 	"${PROJECT_SOURCE_DIR}/../../includes/core"
