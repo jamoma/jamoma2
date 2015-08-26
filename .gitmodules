@@ -1,3 +1,0 @@
-[submodule "dependencies/variant"]
-	path = dependencies/variant
-	url = https://github.com/jamoma/variant.git
