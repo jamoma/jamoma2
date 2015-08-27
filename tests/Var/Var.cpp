@@ -74,20 +74,20 @@ namespace Jamoma {
 			
 			// Test Pairs (e.g. TaggedValue)
 			{
-				auto						a = Tag(-6.0, Unit::Db);
+				auto						a = Tag(-6.0, Unit::db);
 				Var<TaggedValue<double>>	v = a;
 				VarBase						vb = a;
 				TaggedValue<double>			out = v;
 				
 				mTest->TEST_ASSERT("TaggedValue, first item is returned correctly", mTest->compare(out.first, -6.0));
-				mTest->TEST_ASSERT("TaggedValue, second item is returned correctly", out.second == Unit::Db);
+				mTest->TEST_ASSERT("TaggedValue, second item is returned correctly", out.second == Unit::db);
 				
 				out = vb;
 				
 				mTest->TEST_ASSERT("TaggedValue (value assigned from value base by value), first item is returned correctly",
 								   mTest->compare(out.first, -6.0));
 				mTest->TEST_ASSERT("TaggedValue (value assigned from value base by value), second item is returned correctly",
-								   out.second == Unit::Db);
+								   out.second == Unit::db);
 
 				// normal copy assignment
 				auto c = a;
@@ -96,7 +96,7 @@ namespace Jamoma {
 				mTest->TEST_ASSERT("TaggedValue (value assigned from value), first item is returned correctly",
 								   mTest->compare(out.first, -6.0));
 				mTest->TEST_ASSERT("TaggedValue (value assigned from value), second item is returned correctly",
-								   out.second == Unit::Db);
+								   out.second == Unit::db);
 				
 				// the follow asserts, as it should, because the type requested doesn't match the content
 				// std::pair<double, int> foo = vb;

@@ -49,7 +49,7 @@ namespace Jamoma {
 		{
 			auto out = adapt(x);
 
-			for (int channel=0; channel<x.channelCount(); channel++)
+			for (int channel=0; channel<x.channelCount(); ++channel)
 				std::transform(x[channel].begin(), x[channel].end(), out[0][channel].begin(), *this);
 			return out;
 		}

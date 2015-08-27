@@ -71,13 +71,13 @@ namespace Jamoma {
 			using namespace Dataspace;
 			using namespace std;
 
-			g.gain = make_pair(0.25, Unit::LinearGain);
+			g.gain = make_pair(0.25, Unit::linearGain);
 			mTest->TEST_ASSERT("setting gain param linearly", mTest->compare( g(1.0), 0.25) );
 
-			g.gain = make_pair(-6.0, Unit::Db);
+			g.gain = make_pair(-6.0, Unit::db);
 			mTest->TEST_ASSERT("setting gain param in db", mTest->compare( g(1.0), 0.50118723362727224) );
 
-			g.gain = make_pair(110.0, Unit::MidiGain);
+			g.gain = make_pair(110.0, Unit::midiGain);
 			mTest->TEST_ASSERT("setting gain param with midi", mTest->compare( g(1.0), 1.5826306885735968) );
 			
 

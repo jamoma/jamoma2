@@ -42,13 +42,13 @@ namespace Jamoma {
 
 			// Gain parameter (gain dataspace)
 			
-			p.gain = make_pair(0.25, Unit::LinearGain);
+			p.gain = make_pair(0.25, Unit::linearGain);
 			mTest->TEST_ASSERT("setting gain param linearly", mTest->compare( (double)p.gain, 0.25) );
 
-			p.gain = make_pair(-6.0, Unit::Db);
+			p.gain = make_pair(-6.0, Unit::db);
 			mTest->TEST_ASSERT("setting gain param in db", mTest->compare( (double)p.gain, 0.50118723362727224) );
 
-			p.gain = make_pair(110.0, Unit::MidiGain);
+			p.gain = make_pair(110.0, Unit::midiGain);
 			mTest->TEST_ASSERT("setting gain param with midi", mTest->compare( (double)p.gain, 1.5826306885735968) );
 			
 			// Phase parameter (range wrapping)

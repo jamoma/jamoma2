@@ -41,7 +41,7 @@ namespace Jamoma {
 		{
 			auto out = mOutput;
 
-			for (int channel=0; channel < out.channelCount(); channel++)
+			for (int channel=0; channel < out.channelCount(); ++channel)
 				for	(auto& sample : out[0][channel])
 					sample = (*this)(0.0);
 			return out;

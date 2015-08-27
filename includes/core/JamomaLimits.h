@@ -38,7 +38,7 @@ namespace Jamoma {
 		value |= value >> 4;
 		value |= value >> 8;
 		value |= value >> 16;
-		value++;
+		++value;
 		return value;
 	}
 	

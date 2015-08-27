@@ -173,8 +173,8 @@ namespace Jamoma {
 		{
 			auto out = adapt(x);
 			
-			for (int channel=0; channel < x.channelCount(); channel++) {
-				for	(int i=0; i < x.frameCount(); i++)
+			for (int channel=0; channel < x.channelCount(); ++channel) {
+				for	(int i=0; i < x.frameCount(); ++i)
 					out[0][channel][i] = (*this)(x[channel][i], channel);
 			}
 			return out;

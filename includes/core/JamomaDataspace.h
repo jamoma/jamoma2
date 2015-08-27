@@ -54,11 +54,11 @@ namespace Jamoma {
 	// Units for setting/getting parameters
 	// TODO: it is not dry to duplicate all these -- but we need a common enum in order to have a shared interface for all Parameters
 	enum class Unit : uint32_t {
-		None		= (uint32_t)Dataspace::NoneUnit::nothing,
+		none		= (uint32_t)Dataspace::NoneUnit::nothing,
 		
-		LinearGain	= (uint32_t)Dataspace::GainUnit::linear,
-		Db			= (uint32_t)Dataspace::GainUnit::db,
-		MidiGain	= (uint32_t)Dataspace::GainUnit::midi
+		linearGain	= (uint32_t)Dataspace::GainUnit::linear,
+		db			= (uint32_t)Dataspace::GainUnit::db,
+		midiGain	= (uint32_t)Dataspace::GainUnit::midi
 	};
 	
 

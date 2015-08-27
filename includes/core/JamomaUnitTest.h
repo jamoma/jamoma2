@@ -64,10 +64,10 @@ namespace Jamoma {
 		 */
 		void assertion(String aTestName, bool aTestResult, const char* filename, int linenumber)
 		{
-			mAssertionCount++;
+			++mAssertionCount;
 			result(aTestName, aTestResult, filename, linenumber);
 			if (!aTestResult)
-				mFailedAssertions++;
+				++mFailedAssertions;
 		}
 		
 		

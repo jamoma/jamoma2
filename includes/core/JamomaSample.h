@@ -172,7 +172,7 @@ namespace Jamoma {
 				   
 			SampleVector& vector = (*this)[channel];
 
-			for (int i=0; i<frameCount; i++)
+			for (int i=0; i<frameCount; ++i)
 				vector[i] = values[i];
 		}
 		
@@ -189,7 +189,7 @@ namespace Jamoma {
 			
 			SampleVector& vector = (*this)[channel];
 			
-			for (int i=0; i<frameCount; i++)
+			for (int i=0; i<frameCount; ++i)
 				values[i] = vector[i];
 		}
 		
