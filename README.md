@@ -31,6 +31,12 @@ Now open an individual Xcode project from `examples` or `tests`.  Alternatively 
 
 If you don't have CMake you can get it from http://www.cmake.org/ .
 
+## How to Contribute
+
+Please read **Style.md** and contribute code that conforms to the style guidelines.  If your code does not match it will take longer for us to evaluate it and consider it for a possible merge.
+
+You can send code in a variety of ways, but the preferred way is to do a **Pull Request** on Github.
+
 ## Why Are We Doing This?
 
 Jamoma1 and its codebase have grown in a number of exciting and unanticipated directions over the past 10 years.  Additionally, the tools with which we build the codebase (C++11/C++14) and our understanding of computer science and best practices have shifted dramatically.
@@ -107,27 +113,4 @@ As such, we now use simple methods (overloading the the `()` operator), which al
 * Parameter -- was "attribute"
 * Message
 * Notification -- was "return"
-
-
-
-### Code Style
-
-We use **camelCase** for variables and **CamelCase** for types.
-We use **camelCase** for member methods and **CamelCase** for functions that are not methods of an object.
-
-* kVar -- constants
-* gVar -- globals
-* sVar -- statics
-* mVar -- members (of a class which are non-public)
-* var -- local (to a method), or public members of a class (e.g. parameters)
-
-
-### Pointers
-
-**If you are using pointers, you are probably doing something wrong.**
-
-Jamoma2 aims to tighten areas where ambiguous responsibility of resources (memory, files, etc) is eliminated and error-prone idioms are discouraged. As such, using pointers directly is highly discouraged and places where pointers might be necessary should be done through a managed construct such as a class that contains an STL smart pointer.
-
-Obviously we still need to interface with C code that will pass us pointers in some cases (such as getting samples from a sound card).  But this should be the exception; not the rule.
-
 
