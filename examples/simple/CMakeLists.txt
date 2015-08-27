@@ -29,7 +29,7 @@ include_directories(
 	"${PROJECT_SOURCE_DIR}/../../dependencies/Murmur3"
 	"${PROJECT_SOURCE_DIR}/../../dependencies/readerwriterqueue-master"
 
-	"${PROJECT_SOURCE_DIR}/../../dependencies/portaudio/build/include"
+	"${PORTAUDIO_DIR}/include"
 )
 
 
@@ -43,7 +43,7 @@ add_executable(${PROJECT_NAME} ${PROJECT_NAME}.cpp)
 
 
 if (APPLE)
-	target_link_libraries(${PROJECT_NAME} PUBLIC "${PROJECT_SOURCE_DIR}/../../dependencies/portaudio/build/lib/libportaudio.a")	
+	target_link_libraries(${PROJECT_NAME} PUBLIC "${PORTAUDIO_DIR}/build/lib/libportaudio.a")	
 	
 	find_library(THE_LIBRARY "Carbon")
 	target_link_libraries(${PROJECT_NAME} PUBLIC ${THE_LIBRARY})
@@ -58,5 +58,5 @@ if (APPLE)
 	target_link_libraries(${PROJECT_NAME} PUBLIC ${THE_LIBRARY4})
 else() # Assume Linux
 	# NOTE: can't use find_library() because we haven't built it yet
-	target_link_libraries(${PROJECT_NAME} PUBLIC "${PROJECT_SOURCE_DIR}/../../dependencies/portaudio/build/lib/libportaudio.so")
+	target_link_libraries(${PROJECT_NAME} PUBLIC "${PORTAUDIO_DIR}/portaudio/build/lib/libportaudio.so")
 endif()
