@@ -31,15 +31,18 @@ include_directories(
 
 	"${PORTAUDIO_DIR}/include"
 )
+file(GLOB_RECURSE PROJECT_HEADERS ${PROJECT_SOURCE_DIR}/../../includes/*)
 
 
 SET(CMAKE_C_COMPILER clang)
 SET(CMAKE_CXX_COMPILER clang++)
-
 set(CMAKE_CXX_FLAGS "-std=c++1y -stdlib=libc++")
 
 
-add_executable(${PROJECT_NAME} ${PROJECT_NAME}.cpp)
+add_executable( ${PROJECT_NAME} 
+				${PROJECT_NAME}.cpp
+				${PROJECT_HEADERS}
+)
 
 
 if (APPLE)
