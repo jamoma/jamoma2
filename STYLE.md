@@ -30,6 +30,7 @@ These rules are largely taken from the [Juce Coding Standards](http://www.juce.c
 * **Class Organization** : data members at the top (like you do for blocks in C) and then methods below.  Try to minimize switching between `private`/`protected`/`public` a lot by grouping things together.  Prefer to go from `private` to `public`, but this is not a hard-and-fast rule.
 * **Prefer preinc/predec** -- e.g. `++i` or `--i`.
 * Prefer a line of whitespace after variable declarations and before computation/logic.
+* Prefer a line of whitespace before and after one-or-more assert/static_assert statements.
 
 ## Naming Conventions
 
