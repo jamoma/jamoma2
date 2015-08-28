@@ -21,7 +21,8 @@ These rules are largely taken from the [Juce Coding Standards](http://www.juce.c
 * **Prefer Tabs** -- Don't indent with spaces where a tab will work. 1 tab = 4 spaces.
 * **Braces** -- [Stroustrup Style](https://en.wikipedia.org/wiki/Indent_style#Variant:_Stroustrup) -- meaning closing braces on their own line but opening braces on the same line as the identifier for the block.  There may be exceptions if it increases clarity (e.g. constructors with initializer lists)
 * **Hugging** -- pointer or ref designation hug the type not the var identifier, e.g. `MyType* foo = nullptr;` 
-* **Variables** : one per line only.  Preferably initialized.  (same as JUCE guidelines)
+* **Variables** -- one per line only.  Preferably initialized.  (same as JUCE guidelines)
+* **Variables** -- blocks of variable definitions should use tabs to align the variable names.
 * **Commas** -- Never put a space before a comma. Always put a space after a comma.
 * Do not put a space before an open parenthesis
 * Do not write 'if' statements all-on-one-line. Except when you've got a sequence of lines containing similar if statements, and are aligning them all vertically to highlight their similarities.
