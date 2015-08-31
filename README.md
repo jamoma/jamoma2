@@ -24,7 +24,7 @@ As a header-only library there is nothing to build for Jamoma itself. You only b
 	$ cd jamoma2
 	$ mkdir build-xcode
 	$ cd build-xcode
-	$ cmake ..
+	$ cmake -G Xcode ..
 ```
 
 Now open an individual Xcode project from `examples` or `tests`.  Alternatively open the Xcode project at the top level to build everything and run all unit tests.
