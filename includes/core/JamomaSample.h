@@ -158,6 +158,8 @@ namespace Jamoma {
 		
 		
 		// TODO: Add some additional fill() options -- e.g. filling with a sine function, sinc function, etc.
+        // These can emulate options found here:
+        // https://github.com/jamoma/JamomaCore/blob/master/DSP/library/source/TTSampleMatrix.cpp#L254
 		
 		
 		/** Copy values into the SampleBundle from outside. 
