@@ -93,7 +93,7 @@ As such, we now use simple methods (overloading the the `()` operator), which al
 
 ## Idiomatic SampleBundleGroup Usage
 
-* **FFT** -- one bundle of reals, one bundle of imaginaries -- This way the graph stays the same regardless of changes to channel counts.  Also algorithms (e.g. multiplying the two )
+* **FFT** -- one bundle of reals, one bundle of imaginaries -- This way the graph stays the same regardless of changes to channel counts.  The same will apply to the **Hilbert Transform**.  Also algorithms will make sense e.g. multiplying squares of the two bundles (one bundle of reals and one of imaginaries) will yield a bundle on which we call a sqrt operator to get the magnitudes.
 * **SVF** -- one bundle for each response type at output
 
 
