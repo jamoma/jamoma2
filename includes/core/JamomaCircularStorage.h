@@ -144,9 +144,9 @@ namespace Jamoma {
 			long	count = output.size();
 			long	start = mIndex % size();
 			bool	wrap = false;
-						
+			
 			if (start+count > size()) {
-				count = size() - count;
+				count = size() - start;
 				wrap = true;
 			}
 			
