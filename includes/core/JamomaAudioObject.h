@@ -114,6 +114,7 @@ namespace Jamoma {
 		auto adapt(const SampleBundle& x)
 		{
 			mOutput.adapt(x);
+			frameCount = (int)x.frameCount();
 			channelCount = (int)x.channelCount();
 			return mOutput;
 		}
