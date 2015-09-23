@@ -85,6 +85,16 @@ namespace Jamoma {
 		}
 		
 		
+		void write(const T& newInput) {
+			assert(std::this_thread::get_id() == mThread);
+
+			mItems[mIndex] = newInput;
+			++mIndex;
+			if (mIndex == size())
+				mIndex = 0;
+		}
+		
+		
 		/** Read a block of things out from the container.
 			These will be the N most recent items added to the history.
 			@param	output	A place to write the block of things from the buffer. 
@@ -158,6 +168,13 @@ namespace Jamoma {
 				count = output.size() - offset;
 				std::copy_n(mItems.begin(), count, output.begin()+offset);
 			}
+		}
+		
+		
+		// TODO: is there a better name for this "transaction" ?
+		T tail(const T& input) {
+			write(input);
+			return mItems[mIndex%size()];
 		}
 
 		

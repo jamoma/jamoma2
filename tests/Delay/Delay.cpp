@@ -25,6 +25,8 @@ public:
 		
 		testDelayGreaterThanOneVectorSize2();
 		testDelayLessThanOneVectorSize();
+		
+		testDelaySingleSample();
 	}
 
 	
@@ -165,7 +167,26 @@ public:
 	
 	
 	
-	
+	void testDelaySingleSample()
+	{
+		Jamoma::SampleVector	input = {0,1,0,0,   0,0,0,0,   2,0,0,0,   0,0,3,0 };
+		Jamoma::SampleVector	output;
+		Jamoma::Delay			delay;
+		
+		delay.size = 3;
+		
+		for (auto& in : input) {
+			Jamoma::Sample out = delay(in);
+			output.push_back(out);
+		}
+		
+		mTest->TEST_ASSERT("First Vector Output Correct",     output[0] == 0 && output[1] == 0 && output[2] == 0 && output[3] == 0
+														   && output[4] == 1 && output[5] == 0 && output[6] == 0 && output[7] == 0
+														   && output[8] == 0 && output[9] == 0 && output[10] == 0 && output[11] == 2
+														   && output[12] == 0 && output[13] == 0 && output[14] == 0 && output[15] == 0
+						   );
+
+	}
 	
 };
 

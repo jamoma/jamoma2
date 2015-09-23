@@ -76,14 +76,10 @@ namespace Jamoma {
 		}
 		
 		
-		// TODO: the following is untested
 		Sample operator()(Sample x, int channel)
 		{
-			std::vector<Sample>	samples = {x};
-			
-			mHistory[channel].write(samples);
-			mHistory[channel].read(samples);
-			return samples[0];
+			mHistory[channel].resize(size+1); // need delay samples plus "now"
+			return mHistory[channel].tail(x);
 		}
 		
 		
