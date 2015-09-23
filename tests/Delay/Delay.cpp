@@ -22,6 +22,9 @@ public:
 	: mTest(test)
 	{
 		testDelayGreaterThanOneVectorSize();
+		
+		testDelayGreaterThanOneVectorSize2();
+		testDelayLessThanOneVectorSize();
 	}
 
 	
@@ -85,6 +88,84 @@ public:
 		std::cout << "the output has " << badSampleCount << " bad samples" << std::endl;
 		mTest->TEST_ASSERT("Bad Sample Count", badSampleCount == 0);
 	}
+
+	
+	/*
+		Vector Size = 4
+		Delay Size = 6
+		Thus Buffer Size = 10
+	 
+		Write:	[1][0][0][0][ ][ ][ ][ ][ ][ ]
+		Read:	[ ][ ][ ][ ][x][x][x][x][ ][ ]
+	 
+		Write:	[ ][ ][ ][ ][0][0][0][0][ ][ ]
+		Read:	[x][x][ ][ ][ ][ ][ ][ ][x][x]
+		
+		Write:	[0][0][ ][ ][ ][ ][ ][ ][0][0]
+		Read:	[ ][ ][x][x][x][x][ ][ ][ ][ ]
+	 */
+	void testDelayGreaterThanOneVectorSize2()
+	{
+		Jamoma::SampleBundle zero(1, 4);
+		
+		Jamoma::UnitImpulse impulse;
+		impulse.channelCount = 1;
+		impulse.frameCount = 4;
+		
+		Jamoma::Delay my_delay;
+		my_delay.sampleRate = 96000;
+		my_delay.size = 6;
+		
+		Jamoma::SampleBundle out1 = my_delay( impulse() );
+		Jamoma::SampleBundle out2 = my_delay( zero );
+		Jamoma::SampleBundle out3 = my_delay( zero );
+		
+		mTest->TEST_ASSERT("First Vector Output Correct",  out1[0][0] == 0.0 && out1[0][1] == 0.0 && out1[0][2] == 0.0 && out1[0][3] == 0.0);
+		mTest->TEST_ASSERT("Second Vector Output Correct", out2[0][0] == 0.0 && out2[0][1] == 0.0 && out2[0][2] == 1.0 && out2[0][3] == 0.0);
+		mTest->TEST_ASSERT("Third Vector Output Correct",  out3[0][0] == 0.0 && out3[0][1] == 0.0 && out3[0][2] == 0.0 && out3[0][3] == 0.0);
+	}
+	
+	
+	
+	
+	/*
+		Vector Size = 4
+		Delay Size = 3
+		Thus Buffer Size = 7
+	 
+		Write:	[1][0][0][0][ ][ ][ ]
+		Read:	[x][ ][ ][ ][x][x][x]
+	 
+		Write:	[0][ ][ ][ ][0][0][0]
+		Read:	[ ][x][x][x][x][ ][ ]
+		
+		Write:	[ ][0][0][0][0][ ][ ]
+		Read:	[x][x][ ][ ][ ][x][x]
+	 */
+	void testDelayLessThanOneVectorSize()
+	{
+		Jamoma::SampleBundle zero(1, 4);
+		
+		Jamoma::UnitImpulse impulse;
+		impulse.channelCount = 1;
+		impulse.frameCount = 4;
+		
+		Jamoma::Delay my_delay;
+		my_delay.sampleRate = 96000;
+		my_delay.size = 3;
+		
+		Jamoma::SampleBundle out1 = my_delay( impulse() );
+		Jamoma::SampleBundle out2 = my_delay( zero );
+		Jamoma::SampleBundle out3 = my_delay( zero );
+		
+		mTest->TEST_ASSERT("First Vector Output Correct",  out1[0][0] == 0.0 && out1[0][1] == 0.0 && out1[0][2] == 0.0 && out1[0][3] == 1.0);
+		mTest->TEST_ASSERT("Second Vector Output Correct", out2[0][0] == 0.0 && out2[0][1] == 0.0 && out2[0][2] == 0.0 && out2[0][3] == 0.0);
+		mTest->TEST_ASSERT("Third Vector Output Correct",  out3[0][0] == 0.0 && out3[0][1] == 0.0 && out3[0][2] == 0.0 && out3[0][3] == 0.0);
+	}
+	
+	
+	
+	
 	
 };
 

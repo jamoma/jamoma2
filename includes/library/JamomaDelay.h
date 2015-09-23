@@ -28,7 +28,12 @@ namespace Jamoma {
 		const std::size_t		mCapacity;
 		CircularSampleBuffer	mHistory;
 
-		Observer				mChannelCountObserver = Function( [this]{mHistory.resize(channelCount, std::make_pair(mCapacity, (size_t)size));} );
+		Observer				mChannelCountObserver = Function( [this]{
+			if (mHistory.size() && mHistory[0].size() != size+frameCount || mHistory.size() != (size_t)channelCount) {
+																			mHistory.clear(); // ugly: doing this to force the reconstruction of the storage to the correct size
+																			mHistory.resize(channelCount, std::make_pair(mCapacity+frameCount, (size_t)size+frameCount));
+			}
+		} );
 
 	public:
 		static constexpr Classname classname = { "delay" };
@@ -94,8 +99,8 @@ namespace Jamoma {
 				// TODO: we can't acheive the above because we overwrite the memory before we read it!
 				// TODO: the problem with the below is that we are limited to a minimum delay of one vector length.
 				
-				mHistory[channel].tail(out[0][channel]);
 				mHistory[channel].write(x[channel]);
+				mHistory[channel].tail(out[0][channel]);
 			}
 			return out;
 		}
