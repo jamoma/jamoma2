@@ -23,12 +23,14 @@ namespace Jamoma {
 	 */
 	class ParameterBase {
 	protected:
-		Object*				mOwner;			///< The owning Jamoma::Object to which this Parameter belongs.
-		String				mName;			///< The name of this Parameter as it would be addressed dynamically.
-		Synopsis			mSynopsis;		///< A description of what this Parameter represents.
-		RangeLimit			mRangeLimit;	///< The behavior applied to values sent to this parameter if they are outside of the suggested Range.
-		Function			mSetter;		///< A function to be executed after the parameter's value has been set.
-		
+		Object*					mOwner;			///< The owning Jamoma::Object to which this Parameter belongs.
+		String					mName;			///< The name of this Parameter as it would be addressed dynamically.
+		Synopsis				mSynopsis;		///< A description of what this Parameter represents.
+		RangeLimit				mRangeLimit;	///< The behavior applied to values sent to this parameter if they are outside of the suggested Range.
+		Function				mSetter;		///< A function to be executed after the parameter's value has been set.
+		std::vector<Observer*>	mObservers;		///< Objects receiving notifications when this parameter has been set.
+
+		// TODO: the above raw pointer will lead to dangling references ?!?!?!?!
 
 		ParameterBase(Object* owner, const String& name, const Synopsis& synopsis, const RangeLimit& rangeLimit, const Function& setter)
 		: mOwner(owner)
@@ -53,6 +55,20 @@ namespace Jamoma {
 		}
 		
 		virtual ParameterBase& operator = (const VarBase& input) = 0;
+		
+		
+		void addObserver(Observer& anObserver)
+		{
+			mObservers.push_back(&anObserver);
+		}
+		
+		
+		void removeObserver(Observer& anObserver)
+		{
+			// documentation of the below: https://en.wikipedia.org/wiki/Erase%E2%80%93remove_idiom
+			mObservers.erase(std::remove(mObservers.begin(), mObservers.end(), &anObserver), mObservers.end());
+		}
+		
 	};
 	
 	
@@ -94,6 +110,8 @@ namespace Jamoma {
 			}
 			if (mSetter)
 				mSetter();
+			for (auto& observer : mObservers)
+				(*observer)();
 		}
 		
 		
@@ -179,6 +197,8 @@ namespace Jamoma {
 			mValue = input;
 			if (mSetter)
 				mSetter();
+			for (auto& observer : mObservers)
+				(*observer)();
 		}
 		
 
@@ -279,6 +299,8 @@ namespace Jamoma {
 			mValue = Limit(input, mRange.first, mRange.second);
 			if (mSetter)
 				mSetter();
+			for (auto& observer : mObservers)
+				(*observer)();
 		}
 
 		
