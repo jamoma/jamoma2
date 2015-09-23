@@ -1,10 +1,11 @@
 cmake_minimum_required(VERSION 3.0)
 
+project(Jamoma)
+
 
 ####### EXAMPLES
 
 add_subdirectory(examples/simple)
-
 
 
 ####### UNIT TESTS
