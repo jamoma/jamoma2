@@ -43,7 +43,13 @@ namespace Jamoma {
 		: mItems(itemCount)
 		, mSize(itemCount)
 		{}
-		
+
+
+		CircularStorage(std::pair<size_t, size_t> capacityAndSize)
+		: mItems(capacityAndSize.first)
+		, mSize(capacityAndSize.second)
+		{}
+
 		
 		virtual ~CircularStorage()
 		{}
