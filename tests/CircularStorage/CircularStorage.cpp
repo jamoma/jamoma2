@@ -195,35 +195,21 @@ namespace Jamoma {
 			// Change delay time!
 			
 			circ.resize(10);
-
-			// Everything is based on distances from the record head
-			// The play head here is not independent
-			// Therefore, a read after a resize does not reflect what we would typically expect in the audio domain
-			// For example:
 			
 			circ.tail(output);
-			// tail should produce what happened 10 samples ago: 15,16,17,18
-//			mTest->TEST_ASSERT("out-06", output[0]==15 && output[1]==16 && output[2]==17 && output[3]==18);
-			mTest->TEST_ASSERT("out-06", output[0]==9 && output[1]==10 && output[2]==11 && output[3]==12);
+			// if tail produced what happened 10 samples ago it would be: 15,16,17,18
+			// but we just shortened the delay, which means some samples are going to get dropped
+			mTest->TEST_ASSERT("out-06", output[0]==9 && output[1]==10 && output[2]==17 && output[3]==18);
 			samples = {25,26,27,28};
 			circ.write(samples);
-			
-			// The code above in fact produces what happened 16 samples ago
-			// After the write we will be back to some sense of sanity, as the following is delayed by 10 samples:
 			
 			circ.tail(output);
 			// tail should produce what happened 10 samples ago: 19,20,21,22
 			mTest->TEST_ASSERT("out-07", output[0]==19 && output[1]==20 && output[2]==21 && output[3]==22);
 			samples = {29,30,31,32};
 			circ.write(samples);
-			
-			// TODO: is the above a problem? a design flaw? a feature?
-			// TODO: if the buffer is sized one vector larger then we could write prior to reading -- does that solve the problem?
-			// Is that a "correct" solution or a hack exposing some weakness here?
-			
 		}
 
-		
 	};
 
 } // namespace Jamoma
