@@ -127,6 +127,7 @@ constexpr inline uint32_t Hash(const char *const str, const uint32_t seed = 0xAE
 
 
 #include "JamomaCircularStorage.h"
+#include "JamomaDelay.h"
 #include "JamomaUnitTest.h"
 
 
