@@ -42,6 +42,19 @@ namespace Jamoma {
         };
 		
 		
+		/**	This algorithm is an IIR filter, meaning that it relies on feedback.  If the filter should
+			not be producing any signal (such as turning audio off and then back on in a host) or if the
+			feedback has become corrupted (such as might happen if a NaN is fed in) then it may be
+			neccesary to clear the filter by calling this method.
+		 */
+		Message clear = {	"clear",
+							Synopsis("Reset the Filter History"),
+							[this]{
+								mY1.fill(0.0);
+							}
+		};
+		
+		
         Sample operator()(Sample x)
         {
             return (*this)(x,0);
