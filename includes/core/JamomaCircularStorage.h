@@ -32,14 +32,16 @@ namespace Jamoma {
 		
 		std::vector<T>		mItems;										///< storage for the circular buffer's data
 		std::size_t			mIndex = { 0 };								///< location of the record head
+		std::size_t			mSize;										///< the size of the circular buffer (may be different from the amount of allocated storage)
 		std::thread::id		mThread = { std::this_thread::get_id() };	///< used to ensure we don't access unsafely from multiple threads
 	
 	public:
-		/** Constructor specifies a fixed size for the container.
-			If you want a different size, create a new container and dispose of the one you don't want.
+		/** Constructor specifies a fixed amount of storage for the container.
+			If you want a different amount of storage, create a new container and dispose of the one you don't want.
 		 */
 		CircularStorage(std::size_t itemCount)
 		: mItems(itemCount)
+		, mSize(itemCount)
 		{}
 		
 		
@@ -53,10 +55,10 @@ namespace Jamoma {
 		void write(const std::vector<T>& newInput)
 		{
 			assert(std::this_thread::get_id() == mThread);
-			assert(newInput.size() <= mItems.size());
+			assert(newInput.size() <= size());
 			
 			std::size_t count = newInput.size();
-			std::size_t roomRemaining = mItems.size() - mIndex;
+			std::size_t roomRemaining = size() - mIndex;
 			bool		wrap = false;
 			
 			if (count > roomRemaining) {
@@ -98,7 +100,7 @@ namespace Jamoma {
 		void head(std::vector<T>& output)
 		{
 			assert(std::this_thread::get_id() == mThread);
-			assert(mItems.size() >= output.size());
+			assert(size() >= output.size());
 			
 			long	count = output.size();
 			long	start = mIndex - count;
@@ -106,7 +108,7 @@ namespace Jamoma {
 			
 			if (start<0) {
 				count = -start;
-				start = mItems.size() + start;
+				start = size() + start;
 				wrap = true;
 			}
 			
@@ -131,15 +133,15 @@ namespace Jamoma {
 		void tail(std::vector<T>& output)
 		{
 			assert(std::this_thread::get_id() == mThread);
-			assert(mItems.size() >= output.size());
+			assert(size() >= output.size());
 			
 			long	count = output.size();
-			long	start = mIndex % mItems.size();
+			long	start = mIndex % size();
 			bool	wrap = false;
 			
 			if (start<0) {
 				count = -start;
-				start = mItems.size() + start;
+				start = size() + start;
 				wrap = true;
 			}
 			
@@ -162,6 +164,21 @@ namespace Jamoma {
 			mItems.clear();
 		}
 
+		
+		/**	The number of items in the buffer.
+		 */
+		std::size_t size() {
+			return mSize;
+		}
+		
+		
+		/**	Change the number of items in the buffer.
+		 */
+		void resize(std::size_t	newSize) {
+			assert(newSize <= mItems.size());
+			mSize = newSize;
+		}
+		
 	};
 	
 	

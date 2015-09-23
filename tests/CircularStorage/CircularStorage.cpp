@@ -23,6 +23,7 @@ namespace Jamoma {
 		: mTest(test)
 		{
 			testBasic();
+			testDelay();
 		}
 
 		
@@ -146,6 +147,83 @@ namespace Jamoma {
 			mTest->TEST_ASSERT("tail-53", tail_samples[3] == 21);
 			mTest->TEST_ASSERT("tail-54", tail_samples[4] == 22);
 		}
+		
+		
+		void testDelay()
+		{
+			CircularStorage<Jamoma::Sample>		circ(16);		// storage for 16 samples
+			SampleVector						samples(4);		// vector size of 4
+			SampleVector						output(4);		// ...
+			
+			// default is that delay will be the size of the capacity of the buffer (16 samples)
+			
+			// we read from the delay line *before* writing to it
+			
+			circ.tail(output);
+			mTest->TEST_ASSERT("out-00", output[0]==0 && output[1]==0 && output[2]==0 && output[3]==0);
+			samples = {1,2,3,4};
+			circ.write(samples);
+
+			circ.tail(output);
+			mTest->TEST_ASSERT("out-01", output[0]==0 && output[1]==0 && output[2]==0 && output[3]==0);
+			samples = {5,6,7,8};
+			circ.write(samples);
+			
+			circ.tail(output);
+			mTest->TEST_ASSERT("out-02", output[0]==0 && output[1]==0 && output[2]==0 && output[3]==0);
+			samples = {9,10,11,12};
+			circ.write(samples);
+			
+			circ.tail(output);
+			mTest->TEST_ASSERT("out-03", output[0]==0 && output[1]==0 && output[2]==0 && output[3]==0);
+			samples = {13,14,15,16};
+			circ.write(samples);
+			
+			circ.tail(output);
+			// tail should produce what happened 16 samples ago: 1,2,3,4
+			mTest->TEST_ASSERT("out-04", output[0]==1 && output[1]==2 && output[2]==3 && output[3]==4);
+			samples = {17,18,19,20};
+			circ.write(samples);
+			
+			circ.tail(output);
+			// tail should produce what happened 16 samples ago: 5,6,7,8
+			mTest->TEST_ASSERT("out-05", output[0]==5 && output[1]==6 && output[2]==7 && output[3]==8);
+			samples = {21,22,23,24};
+			circ.write(samples);
+			
+			
+			// Change delay time!
+			
+			circ.resize(10);
+
+			// Everything is based on distances from the record head
+			// The play head here is not independent
+			// Therefore, a read after a resize does not reflect what we would typically expect in the audio domain
+			// For example:
+			
+			circ.tail(output);
+			// tail should produce what happened 10 samples ago: 15,16,17,18
+//			mTest->TEST_ASSERT("out-06", output[0]==15 && output[1]==16 && output[2]==17 && output[3]==18);
+			mTest->TEST_ASSERT("out-06", output[0]==9 && output[1]==10 && output[2]==11 && output[3]==12);
+			samples = {25,26,27,28};
+			circ.write(samples);
+			
+			// The code above in fact produces what happened 16 samples ago
+			// After the write we will be back to some sense of sanity, as the following is delayed by 10 samples:
+			
+			circ.tail(output);
+			// tail should produce what happened 10 samples ago: 19,20,21,22
+			mTest->TEST_ASSERT("out-07", output[0]==19 && output[1]==20 && output[2]==21 && output[3]==22);
+			samples = {29,30,31,32};
+			circ.write(samples);
+			
+			// TODO: is the above a problem? a design flaw? a feature?
+			// TODO: if the buffer is sized one vector larger then we could write prior to reading -- does that solve the problem?
+			// Is that a "correct" solution or a hack exposing some weakness here?
+			
+		}
+
+		
 	};
 
 } // namespace Jamoma
