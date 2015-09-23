@@ -55,17 +55,31 @@ namespace Jamoma {
 
 			// read tests
 			
-			Jamoma::SampleVector	foo(3);
-			circ.read(foo);
-			mTest->TEST_ASSERT("read-00", foo[0] == 8);
-			mTest->TEST_ASSERT("read-01", foo[1] == 9);
-			mTest->TEST_ASSERT("read-02", foo[2] == 10);
+			Jamoma::SampleVector	head_samples(3);
+			Jamoma::SampleVector	tail_samples(3);
 			
-			circ.read(foo); // always gets the most recent -- and nothing has changed
-			mTest->TEST_ASSERT("read-10", foo[0] == 8);
-			mTest->TEST_ASSERT("read-11", foo[1] == 9);
-			mTest->TEST_ASSERT("read-12", foo[2] == 10);
+			circ.head(head_samples);
+			mTest->TEST_ASSERT("read-00", head_samples[0] == 8);
+			mTest->TEST_ASSERT("read-01", head_samples[1] == 9);
+			mTest->TEST_ASSERT("read-02", head_samples[2] == 10);
+
+			circ.tail(tail_samples);
+			mTest->TEST_ASSERT("tail-00", tail_samples[0] == 3);
+			mTest->TEST_ASSERT("tail-01", tail_samples[1] == 4);
+			mTest->TEST_ASSERT("tail-02", tail_samples[2] == 5);
+
 			
+			circ.head(head_samples); // always gets the most recent -- and nothing has changed
+			mTest->TEST_ASSERT("read-10", head_samples[0] == 8);
+			mTest->TEST_ASSERT("read-11", head_samples[1] == 9);
+			mTest->TEST_ASSERT("read-12", head_samples[2] == 10);
+
+			circ.tail(tail_samples); // always gets the oldest -- and nothing has changed
+			mTest->TEST_ASSERT("tail-10", tail_samples[0] == 3);
+			mTest->TEST_ASSERT("tail-11", tail_samples[1] == 4);
+			mTest->TEST_ASSERT("tail-12", tail_samples[2] == 5);
+			
+
 			samples = {20, 21, 22};
 			circ.write(samples);
 			mTest->TEST_ASSERT("write-20", circ.mItems[0] == 9);
@@ -77,10 +91,16 @@ namespace Jamoma {
 			mTest->TEST_ASSERT("write-26", circ.mItems[6] == 7);
 			mTest->TEST_ASSERT("write-27", circ.mItems[7] == 8);
 			
-			circ.read(foo);
-			mTest->TEST_ASSERT("read-20", foo[0] == 20);
-			mTest->TEST_ASSERT("read-21", foo[1] == 21);
-			mTest->TEST_ASSERT("read-22", foo[2] == 22);
+			circ.head(head_samples);
+			mTest->TEST_ASSERT("read-20", head_samples[0] == 20);
+			mTest->TEST_ASSERT("read-21", head_samples[1] == 21);
+			mTest->TEST_ASSERT("read-22", head_samples[2] == 22);
+	
+			circ.tail(tail_samples);
+			mTest->TEST_ASSERT("tail-20", tail_samples[0] == 6);
+			mTest->TEST_ASSERT("tail-21", tail_samples[1] == 7);
+			mTest->TEST_ASSERT("tail-22", tail_samples[2] == 8);
+
 			
 			samples = {100, 101, 102};
 			circ.write(samples);
@@ -93,22 +113,38 @@ namespace Jamoma {
 			mTest->TEST_ASSERT("write-36", circ.mItems[6] == 101);
 			mTest->TEST_ASSERT("write-37", circ.mItems[7] == 102);
 
-			circ.read(foo);
-			mTest->TEST_ASSERT("read-30", foo[0] == 100);
-			mTest->TEST_ASSERT("read-31", foo[1] == 101);
-			mTest->TEST_ASSERT("read-32", foo[2] == 102);
+			circ.head(head_samples);
+			mTest->TEST_ASSERT("read-30", head_samples[0] == 100);
+			mTest->TEST_ASSERT("read-31", head_samples[1] == 101);
+			mTest->TEST_ASSERT("read-32", head_samples[2] == 102);
+
+			circ.tail(tail_samples);
+			mTest->TEST_ASSERT("tail-30", tail_samples[0] == 9);
+			mTest->TEST_ASSERT("tail-31", tail_samples[1] == 10);
+			mTest->TEST_ASSERT("tail-32", tail_samples[2] == 20);
+
 			
-			foo.resize(5);
+			head_samples.resize(5);
+			tail_samples.resize(5);
 			mTest->TEST_ASSERT("write-40", circ.mItems[0] == 9);
 			mTest->TEST_ASSERT("write-41", circ.mItems[1] == 10);
 			mTest->TEST_ASSERT("write-42", circ.mItems[2] == 20);
 			mTest->TEST_ASSERT("write-43", circ.mItems[3] == 21);
 			mTest->TEST_ASSERT("write-44", circ.mItems[4] == 22);
 			
-			circ.read(foo);
-			mTest->TEST_ASSERT("write-42", circ.mItems[2] == 20);
-			mTest->TEST_ASSERT("write-43", circ.mItems[3] == 21);
-			mTest->TEST_ASSERT("write-44", circ.mItems[4] == 22);
+			circ.head(head_samples);
+			mTest->TEST_ASSERT("head-50", head_samples[0] == 21);
+			mTest->TEST_ASSERT("head-51", head_samples[1] == 22);
+			mTest->TEST_ASSERT("head-52", head_samples[2] == 100);
+			mTest->TEST_ASSERT("head-53", head_samples[3] == 101);
+			mTest->TEST_ASSERT("head-54", head_samples[4] == 102);
+			
+			circ.tail(tail_samples);
+			mTest->TEST_ASSERT("tail-50", tail_samples[0] == 9);
+			mTest->TEST_ASSERT("tail-51", tail_samples[1] == 10);
+			mTest->TEST_ASSERT("tail-52", tail_samples[2] == 20);
+			mTest->TEST_ASSERT("tail-53", tail_samples[3] == 21);
+			mTest->TEST_ASSERT("tail-54", tail_samples[4] == 22);
 		}
 	};
 

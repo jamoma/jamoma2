@@ -83,7 +83,19 @@ namespace Jamoma {
 							The size of this buffer will determine the number of things to request. 
 							May not be larger than the size of the buffer.
 		 */
-		void read(std::vector<T>& output)
+		void read(std::vector<T>& output) {
+			head(output);
+		}
+		
+		
+		/** Read a block of things out from the container.
+			These will be the N most recent items added to the history.
+			@param	output	A place to write the block of things from the buffer.
+							The size of this buffer will determine the number of things to request.
+							May not be larger than the size of the buffer.
+			@see	tail()
+		 */
+		void head(std::vector<T>& output)
 		{
 			assert(std::this_thread::get_id() == mThread);
 			assert(mItems.size() >= output.size());
@@ -107,6 +119,49 @@ namespace Jamoma {
 				std::copy_n(mItems.begin(), count, output.begin()+offset);
 			}
 		}
+		
+		
+		/** Read a block of things out from the container.
+			These will be the N oldest items added in the history.
+			@param	output	A place to write the block of things from the buffer.
+							The size of this buffer will determine the number of things to request.
+							May not be larger than the size of the buffer.
+			@see	head()
+		 */
+		void tail(std::vector<T>& output)
+		{
+			assert(std::this_thread::get_id() == mThread);
+			assert(mItems.size() >= output.size());
+			
+			long	count = output.size();
+			long	start = mIndex % mItems.size();
+			bool	wrap = false;
+			
+			if (start<0) {
+				count = -start;
+				start = mItems.size() + start;
+				wrap = true;
+			}
+			
+			std::copy_n(mItems.begin()+start, count, output.begin());
+			
+			if (wrap) {
+				std::size_t offset = count;
+				
+				count = output.size() - offset;
+				std::copy_n(mItems.begin(), count, output.begin()+offset);
+			}
+		}
+
+		
+		/**	Zero the contents.
+		 */
+		void clear()
+		{
+			assert(std::this_thread::get_id() == mThread);
+			mItems.clear();
+		}
+
 	};
 	
 	
