@@ -138,10 +138,9 @@ namespace Jamoma {
 			long	count = output.size();
 			long	start = mIndex % size();
 			bool	wrap = false;
-			
-			if (start<0) {
-				count = -start;
-				start = size() + start;
+						
+			if (start+count > size()) {
+				count = size() - count;
 				wrap = true;
 			}
 			
