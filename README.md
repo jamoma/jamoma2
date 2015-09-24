@@ -114,3 +114,38 @@ As such, we now use simple methods (overloading the the `()` operator), which al
 * Message
 * Notification -- was "return"
 
+
+## Unit Testing
+
+Where relevant, unit tests should include in comments any reference code or processes used to generate the expected results.  For mathematical or dsp cases the preferred environment is Octave.  To set that up on a Mac running Yosemite:
+
+```
+brew tap homebrew/science
+brew update
+brew upgrade
+brew install gcc
+brew install octave
+
+# for dsp applications you will need to download two add-ons:
+# http://octave.sourceforge.net/control/index.html
+# http://octave.sourceforge.net/signal/index.html
+# and then install them in octave itself (using the path to your downloads).
+# there may be lots of warnings, don't be alarmed.
+
+octave
+pkg install /Users/tim/Downloads/control-2.8.4.tar.gz
+pkg install /Users/tim/Downloads/signal-1.3.2.tar.gz
+
+# now you actually load the signal package:
+
+pkg load signal
+
+# and then you can use octave...
+# For example to generate an impulse response from a numerator (a) and denominator (b):
+
+a = [0.5, 1.0];% numerator (fir)
+b = [1.0, 0.5];% denominator (iir)
+i = impz(a, b, 64);
+format long g
+i
+```
