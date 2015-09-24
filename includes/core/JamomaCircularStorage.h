@@ -171,10 +171,9 @@ namespace Jamoma {
 		}
 		
 		
-		// TODO: is there a better name for this "transaction" ?
-		T tail(const T& input) {
-			write(input);
-			return mItems[mIndex%size()];
+		T tail(int offset = 0)  {
+			// TODO: benchmark / evaluate use of modulo here
+			return mItems[ (mIndex+offset) % size() ];
 		}
 
 		

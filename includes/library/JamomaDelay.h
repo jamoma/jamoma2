@@ -79,7 +79,8 @@ namespace Jamoma {
 		Sample operator()(Sample x, int channel)
 		{
 			mHistory[channel].resize(size+1); // need delay samples plus "now"
-			return mHistory[channel].tail(x);
+			mHistory[channel].write(x);
+			return mHistory[channel].tail();
 		}
 		
 		
