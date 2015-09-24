@@ -203,4 +203,8 @@ namespace Jamoma {
 	};
 	
 	
+	using CircularSampleBuffer = CircularStorage<Sample>;
+	using CircularSampleBufferGroup = std::vector<CircularSampleBuffer>;
+	
+	
 } // namespace Jamoma
