@@ -111,15 +111,17 @@ namespace Jamoma {
 			@param	a			The first value to test
 			@param	b			The second value to test
 			@param	equivalent	The expected result when comparing the two floats a and b. Defaults to TRUE.
+			@param	maxUlps		The maximum number of "units in last place" that can deviate and still evaluate as equivalent.
+								See https://randomascii.wordpress.com/2012/02/25/comparing-floating-point-numbers-2012-edition/
 			@return				Returns true if a is equivalent to b, otherwise returns false.
 		 */
 		template <class U>
-		bool compare(U a, U b, bool equivalent = true)
+		bool compare(U a, U b, bool equivalent = true, size_t maxUlps = 4)
 		{
 			testing::internal::FloatingPoint<U> aa(a);
 			testing::internal::FloatingPoint<U> bb(b);
 			
-			bool result = aa.AlmostEquals(bb);
+			bool result = aa.AlmostEquals(bb, maxUlps);
 			
 			if (result == equivalent) // Was this the expected result?
 				return true;

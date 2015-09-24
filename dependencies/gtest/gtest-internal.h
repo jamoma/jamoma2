@@ -256,13 +256,13 @@ class FloatingPoint {
   //   - returns false if either number is (or both are) NAN.
   //   - treats really large numbers as almost equal to infinity.
   //   - thinks +0.0 and -0.0 are 0 DLP's apart.
-  bool AlmostEquals(const FloatingPoint& rhs) const {
+  bool AlmostEquals(const FloatingPoint& rhs, const size_t maxulps = kMaxUlps) const {
     // The IEEE standard says that any comparison operation involving
     // a NAN must return false.
     if (is_nan() || rhs.is_nan()) return false;
 
     return DistanceBetweenSignAndMagnitudeNumbers(u_.bits_, rhs.u_.bits_)
-        <= kMaxUlps;
+        <= maxulps;
   }
 
  private:
