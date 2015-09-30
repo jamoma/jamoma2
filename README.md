@@ -88,16 +88,7 @@ The branching penalty on contemporary processors is not nearly so severe. Furthe
 
 As such, we now use simple methods (overloading the the `()` operator), which also yields the most direct, understandable, and elegant code.
 
-
-
-
-## Idiomatic SampleBundleGroup Usage
-
-* **FFT** -- one bundle of reals, one bundle of imaginaries -- This way the graph stays the same regardless of changes to channel counts.  The same will apply to the **Hilbert Transform**.  Also algorithms will make sense e.g. multiplying squares of the two bundles (one bundle of reals and one of imaginaries) will yield a bundle on which we call a sqrt operator to get the magnitudes.
-* **SVF** -- one bundle for each response type at output
-
-
-## Golossary
+## Glossary
 
 * **Sample** -- A single sample value
 * **SampleVector** -- A vector of sample values
@@ -107,8 +98,14 @@ As such, we now use simple methods (overloading the the `()` operator), which al
 * **Immutable** -- Readonly (or const in C++ terms), meaning it must be fully initialized when constructed. For example: an `ImmutableSampleBundle` might contain the samples from an audio file. You can't change the samples. So if you want to read a different audio file then you create a new `ImmutableSampleBundle` and then discard the old one.
 * **Shared** -- A shared type is internal reference counted, probably using C++11 smart pointers. In the example above it would be best to use a `SharedImmutableSampleBundle` because you are guaranteed that the `SampleBundle` will not disappear in the middle of a routine that is attempting to read from it.
 
+### Idiomatic SampleBundleGroup Usage
 
-## Class Construction
+* **FFT** -- one bundle of reals, one bundle of imaginaries -- This way the graph stays the same regardless of changes to channel counts.  The same will apply to the **Hilbert Transform**.  Also algorithms will make sense e.g. multiplying squares of the two bundles (one bundle of reals and one of imaginaries) will yield a bundle on which we call a sqrt operator to get the magnitudes.
+* **SVF** -- one bundle for each response type at output
+
+
+
+### Class Construction
 
 * Parameter -- was "attribute"
 * Message
