@@ -29,7 +29,7 @@ As a header-only library there is nothing to build for Jamoma itself. You only b
 
 Now open an individual Xcode project from `examples` or `tests`.  Alternatively open the Xcode project at the top level to build everything and run all unit tests.
 
-If you don't have CMake you can get it from http://www.cmake.org/ .
+If you don't have CMake you can get it from [http://www.cmake.org/](http://www.cmake.org/) .
 
 ## How to Contribute
 
@@ -114,7 +114,7 @@ As such, we now use simple methods (overloading the the `()` operator), which al
 
 ## Unit Testing
 
-Where relevant, unit tests should include in comments any reference code or processes used to generate the expected results.  For mathematical or dsp cases the preferred environment is Octave.  To set that up on a Mac running Yosemite:
+Where relevant, unit tests should include in comments any reference code or processes used to generate the expected results.  For mathematical or dsp cases the preferred environment is Octave.  While full directions for installing Octave can be found on [this wiki](http://wiki.octave.org/Main_Page), the following provides basic steps to set it up on a Mac running Yosemite using Homebrew:
 
 ```
 # if you do not have homebrew installed, visit http://brew.sh/
@@ -125,6 +125,9 @@ brew upgrade
 # these next two steps may take almost an hour to complete, 
 # even on fast machines. plan accordingly.
 brew install gcc
+
+# if you do not have java installed, you may add the "--without-java" option
+# at the end of the next line
 brew install octave
 
 # for dsp applications you will need to download two add-ons.
