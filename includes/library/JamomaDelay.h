@@ -108,6 +108,9 @@ namespace Jamoma {
         
         const std::size_t			mCapacity;
         CircularSampleBufferGroup	mHistory;
+        std::size_t                 mIntegralDelay;
+        double                      mFractionalDelay;
+        
         
         // NW: removing Observer temporarily
         
@@ -130,10 +133,13 @@ namespace Jamoma {
         /** length of the delay
          TODO: dataspace integration for units other than samples
          */
-        Parameter<int>	size = { this, "size", 1,
+        Parameter<double>	size = { this, "size", 1.0,
             [this]{
+                mIntegralDelay = (int)size;
+                mFractionalDelay = size - mIntegralDelay;
+                
                 for (auto& channel : mHistory)
-                    channel.resize((int)size);
+                    channel.resize(mIntegralDelay+1);
                     }
         };
         
@@ -175,6 +181,14 @@ namespace Jamoma {
                 mHistory[channel].tail(out[0][channel]);
             }
             return out;
+        }
+        
+        std::size_t integralDelay() {
+            return mIntegralDelay;
+        }
+        
+        double fractionalDelay() {
+            return mFractionalDelay;
         }
         
         

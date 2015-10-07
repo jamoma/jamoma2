@@ -26,6 +26,8 @@ public:
 		testDelayLessThanOneVectorSize();
 		
 		testDelaySingleSample();
+        
+        testSettingInterpolatingDelaySize();
 	}
 
 	
@@ -186,6 +188,19 @@ public:
 						   );
 
 	}
+    
+    void testSettingInterpolatingDelaySize()
+    {
+        Jamoma::DelayWithLinearInterpolation    delay;
+        
+        delay.size = 3.2;
+        
+        mTest->TEST_ASSERT("mIntergralDelay value is correct", delay.integralDelay() == 3);
+        mTest->TEST_ASSERT("mFractionalDelay value is correct", delay.fractionalDelay() == 0.2);
+        
+        std::cout << "fractionalDelay is " << delay.fractionalDelay() << " but it should be " << 0.2 << std::endl;
+        
+    }
 	
 };
 
