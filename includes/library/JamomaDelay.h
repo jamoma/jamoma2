@@ -100,6 +100,85 @@ namespace Jamoma {
 		}
 		
 	};
+    
+    /**	A multichannel interpolating delay line.
+     @warning This class is experimental. May be eventually be replaced with template design in Delay class.
+     */
+    class DelayWithLinearInterpolation : public AudioObject {
+        
+        const std::size_t			mCapacity;
+        CircularSampleBufferGroup	mHistory;
+        
+        // NW: removing Observer temporarily
+        
+    public:
+        static constexpr Classname classname = { "delayWithLinearInterpolation" };
+        static constexpr auto tags = { "dspEffectsLib", "audio", "processor", "delay" };
+        
+        
+        /** Capacity of the delay is fixed at instantiation
+         */
+        DelayWithLinearInterpolation(std::size_t capacity = 256)
+        : mCapacity(capacity)
+        , mHistory(1, capacity)
+        {
+            // NW: see above removal of Observer
+            //channelCount.addObserver(mChannelCountObserver);
+        }
+        
+        
+        /** length of the delay
+         TODO: dataspace integration for units other than samples
+         */
+        Parameter<int>	size = { this, "size", 1,
+            [this]{
+                for (auto& channel : mHistory)
+                    channel.resize((int)size);
+                    }
+        };
+        
+        
+        Message			clear = { "clear",
+            Synopsis("Erase the delay history"),
+            [this]{
+                for (auto& channel : mHistory)
+                    channel.clear();
+                    }
+        };
+        
+        Sample operator()(Sample x)
+        {
+            return (*this)(x, 0);
+        }
+        
+        
+        Sample operator()(Sample x, int channel)
+        {
+            mHistory[channel].resize(size+1); // need delay samples plus "now"
+            mHistory[channel].write(x);
+            return mHistory[channel].tail();
+        }
+        
+        SharedSampleBundleGroup operator()(const SampleBundle& x)
+        {
+            auto out = adapt(x);
+            
+            for (int channel=0; channel < x.channelCount(); ++channel) {
+                // write first (then read) so that we can acheive a zero-sample delay
+                // mHistory[channel].write(x[channel]);
+                // mHistory[channel].tail(out[0][channel]);
+                
+                // TODO: we can't acheive the above because we overwrite the memory before we read it!
+                // TODO: the problem with the below is that we are limited to a minimum delay of one vector length.
+                
+                mHistory[channel].write(x[channel]);
+                mHistory[channel].tail(out[0][channel]);
+            }
+            return out;
+        }
+        
+        
+    };
 	
 
 } // namespace Jamoma
