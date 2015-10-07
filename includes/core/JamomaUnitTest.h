@@ -1,14 +1,13 @@
 /** @file
 	
-	@ingroup jamoma2
+	@ingroup 	jamoma2
 	
-	@brief Define a parameter of a JamomaObject
+	@brief 		Define a parameter of a JamomaObject
  
-	@author Timothy Place
-	
-	@copyright Copyright © 2015 by Jamoma authors and contributors @n
-	This code is licensed under the terms of the "BSD 3-Clause License" @n
-	https://github.com/jamoma/jamoma2/blob/master/LICENSE.md @n
+	@author		Timothy Place
+	@copyright	Copyright (c) 2005-2015 The Jamoma Group, http://jamoma.org.
+	@license	This project is released under the terms of the MIT License.
+
  */
 
 #pragma once
@@ -64,10 +63,10 @@ namespace Jamoma {
 		 */
 		void assertion(String aTestName, bool aTestResult, const char* filename, int linenumber)
 		{
-			mAssertionCount++;
+			++mAssertionCount;
 			result(aTestName, aTestResult, filename, linenumber);
 			if (!aTestResult)
-				mFailedAssertions++;
+				++mFailedAssertions;
 		}
 		
 		
@@ -111,15 +110,17 @@ namespace Jamoma {
 			@param	a			The first value to test
 			@param	b			The second value to test
 			@param	equivalent	The expected result when comparing the two floats a and b. Defaults to TRUE.
+			@param	maxUlps		The maximum number of "units in last place" that can deviate and still evaluate as equivalent.
+								See https://randomascii.wordpress.com/2012/02/25/comparing-floating-point-numbers-2012-edition/
 			@return				Returns true if a is equivalent to b, otherwise returns false.
 		 */
 		template <class U>
-		bool compare(U a, U b, bool equivalent = true)
+		bool compare(U a, U b, bool equivalent = true, size_t maxUlps = 4)
 		{
 			testing::internal::FloatingPoint<U> aa(a);
 			testing::internal::FloatingPoint<U> bb(b);
 			
-			bool result = aa.AlmostEquals(bb);
+			bool result = aa.AlmostEquals(bb, maxUlps);
 			
 			if (result == equivalent) // Was this the expected result?
 				return true;

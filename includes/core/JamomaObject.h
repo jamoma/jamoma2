@@ -1,17 +1,16 @@
 /** @file
 	
-	@ingroup jamoma2
+	@ingroup 	jamoma2
 	
-	@brief Create Jamoma Object instances.
+	@brief 		Create Jamoma Object instances.
 	
-	@details Parent class for all Objects within the Jamoma library. 
-	Defines common features such as Parameters and Messages that are used by all Objects throughout the codebase.
+	@details 	Parent class for all Objects within the Jamoma library. 
+				Defines common features such as Parameters and Messages that are used by all Objects throughout the codebase.
 	
-	@author Timothy Place, Nathan Wolek
-	
-	@copyright Copyright © 2015 by Jamoma authors and contributors @n
-	This code is licensed under the terms of the "BSD 3-Clause License" @n
-	https://github.com/jamoma/jamoma2/blob/master/LICENSE.md @n
+	@author		Timothy Place, Nathan Wolek
+	@copyright	Copyright (c) 2005-2015 The Jamoma Group, http://jamoma.org.
+	@license	This project is released under the terms of the MIT License.
+
  */
 
 #pragma once
@@ -97,16 +96,16 @@ namespace Jamoma {
 		
 		/** send a message to the object dynamically
 		 */
-		ValueBase send(const String& name, const ValueBase& input)
+		VarBase send(const String& name, const VarBase& input)
 		{
-			return Value<int>(0);	// TODO: stub
+			return 0;	// TODO: stub
 		}
 		
 		/** send a message to the object dynamically 
 		 */
-		ValueBase send(const String& name)
+		VarBase send(const String& name)
 		{
-			return Value<int>(0);	// TODO: stub
+			return 0;	// TODO: stub
 		}
 	};
 

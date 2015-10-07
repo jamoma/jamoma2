@@ -1,14 +1,12 @@
 /** @file
 	
-	@ingroup jamoma2
+	@ingroup 	jamoma2
 	
-	@brief Define a parameter of a JamomaObject
+	@brief 		Define a parameter of a JamomaObject
  
-	@author Timothy Place
-	
-	@copyright Copyright © 2015 by Jamoma authors and contributors @n
-	This code is licensed under the terms of the "BSD 3-Clause License" @n
-	https://github.com/jamoma/jamoma2/blob/master/LICENSE.md @n
+	@author		Timothy Place
+	@copyright	Copyright (c) 2005-2015 The Jamoma Group, http://jamoma.org.
+	@license	This project is released under the terms of the MIT License.
  */
 
 #pragma once
@@ -23,12 +21,14 @@ namespace Jamoma {
 	 */
 	class ParameterBase {
 	protected:
-		Object*				mOwner;			///< The owning Jamoma::Object to which this Parameter belongs.
-		String				mName;			///< The name of this Parameter as it would be addressed dynamically.
-		Synopsis			mSynopsis;		///< A description of what this Parameter represents.
-		RangeLimit			mRangeLimit;	///< The behavior applied to values sent to this parameter if they are outside of the suggested Range.
-		Function			mSetter;		///< A function to be executed after the parameter's value has been set.
-		
+		Object*					mOwner;			///< The owning Jamoma::Object to which this Parameter belongs.
+		String					mName;			///< The name of this Parameter as it would be addressed dynamically.
+		Synopsis				mSynopsis;		///< A description of what this Parameter represents.
+		RangeLimit				mRangeLimit;	///< The behavior applied to values sent to this parameter if they are outside of the suggested Range.
+		Function				mSetter;		///< A function to be executed after the parameter's value has been set.
+		std::vector<Observer*>	mObservers;		///< Objects receiving notifications when this parameter has been set.
+
+		// TODO: the above raw pointer will lead to dangling references ?!?!?!?!
 
 		ParameterBase(Object* owner, const String& name, const Synopsis& synopsis, const RangeLimit& rangeLimit, const Function& setter)
 		: mOwner(owner)
@@ -52,7 +52,21 @@ namespace Jamoma {
 			return lhs.mName == rhs;
 		}
 		
-		virtual ParameterBase& operator = (const ValueBase& input) = 0;
+		virtual ParameterBase& operator = (const VarBase& input) = 0;
+		
+		
+		void addObserver(Observer& anObserver)
+		{
+			mObservers.push_back(&anObserver);
+		}
+		
+		
+		void removeObserver(Observer& anObserver)
+		{
+			// documentation of the below: https://en.wikipedia.org/wiki/Erase%E2%80%93remove_idiom
+			mObservers.erase(std::remove(mObservers.begin(), mObservers.end(), &anObserver), mObservers.end());
+		}
+		
 	};
 	
 	
@@ -94,6 +108,8 @@ namespace Jamoma {
 			}
 			if (mSetter)
 				mSetter();
+			for (auto& observer : mObservers)
+				(*observer)();
 		}
 		
 		
@@ -137,7 +153,7 @@ namespace Jamoma {
 		
 		// setter for case when input is a generic value
 		// TODO: if a value has 2 members then do we use the last one as a unit? perhaps it needs some metadata so that we know?
-		Parameter& operator = (const ValueBase& input)
+		Parameter& operator = (const VarBase& input)
 		{
 			set(input);
 			return *this;
@@ -179,6 +195,8 @@ namespace Jamoma {
 			mValue = input;
 			if (mSetter)
 				mSetter();
+			for (auto& observer : mObservers)
+				(*observer)();
 		}
 		
 
@@ -204,7 +222,20 @@ namespace Jamoma {
 			owner->parameters[name] = this;
 			set(initial);
 		}
+	
 		
+		Parameter(Object* owner, String name, std::pair<T, Unit>initial,  Function setter = nullptr)
+		: ParameterBase(owner, name, "", RangeLimit::none, setter)
+		{
+			// 1. iterate args
+			// 2. determine their types
+			// 3. do something appropriate for their given type
+			// 4. can we make this whole process constexpr ?
+			
+			owner->parameters[name] = this;
+			set(initial.first, initial.second);
+		}
+
 		
 		// setter
 		Parameter& operator = (T input)
@@ -224,7 +255,7 @@ namespace Jamoma {
 		
 		// setter for case when input is a generic value
 		// TODO: if a value has 2 members then do we use the last one as a unit? perhaps it needs some metadata so that we know?
-		Parameter& operator = (const ValueBase& input)
+		Parameter& operator = (const VarBase& input)
 		{
 			set(input);
 			return *this;
@@ -266,6 +297,8 @@ namespace Jamoma {
 			mValue = Limit(input, mRange.first, mRange.second);
 			if (mSetter)
 				mSetter();
+			for (auto& observer : mObservers)
+				(*observer)();
 		}
 
 		
@@ -309,7 +342,7 @@ namespace Jamoma {
 		
 		// setter for case when input is a generic value
 		// TODO: if a value has 2 members then do we use the last one as a unit? perhaps it needs some metadata so that we know?
-		Parameter& operator = (const ValueBase& input)
+		Parameter& operator = (const VarBase& input)
 		{
 			set(input);
 			return *this;

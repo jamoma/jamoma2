@@ -1,14 +1,12 @@
 /** @file
 	
-	@ingroup jamoma2
+	@ingroup 	jamoma2
 	
-	@brief Shared Dataspace Structures
+	@brief 		Shared Dataspace Structures
 	
-	@author Tim Place
-	
-	@copyright Copyright © 2015 by Jamoma authors and contributors @n
-	This code is licensed under the terms of the "BSD 3-Clause License" @n
-	https://github.com/jamoma/jamoma2/blob/master/LICENSE.md @n
+	@author		Timothy Place
+	@copyright	Copyright (c) 2005-2015 The Jamoma Group, http://jamoma.org.
+	@license	This project is released under the terms of the MIT License.
  */
 
 #pragma once
@@ -54,11 +52,11 @@ namespace Jamoma {
 	// Units for setting/getting parameters
 	// TODO: it is not dry to duplicate all these -- but we need a common enum in order to have a shared interface for all Parameters
 	enum class Unit : uint32_t {
-		None		= (uint32_t)Dataspace::NoneUnit::nothing,
+		none		= (uint32_t)Dataspace::NoneUnit::nothing,
 		
-		LinearGain	= (uint32_t)Dataspace::GainUnit::linear,
-		Db			= (uint32_t)Dataspace::GainUnit::db,
-		MidiGain	= (uint32_t)Dataspace::GainUnit::midi
+		linearGain	= (uint32_t)Dataspace::GainUnit::linear,
+		db			= (uint32_t)Dataspace::GainUnit::db,
+		midiGain	= (uint32_t)Dataspace::GainUnit::midi
 	};
 	
 

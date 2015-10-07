@@ -1,17 +1,15 @@
 /** @file
 	
-	@ingroup jamoma2
+	@ingroup 	jamoma2
 	
-	@brief Store samples in a chunk of memory.
+	@brief 		Store samples in a chunk of memory.
 	
-	@details Defines the Sample datatype and several layers of containers for representing the relationship between Samples in memory. 
-	These containers in order from lowest to highest level are referred to as Sample, SampleVector, SampleBundle, and SampleBundleGroup.
+	@details 	Defines the Sample datatype and several layers of containers for representing the relationship between Samples in memory. 
+				These containers in order from lowest to highest level are referred to as Sample, SampleVector, SampleBundle, and SampleBundleGroup.
 	
-	@author Timothy Place, Nathan Wolek
-	
-	@copyright Copyright © 2015 by Jamoma authors and contributors @n
-	This code is licensed under the terms of the "BSD 3-Clause License" @n
-	https://github.com/jamoma/jamoma2/blob/master/LICENSE.md @n
+	@author		Timothy Place, Nathan Wolek
+	@copyright	Copyright (c) 2005-2015 The Jamoma Group, http://jamoma.org.
+	@license	This project is released under the terms of the MIT License.
  */
 
 #pragma once
@@ -158,6 +156,8 @@ namespace Jamoma {
 		
 		
 		// TODO: Add some additional fill() options -- e.g. filling with a sine function, sinc function, etc.
+        // These can emulate options found here:
+        // https://github.com/jamoma/JamomaCore/blob/master/DSP/library/source/TTSampleMatrix.cpp#L254
 		
 		
 		/** Copy values into the SampleBundle from outside. 
@@ -172,7 +172,7 @@ namespace Jamoma {
 				   
 			SampleVector& vector = (*this)[channel];
 
-			for (int i=0; i<frameCount; i++)
+			for (int i=0; i<frameCount; ++i)
 				vector[i] = values[i];
 		}
 		
@@ -189,7 +189,7 @@ namespace Jamoma {
 			
 			SampleVector& vector = (*this)[channel];
 			
-			for (int i=0; i<frameCount; i++)
+			for (int i=0; i<frameCount; ++i)
 				values[i] = vector[i];
 		}
 		

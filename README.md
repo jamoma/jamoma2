@@ -5,10 +5,37 @@ A header-only C++ library for building dynamic and reflexive systems with an emp
 
 ## How to Build
 
-As a header-only library there is nothing to build for Jamoma itself. You only build your project that uses Jamoma.  You can investigate examples to build in the **examples** folder or build and run tests in the **tests** folder.
+As a header-only library there is nothing to build for Jamoma itself. You only build your project that uses Jamoma.  You can investigate examples to build in the **examples** folder or build and run tests in the **tests** folder. To build everything, here are a couple of example console sessions:
 
-For a quick sanity check, you can build everything by running `make` in the top-level folder or `make test` to build and run all of the tests.
+### Building on the command line (Mac or Linux)
 
+```
+	$ cd jamoma2
+	$ mkdir build
+	$ cd build
+	$ cmake ..
+	$ make
+	$ make test
+```
+
+### Building on a Mac using Xcode
+
+```
+	$ cd jamoma2
+	$ mkdir build-xcode
+	$ cd build-xcode
+	$ cmake -G Xcode ..
+```
+
+Now open an individual Xcode project from `examples` or `tests`.  Alternatively open the Xcode project at the top level to build everything and run all unit tests.
+
+If you don't have CMake you can get it from [http://www.cmake.org/](http://www.cmake.org/) .
+
+## How to Contribute
+
+Please read **Style.md** and contribute code that conforms to the style guidelines.  If your code does not match it will take longer for us to evaluate it and consider it for a possible merge.
+
+You can send code in a variety of ways, but the preferred way is to do a **Pull Request** on Github.
 
 ## Why Are We Doing This?
 
@@ -61,16 +88,7 @@ The branching penalty on contemporary processors is not nearly so severe. Furthe
 
 As such, we now use simple methods (overloading the the `()` operator), which also yields the most direct, understandable, and elegant code.
 
-
-
-
-## Idiomatic SampleBundleGroup Usage
-
-* **FFT** -- one bundle of reals, one bundle of imaginaries -- This way the graph stays the same regardless of changes to channel counts.  Also algorithms (e.g. multiplying the two )
-* **SVF** -- one bundle for each response type at output
-
-
-## Golossary
+## Glossary
 
 * **Sample** -- A single sample value
 * **SampleVector** -- A vector of sample values
@@ -80,33 +98,61 @@ As such, we now use simple methods (overloading the the `()` operator), which al
 * **Immutable** -- Readonly (or const in C++ terms), meaning it must be fully initialized when constructed. For example: an `ImmutableSampleBundle` might contain the samples from an audio file. You can't change the samples. So if you want to read a different audio file then you create a new `ImmutableSampleBundle` and then discard the old one.
 * **Shared** -- A shared type is internal reference counted, probably using C++11 smart pointers. In the example above it would be best to use a `SharedImmutableSampleBundle` because you are guaranteed that the `SampleBundle` will not disappear in the middle of a routine that is attempting to read from it.
 
+### Idiomatic SampleBundleGroup Usage
 
-## Class Construction
+* **FFT** -- one bundle of reals, one bundle of imaginaries -- This way the graph stays the same regardless of changes to channel counts.  The same will apply to the **Hilbert Transform**.  Also algorithms will make sense e.g. multiplying squares of the two bundles (one bundle of reals and one of imaginaries) will yield a bundle on which we call a sqrt operator to get the magnitudes.
+* **SVF** -- one bundle for each response type at output
+
+
+
+### Class Construction
 
 * Parameter -- was "attribute"
 * Message
 * Notification -- was "return"
 
 
+## Unit Testing
 
-### Code Style
+Where relevant, unit tests should include in comments any reference code or processes used to generate the expected results.  For mathematical or dsp cases the preferred environment is Octave.  While full directions for installing Octave can be found on [this wiki](http://wiki.octave.org/Main_Page), the following provides basic steps to set it up on a Mac running Yosemite using Homebrew:
 
-We use **camelCase** for variables and **CamelCase** for types.
-We use **camelCase** for member methods and **CamelCase** for functions that are not methods of an object.
+```
+# if you do not have homebrew installed, visit http://brew.sh/
+brew tap homebrew/science
+brew update
+brew upgrade
 
-* kVar -- constants
-* gVar -- globals
-* sVar -- statics
-* mVar -- members (of a class which are non-public)
-* var -- local (to a method), or public members of a class (e.g. parameters)
+# these next two steps may take almost an hour to complete, 
+# even on fast machines. plan accordingly.
+brew install gcc
 
+# if you do not have java installed, you may add the "--without-java" option
+# at the end of the next line
+brew install octave
 
-### Pointers
+# for dsp applications you will need to download two add-ons.
+# these should be downloaded via your browser at the following URLs:
+# http://octave.sourceforge.net/control/index.html
+# http://octave.sourceforge.net/signal/index.html
 
-**If you are using pointers, you are probably doing something wrong.**
+# now you can install them in octave itself using the path 
+# to your Downloads folder.
+# there may be lots of warnings, don't be alarmed.
 
-Jamoma2 aims to tighten areas where ambiguous responsibility of resources (memory, files, etc) is eliminated and error-prone idioms are discouraged. As such, using pointers directly is highly discouraged and places where pointers might be necessary should be done through a managed construct such as a class that contains an STL smart pointer.
+octave
+pkg install ~/Downloads/control-2.8.4.tar.gz
+pkg install ~/Downloads/signal-1.3.2.tar.gz
 
-Obviously we still need to interface with C code that will pass us pointers in some cases (such as getting samples from a sound card).  But this should be the exception; not the rule.
+# now you actually load the signal package:
 
+pkg load signal
 
+# and then you can use octave...
+# For example to generate an impulse response from a numerator (a) and denominator (b):
+
+a = [0.5, 1.0];% numerator (fir)
+b = [1.0, 0.5];% denominator (iir)
+i = impz(a, b, 64);
+format long g
+i
+```

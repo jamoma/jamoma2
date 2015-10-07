@@ -1,14 +1,12 @@
 /** @file
 	
-	@ingroup jamoma2
+	@ingroup 	jamoma2
 	
-	@brief Apply gain to samples.
+	@brief 		Apply gain to samples.
 	
-	@author Timothy Place, Nathan Wolek
-	
-	@copyright Copyright © 2015 by Jamoma authors and contributors @n
-	This code is licensed under the terms of the "BSD 3-Clause License" @n
-	https://github.com/jamoma/jamoma2/blob/master/LICENSE.md @n
+	@author		Timothy Place, Nathan Wolek
+	@copyright	Copyright (c) 2005-2015 The Jamoma Group, http://jamoma.org.
+	@license	This project is released under the terms of the MIT License.
  */
 
 #pragma once
@@ -49,7 +47,7 @@ namespace Jamoma {
 		{
 			auto out = adapt(x);
 
-			for (int channel=0; channel<x.channelCount(); channel++)
+			for (int channel=0; channel<x.channelCount(); ++channel)
 				std::transform(x[channel].begin(), x[channel].end(), out[0][channel].begin(), *this);
 			return out;
 		}
