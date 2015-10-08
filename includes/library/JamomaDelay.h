@@ -171,12 +171,6 @@ namespace Jamoma {
             
             for (int channel=0; channel < x.channelCount(); ++channel) {
                 // write first (then read) so that we can acheive a zero-sample delay
-                // mHistory[channel].write(x[channel]);
-                // mHistory[channel].tail(out[0][channel]);
-                
-                // TODO: we can't acheive the above because we overwrite the memory before we read it!
-                // TODO: the problem with the below is that we are limited to a minimum delay of one vector length.
-                
                 mHistory[channel].write(x[channel]);
                 mHistory[channel].tail(out[0][channel]);
             }
