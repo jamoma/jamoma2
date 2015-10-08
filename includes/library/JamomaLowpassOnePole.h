@@ -16,12 +16,13 @@
 namespace Jamoma {
     
     /**	This AudioObject applies a basic <a href="https://en.wikipedia.org/wiki/Low-pass_filter">low-pass filter</a> to a Sample or SampleBundle.
+		Handy for use in smoothing control signals or damping high frequency components.
      */
     class LowpassOnePole : public AudioObject {
         
-        AdaptingSampleBundle		mY1 = {this};           ///< previous output sample for each channel
-        double                      mCoefficientF;			///< filter coefficient
-        double                      mOneMinusCoefficientF;	///< 1 - mCoefficientF
+        AdaptingSampleBundle		mY1 = {this};           ///< previous output sample (for each channel)
+        double                      mA0;					///< gain coefficient
+        double                      mB1;					///< feedback coefficient
         
     public:
         static constexpr Classname classname = { "lowpass.1" };
@@ -34,10 +35,16 @@ namespace Jamoma {
                                                             0.5,
                                                             Range<double>(0.0, 1.0),
                                                             [this]{
-                                                                mCoefficientF = coefficient;
-                                                                mOneMinusCoefficientF = 1 - coefficient;
+                                                                mA0 = coefficient;
+                                                                mB1 = 1 - coefficient;
                                                             }
         };
+		
+		
+		/** Set filter coefficient using a cutoff frequency.
+			@see http://musicdsp.org/showArchiveComment.php?ArchiveID=237
+		 */
+		Parameter<double, NativeUnit::Hz> frequency = { this, "frequency", 1000.0, [this]{coefficient = 1.0 - exp(-2.0 * 3.1415 * frequency / sampleRate);} };
 		
 		
 		/**	This algorithm is an IIR filter, meaning that it relies on feedback.  If the filter should
@@ -61,7 +68,7 @@ namespace Jamoma {
 		
         Sample operator()(Sample x, int channel)
         {
-            Sample y = (x * mCoefficientF) + (mY1[channel][0] * mOneMinusCoefficientF); // compute next output sample
+            Sample y = (x * mA0) + (mY1[channel][0] * mB1); // compute next output sample
 
 			ZeroDenormal(y);
 			mY1[channel][0] = y; // update history
