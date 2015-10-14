@@ -17,9 +17,7 @@
 namespace Jamoma {
 
 	
-	/**	This AudioObject implements an IIR comb filter with an additional lowpass filter in the feedback loop.
-		The result is a comb filter that is warmer or "less tinny" than the typical comb filter.
-		This filter is one of the key building blocks in for the TapVerb effect.
+	/**	This AudioObject implements a generalized allpass filter.
 	 */
 	class Allpass1 : public AudioObject {
 		
@@ -53,7 +51,7 @@ namespace Jamoma {
 		}
 
 		
-		/** size of the history buffers -- i.e. the maximum delay time
+		/** size of the history buffers -- i.e. the delay time
 			TODO: dataspace integration for units other than samples
 		 */
 		Parameter<int>	size = { this, "size", 1,
@@ -66,17 +64,11 @@ namespace Jamoma {
 		};
 
 		
-		/** Delay time
+		/** Delay time.
+			An alias of the #size parameter.
 			TODO: dataspace with Native Unit in samples
          */
-		Parameter<int>		delay = { this, "delay", 1,
-										[this] {
-											for (auto& channel : mFeedforwardHistory)
-												channel.resize((int)size);
-											for (auto& channel : mFeedbackHistory)
-												channel.resize((int)size);
-										}
-		};
+		Parameter<int>		delay = { this, "delay", 1, [this] { size = (int)delay; } };
 		
 	
 		/** Feedback coefficient.
