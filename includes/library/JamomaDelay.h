@@ -110,6 +110,7 @@ namespace Jamoma {
         CircularSampleBufferGroup	mHistory;
         std::size_t                 mIntegralDelay;
         double                      mFractionalDelay;
+        double                      mOneMinusFractionalDelay;
         
         
         // NW: removing Observer temporarily
@@ -137,6 +138,7 @@ namespace Jamoma {
             [this]{
                 mIntegralDelay = (int)size;
                 mFractionalDelay = size - mIntegralDelay;
+                mOneMinusFractionalDelay = 1.0 - mFractionalDelay;
                 
                 for (auto& channel : mHistory)
                     channel.resize(mIntegralDelay+1);
@@ -183,6 +185,10 @@ namespace Jamoma {
         
         double fractionalDelay() {
             return mFractionalDelay;
+        }
+        
+        double oneMinusFractionalDelay() {
+            return mOneMinusFractionalDelay;
         }
         
         

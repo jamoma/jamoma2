@@ -201,6 +201,10 @@ public:
                            mTest->compare(delay.fractionalDelay(), 0.2, true, 6)
                            );
         
+        mTest->TEST_ASSERT("mFractionalDelay value is correct",
+                           mTest->compare(delay.oneMinusFractionalDelay(), 0.8, true, 6)
+                           );
+        
     }
 	
 };
