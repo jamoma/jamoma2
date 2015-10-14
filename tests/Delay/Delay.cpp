@@ -90,8 +90,11 @@ public:
 			}
 		}
 
-		std::cout << "the output has " << badSampleCount << " bad samples" << std::endl;
-		mTest->TEST_ASSERT("Bad Sample Count", badSampleCount == 0);
+        if (badSampleCount) {
+            std::cout << "the output has " << badSampleCount << " bad samples" << std::endl;
+        }
+        
+		mTest->TEST_ASSERT("DelayGreaterThanOneVectorSize produced correct output", badSampleCount == 0);
 	}
 
 	
