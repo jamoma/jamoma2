@@ -32,6 +32,9 @@ public:
         testInterpolatingDelayGreaterThanOne();
         testInterpolatingDelayLessThanOne();
         testInterpolatingDelayZero();
+        
+        // NW: this test throws assertion about thread safety
+        //testInterpolatingDelayGreaterThanOneVectorSize();
 	}
 
 	
@@ -344,6 +347,71 @@ public:
         mTest->TEST_ASSERT("delay.size of 0 produced correct output", badSampleCount == 0);
         
     }
+    
+    void testInterpolatingDelayGreaterThanOneVectorSize()
+    {
+        Jamoma::SampleBundle zero(2, 64);
+        
+        Jamoma::UnitImpulse impulse;
+        impulse.channelCount = 2;
+        impulse.frameCount = 64;
+        
+        Jamoma::DelayWithLinearInterpolation my_delay;
+        my_delay.sampleRate = 44100;
+        my_delay.size = 100.2;
+        
+        Jamoma::SampleBundle out_samples1 = my_delay( impulse() );
+        Jamoma::SampleBundle out_samples2 = my_delay( zero );
+        Jamoma::SampleBundle out_samples3 = my_delay( zero );
+        
+        int badSampleCount = 0;
+        
+        // first 64 samples should all be zero
+        for (auto& channel : out_samples1) {
+            for (auto& sample : channel) {
+                if (sample != 0.0) {
+                    badSampleCount++;
+                    std::cout << "bad sample " << " is " << sample << std::endl;
+                }
+            }
+        }
+        
+        // 100 samples later should be 1.0
+        // note: this is not the 100th sample, but 100 samples after sample 0 -- a delay of 0 is sample 0
+        for (auto& channel : out_samples2) {
+            int i = 0;
+            for (auto& sample : channel) {
+                if (i == 100-64) {
+                    if (sample != 0.8) {
+                        badSampleCount++;
+                        std::cout << "sample " << i << " is " << sample << std::endl;
+                    }
+                }
+                else if (sample != 0.8) {
+                    badSampleCount++;
+                    std::cout << "sample " << i << " is " << sample << std::endl;
+                }
+                ++i;
+            }
+        }
+        
+        // last 64 samples should all be zero
+        for (auto& channel : out_samples3) {
+            for (auto& sample : channel) {
+                if (sample != 0.0) {
+                    badSampleCount++;
+                    std::cout << "bad sample " << " is " << sample << std::endl;
+                }
+            }
+        }
+        
+        if (badSampleCount) {
+            std::cout << "the output has " << badSampleCount << " bad samples" << std::endl;
+        }
+        
+        mTest->TEST_ASSERT("DelayGreaterThanOneVectorSize produced correct output", badSampleCount == 0);
+    }
+
 
 	
 };

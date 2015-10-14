@@ -165,11 +165,21 @@ namespace Jamoma {
         SharedSampleBundleGroup operator()(const SampleBundle& x)
         {
             auto out = adapt(x);
+            auto tailPull = adapt(x);
+            tailPull.resizeFrames(x.frameCount()+1); // need one extra frame for interpolation
             
             for (int channel=0; channel < x.channelCount(); ++channel) {
                 // write first (then read) so that we can acheive a zero-sample delay
                 mHistory[channel].write(x[channel]);
-                mHistory[channel].tail(out[0][channel]);
+                mHistory[channel].tail(tailPull[0][channel]);
+                
+                for (int frame=0; frame < x.frameCount(); ++frame) {
+                    out[0][channel][frame] =
+                        fractionalDelay() * tailPull[0][channel][frame-1] +
+                        oneMinusFractionalDelay() * tailPull[0][channel][frame];
+                    
+                }
+
             }
             return out;
         }
