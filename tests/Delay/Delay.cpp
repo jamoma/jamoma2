@@ -3,7 +3,7 @@
  
 	@brief 		Unit test for the Delay class
  
-	@author		Timothy Place
+	@author		Timothy Place, Nathan Wolek
 	@copyright	Copyright (c) 2005-2015 The Jamoma Group, http://jamoma.org.
 	@license	This project is released under the terms of the MIT License.
 
@@ -28,6 +28,8 @@ public:
 		testDelaySingleSample();
         
         testSettingInterpolatingDelaySize();
+        
+        testInterpolatingDelay();
 	}
 
 	
@@ -204,6 +206,56 @@ public:
         mTest->TEST_ASSERT("mFractionalDelay value is correct",
                            mTest->compare(delay.oneMinusFractionalDelay(), 0.8, true, 6)
                            );
+        
+    }
+    
+    void testInterpolatingDelay()
+    {
+        Jamoma::SampleVector                    input = {0,1,0,0,   0,0,0,0,   2,0,0,0,   0,0,3,0 };
+        Jamoma::SampleVector                    output;
+        Jamoma::DelayWithLinearInterpolation	delay;
+        
+        delay.size = 2.1;
+        
+        for (auto& in : input) {
+            Jamoma::Sample out = delay(in);
+            output.push_back(out);
+        }
+        
+        Jamoma::SampleVector expectedOutput = {
+            0.0,
+            0.0,
+            0.0,
+            0.9,
+            0.1,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            1.8,
+            0.2,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        };
+        
+        Jamoma::Sample	temp = 0.0;
+        Jamoma::Sample	tempExpected = 0.0;
+        int				badSampleCount = 0;
+        
+        for (int i=0; i < expectedOutput.size(); i++) {
+            temp = output[i];
+            tempExpected = expectedOutput[i];
+            
+            if (! mTest->compare(temp, tempExpected, true, 8) ) {
+                badSampleCount++;
+                std::cout << "sample " << i << " had a difference of " << std::fabs(temp - tempExpected) << std::endl;
+            }
+        }
+        
+        mTest->TEST_ASSERT("delay.size of 2.1 produced correct output", badSampleCount == 0);
         
     }
 	

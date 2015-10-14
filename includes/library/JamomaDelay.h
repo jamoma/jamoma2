@@ -135,7 +135,7 @@ namespace Jamoma {
                 mOneMinusFractionalDelay = 1.0 - mFractionalDelay;
                 
                 for (auto& channel : mHistory)
-                    channel.resize(mIntegralDelay+1);
+                    channel.resize(mIntegralDelay);
                     }
         };
         
@@ -156,9 +156,10 @@ namespace Jamoma {
         
         Sample operator()(Sample x, int channel)
         {
-            mHistory[channel].resize(size+1); // need delay samples plus "now"
+            mHistory[channel].resize(size+2); // need delay samples plus 2 "now" samples
             mHistory[channel].write(x);
-            return mHistory[channel].tail();
+            return fractionalDelay() * mHistory[channel].tail() + // BAD
+                oneMinusFractionalDelay() * mHistory[channel].tail(1); // GOOD
         }
         
         SharedSampleBundleGroup operator()(const SampleBundle& x)
