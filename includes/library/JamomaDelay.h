@@ -4,7 +4,7 @@
 	
 	@brief 		Delay line implementations
 	
-	@author		Timothy Place
+	@author		Timothy Place, Nathan Wolek
 	@copyright	Copyright (c) 2005-2015 The Jamoma Group, http://jamoma.org.
 	@license	This project is released under the terms of the MIT License.
 
@@ -156,10 +156,10 @@ namespace Jamoma {
         
         Sample operator()(Sample x, int channel)
         {
-            mHistory[channel].resize(size+2); // need delay samples plus 2 "now" samples
+            mHistory[channel].resize(size+2); // need delay samples plus 2 "now" samples for interpolation
             mHistory[channel].write(x);
-            return fractionalDelay() * mHistory[channel].tail() + // BAD
-                oneMinusFractionalDelay() * mHistory[channel].tail(1); // GOOD
+            return fractionalDelay() * mHistory[channel].tail() +
+                oneMinusFractionalDelay() * mHistory[channel].tail(1);
         }
         
         SharedSampleBundleGroup operator()(const SampleBundle& x)

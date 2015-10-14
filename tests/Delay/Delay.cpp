@@ -29,9 +29,9 @@ public:
         
         testSettingInterpolatingDelaySize();
         
-        testInterpolatingDelay();
-        testInterpolatingDelay2();
-        testInterpolatingDelay3();
+        testInterpolatingDelayGreaterThanOne();
+        testInterpolatingDelayLessThanOne();
+        testInterpolatingDelayZero();
 	}
 
 	
@@ -214,7 +214,7 @@ public:
         
     }
     
-    void testInterpolatingDelay()
+    void testInterpolatingDelayGreaterThanOne()
     {
         Jamoma::SampleVector                    input = {0,1,0,0,   0,0,0,0,   2,0,0,0,   0,0,3,0 };
         Jamoma::SampleVector                    output;
@@ -264,7 +264,7 @@ public:
         
     }
     
-    void testInterpolatingDelay2()
+    void testInterpolatingDelayLessThanOne()
     {
         Jamoma::SampleVector                    input = {0,1,0,0,   0,0,0,0,   2,0,0,0,   0,0,3,0 };
         Jamoma::SampleVector                    output;
@@ -314,7 +314,7 @@ public:
         
     }
     
-    void testInterpolatingDelay3()
+    void testInterpolatingDelayZero()
     {
         Jamoma::SampleVector                    input = {0,1,0,0,   0,0,0,0,   2,0,0,0,   0,0,3,0 };
         Jamoma::SampleVector                    output;
