@@ -31,6 +31,7 @@ public:
         
         testInterpolatingDelay();
         testInterpolatingDelay2();
+        testInterpolatingDelay3();
 	}
 
 	
@@ -312,6 +313,38 @@ public:
         mTest->TEST_ASSERT("delay.size of 0.4 produced correct output", badSampleCount == 0);
         
     }
+    
+    void testInterpolatingDelay3()
+    {
+        Jamoma::SampleVector                    input = {0,1,0,0,   0,0,0,0,   2,0,0,0,   0,0,3,0 };
+        Jamoma::SampleVector                    output;
+        Jamoma::DelayWithLinearInterpolation	delay;
+        
+        delay.size = 0.;
+        
+        for (auto& in : input) {
+            Jamoma::Sample out = delay(in);
+            output.push_back(out);
+        }
+        
+        Jamoma::Sample	temp = 0.0;
+        Jamoma::Sample	tempExpected = 0.0;
+        int				badSampleCount = 0;
+        
+        for (int i=0; i < input.size(); i++) {
+            temp = output[i];
+            tempExpected = input[i];
+            
+            if (! mTest->compare(temp, tempExpected, true, 8) ) {
+                badSampleCount++;
+                std::cout << "sample " << i << " had a difference of " << std::fabs(temp - tempExpected) << std::endl;
+            }
+        }
+        
+        mTest->TEST_ASSERT("delay.size of 0 produced correct output", badSampleCount == 0);
+        
+    }
+
 	
 };
 
