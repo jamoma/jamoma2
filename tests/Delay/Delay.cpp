@@ -364,6 +364,43 @@ public:
         Jamoma::SampleBundle out_samples2 = my_delay( zero );
         Jamoma::SampleBundle out_samples3 = my_delay( zero );
         
+        // NW: first test to see if the expected values are in the right place
+        Jamoma::Sample	temp = 0.0;
+        Jamoma::Sample	tempExpected = 0.0;
+        int badSampleCount = 0;
+        
+        temp = out_samples2[0][36];
+        tempExpected = 0.8;
+        if (! mTest->compare(temp, tempExpected, true, 6)) {
+            badSampleCount++;
+            std::cout << "expected value " << tempExpected << " but instead it was " << temp << std::endl;
+        }
+        
+        temp = out_samples2[0][37];
+        tempExpected = 0.2;
+        if (! mTest->compare(temp, tempExpected, true, 6)) {
+            badSampleCount++;
+            std::cout << "expected value " << tempExpected << " but instead it was " << temp << std::endl;
+        }
+        
+        temp = out_samples2[1][36];
+        tempExpected = 0.8;
+        if (! mTest->compare(temp, tempExpected, true, 6)) {
+            badSampleCount++;
+            std::cout << "expected value " << tempExpected << " but instead it was " << temp << std::endl;
+        }
+        
+        temp = out_samples2[1][37];
+        tempExpected = 0.2;
+        if (! mTest->compare(temp, tempExpected, true, 6)) {
+            badSampleCount++;
+            std::cout << "expected value " << tempExpected << " but instead it was " << temp << std::endl;
+        }
+        
+        mTest->TEST_ASSERT("InterpolatingDelayGreaterThanOneVectorSize produced non-zero samples in the wrong place", badSampleCount == 0);
+        
+        // NW: then test to see how many non-zero samples were produced
+        // is this count is right, it may be that the delay size is set incorrectly
         int nonZeroSampleCount = 0;
         
         // first 64 samples should all be zero
@@ -371,7 +408,7 @@ public:
             for (auto& sample : channel) {
                 if (sample != 0.0) {
                     nonZeroSampleCount++;
-                    std::cout << "an out_samples1 item is " << sample << std::endl;
+                    if (badSampleCount) std::cout << "an out_samples1 item is " << sample << std::endl;
                 }
             }
         }
@@ -381,7 +418,7 @@ public:
             for (auto& sample : channel) {
                 if (sample != 0.0) {
                     nonZeroSampleCount++;
-                    std::cout << "an out_samples2 item is " << sample << std::endl;
+                    if (badSampleCount) std::cout << "an out_samples2 item is " << sample << std::endl;
                 }
             }
         }
@@ -391,7 +428,7 @@ public:
             for (auto& sample : channel) {
                 if (sample != 0.0) {
                     nonZeroSampleCount++;
-                    std::cout << "an out_samples3 item is " << sample << std::endl;
+                    if (badSampleCount) std::cout << "an out_samples3 item is " << sample << std::endl;
                 }
             }
         }
@@ -401,9 +438,6 @@ public:
         }
         
         mTest->TEST_ASSERT("InterpolatingDelayGreaterThanOneVectorSize produced correct number of non-zero samples", nonZeroSampleCount == 4);
-        
-        //NW: next test to see if the expected values are in the right place
-        //Jamoma::Sample	temp = 0.0;
         
     }
 
