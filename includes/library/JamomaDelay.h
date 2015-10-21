@@ -106,8 +106,13 @@ namespace Jamoma {
         double                      mFractionalDelay;
         double                      mOneMinusFractionalDelay;
         
-        
-        // NW: removing Observer temporarily
+        // NW: according to TAP this ensures that mHistory is resized when necessary
+        Observer				mChannelCountObserver = Function( [this]{
+            if ((mHistory.size() && mHistory[0].size() != size+frameCount) || mHistory.size() != (size_t)channelCount) {
+                mHistory.clear(); // ugly: doing this to force the reconstruction of the storage to the correct size
+                mHistory.resize(channelCount, std::make_pair(mCapacity+frameCount, (size_t)size+frameCount));
+            }
+        } );
         
     public:
         static constexpr Classname classname = { "delayWithLinearInterpolation" };
@@ -120,8 +125,7 @@ namespace Jamoma {
         : mCapacity(capacity)
         , mHistory(1, capacity)
         {
-            // NW: see above removal of Observer
-            //channelCount.addObserver(mChannelCountObserver);
+            channelCount.addObserver(mChannelCountObserver);
         }
         
         
@@ -165,7 +169,7 @@ namespace Jamoma {
         SharedSampleBundleGroup operator()(const SampleBundle& x)
         {
             auto out = adapt(x);
-            auto tailPull = adapt(x);
+            auto tailPull = out;
             tailPull.resizeFrames(x.frameCount()+1); // need one extra frame for interpolation
             
             for (int channel=0; channel < x.channelCount(); ++channel) {

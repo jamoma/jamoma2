@@ -33,8 +33,8 @@ public:
         testInterpolatingDelayLessThanOne();
         testInterpolatingDelayZero();
         
-        // NW: this test throws assertion about thread safety
-        //testInterpolatingDelayGreaterThanOneVectorSize();
+        // NW: this test currently produces bad samples
+        testInterpolatingDelayGreaterThanOneVectorSize();
 	}
 
 	
