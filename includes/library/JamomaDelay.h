@@ -179,19 +179,13 @@ namespace Jamoma {
                 
                 for (int frame=0; frame < x.frameCount(); ++frame) {
                     out[0][channel][frame] =
-                        fractionalDelay() * tailPull[0][channel][frame-1] +
-                        oneMinusFractionalDelay() * tailPull[0][channel][frame];
+                        fractionalDelay() * tailPull[0][channel][frame] +
+                        oneMinusFractionalDelay() * tailPull[0][channel][frame+1];
                     
                 }
 
             }
             
-            // NW: alternate method
-            /*for (int channel=0; channel < x.channelCount(); ++channel) {
-                for (int frame=0; frame < x.frameCount(); ++frame) {
-                    out[0][channel][frame] = (*this)(x[channel][frame], channel);
-                }
-            }*/
             return out;
         }
         

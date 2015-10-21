@@ -364,7 +364,6 @@ public:
         Jamoma::SampleBundle out_samples2 = my_delay( zero );
         Jamoma::SampleBundle out_samples3 = my_delay( zero );
         
-        Jamoma::Sample	temp = 0.0;
         int nonZeroSampleCount = 0;
         
         // first 64 samples should all be zero
@@ -377,7 +376,7 @@ public:
             }
         }
         
-        // this group of samples should produce 2 non-zero values
+        // this group of samples should produce 2 non-zero values per channel, 4 total
         for (auto& channel : out_samples2) {
             for (auto& sample : channel) {
                 if (sample != 0.0) {
@@ -397,11 +396,15 @@ public:
             }
         }
         
-        if (nonZeroSampleCount) {
+        if (nonZeroSampleCount != 4) {
             std::cout << "the output has " << nonZeroSampleCount << " non-zero samples" << std::endl;
         }
         
         mTest->TEST_ASSERT("InterpolatingDelayGreaterThanOneVectorSize produced correct number of non-zero samples", nonZeroSampleCount == 4);
+        
+        //NW: next test to see if the expected values are in the right place
+        //Jamoma::Sample	temp = 0.0;
+        
     }
 
 
