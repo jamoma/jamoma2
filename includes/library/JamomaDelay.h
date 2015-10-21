@@ -185,6 +185,13 @@ namespace Jamoma {
                 }
 
             }
+            
+            // NW: alternate method
+            /*for (int channel=0; channel < x.channelCount(); ++channel) {
+                for (int frame=0; frame < x.frameCount(); ++frame) {
+                    out[0][channel][frame] = (*this)(x[channel][frame], channel);
+                }
+            }*/
             return out;
         }
         

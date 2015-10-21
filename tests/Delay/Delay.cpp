@@ -364,34 +364,26 @@ public:
         Jamoma::SampleBundle out_samples2 = my_delay( zero );
         Jamoma::SampleBundle out_samples3 = my_delay( zero );
         
-        int badSampleCount = 0;
+        Jamoma::Sample	temp = 0.0;
+        int nonZeroSampleCount = 0;
         
         // first 64 samples should all be zero
         for (auto& channel : out_samples1) {
             for (auto& sample : channel) {
                 if (sample != 0.0) {
-                    badSampleCount++;
-                    std::cout << "bad sample " << " is " << sample << std::endl;
+                    nonZeroSampleCount++;
+                    std::cout << "an out_samples1 item is " << sample << std::endl;
                 }
             }
         }
         
-        // 100 samples later should be 1.0
-        // note: this is not the 100th sample, but 100 samples after sample 0 -- a delay of 0 is sample 0
+        // this group of samples should produce 2 non-zero values
         for (auto& channel : out_samples2) {
-            int i = 0;
             for (auto& sample : channel) {
-                if (i == 100-64) {
-                    if (sample != 0.8) {
-                        badSampleCount++;
-                        std::cout << "sample " << i << " is " << sample << std::endl;
-                    }
+                if (sample != 0.0) {
+                    nonZeroSampleCount++;
+                    std::cout << "an out_samples2 item is " << sample << std::endl;
                 }
-                else if (sample != 0.8) {
-                    badSampleCount++;
-                    std::cout << "sample " << i << " is " << sample << std::endl;
-                }
-                ++i;
             }
         }
         
@@ -399,17 +391,17 @@ public:
         for (auto& channel : out_samples3) {
             for (auto& sample : channel) {
                 if (sample != 0.0) {
-                    badSampleCount++;
-                    std::cout << "bad sample " << " is " << sample << std::endl;
+                    nonZeroSampleCount++;
+                    std::cout << "an out_samples3 item is " << sample << std::endl;
                 }
             }
         }
         
-        if (badSampleCount) {
-            std::cout << "the output has " << badSampleCount << " bad samples" << std::endl;
+        if (nonZeroSampleCount) {
+            std::cout << "the output has " << nonZeroSampleCount << " non-zero samples" << std::endl;
         }
         
-        mTest->TEST_ASSERT("DelayGreaterThanOneVectorSize produced correct output", badSampleCount == 0);
+        mTest->TEST_ASSERT("InterpolatingDelayGreaterThanOneVectorSize produced correct number of non-zero samples", nonZeroSampleCount == 4);
     }
 
 
