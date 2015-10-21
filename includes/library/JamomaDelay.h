@@ -108,7 +108,7 @@ namespace Jamoma {
         
         // NW: according to TAP this ensures that mHistory is resized when necessary
         Observer				mChannelCountObserver = Function( [this]{
-            if ((mHistory.size() && mHistory[0].size() != size+frameCount) || mHistory.size() != (size_t)channelCount) {
+            if ((mHistory.size() && mHistory[0].size() != mIntegralDelay+frameCount) || mHistory.size() != (size_t)channelCount) {
                 mHistory.clear(); // ugly: doing this to force the reconstruction of the storage to the correct size
                 mHistory.resize(channelCount, std::make_pair(mCapacity+frameCount, (size_t)size+frameCount));
             }
