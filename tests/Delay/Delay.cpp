@@ -33,8 +33,9 @@ public:
         testInterpolatingDelayLessThanOne();
         testInterpolatingDelayZero();
         
-        // NW: this test currently produces bad samples
         testInterpolatingDelayGreaterThanOneVectorSize();
+        // NW: this test currently produces bad samples
+        testInterpolatingDelayAtVectorEdge();
 	}
 
 	
@@ -438,6 +439,58 @@ public:
         }
         
         mTest->TEST_ASSERT("InterpolatingDelayGreaterThanOneVectorSize produced correct number of non-zero samples", nonZeroSampleCount == 4);
+        
+    }
+    
+    void testInterpolatingDelayAtVectorEdge()
+    {
+        Jamoma::SampleBundle zero(2, 64);
+        
+        Jamoma::UnitImpulse impulse;
+        impulse.channelCount = 2;
+        impulse.frameCount = 64;
+        
+        Jamoma::DelayWithLinearInterpolation my_delay;
+        my_delay.sampleRate = 44100;
+        my_delay.size = 63.70000000000000284;
+        
+        Jamoma::SampleBundle out_samples1 = my_delay( impulse() );
+        Jamoma::SampleBundle out_samples2 = my_delay( zero );
+        
+        // NW: first test to see if the expected values are in the right place
+        Jamoma::Sample	temp = 0.0;
+        Jamoma::Sample	tempExpected = 0.0;
+        int badSampleCount = 0;
+        
+        temp = out_samples1[0][63];
+        tempExpected = 0.29999999999999716;
+        if (! mTest->compare(temp, tempExpected, true, 8)) {
+            badSampleCount++;
+            std::cout << "expected value " << tempExpected << " but instead it was " << temp << std::endl;
+        }
+        
+        temp = out_samples2[0][0];
+        tempExpected = 0.70000000000000284;
+        if (! mTest->compare(temp, tempExpected, true, 8)) {
+            badSampleCount++;
+            std::cout << "expected value " << tempExpected << " but instead it was " << temp << std::endl;
+        }
+        
+        temp = out_samples1[1][63];
+        tempExpected = 0.29999999999999716;
+        if (! mTest->compare(temp, tempExpected, true, 8)) {
+            badSampleCount++;
+            std::cout << "expected value " << tempExpected << " but instead it was " << temp << std::endl;
+        }
+        
+        temp = out_samples2[1][0];
+        tempExpected = 0.70000000000000284;
+        if (! mTest->compare(temp, tempExpected, true, 8)) {
+            badSampleCount++;
+            std::cout << "expected value " << tempExpected << " but instead it was " << temp << std::endl;
+        }
+        
+        mTest->TEST_ASSERT("InterpolatingDelayAtVectorEdge produced non-zero samples in the wrong place", badSampleCount == 0);
         
     }
 
