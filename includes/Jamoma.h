@@ -89,7 +89,7 @@ namespace Jamoma {
 
 // Dependencies
 
-#include "readerwriterqueue.h"
+//#include "readerwriterqueue.h"
 
 
 
