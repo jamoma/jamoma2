@@ -2,6 +2,14 @@ cmake_minimum_required(VERSION 3.0)
 
 project(Jamoma)
 
+####### PREREQUISITES
+
+message(STATUS "Updating Git Submodules")
+execute_process(
+	COMMAND				git submodule update --init --recursive
+	WORKING_DIRECTORY	"${PROJECT_SOURCE_DIR}"
+)
+
 
 ####### EXAMPLES
 
