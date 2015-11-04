@@ -30,6 +30,9 @@ before_install:
   - wget http://www.cmake.org/files/v3.3/cmake-3.3.1-Darwin-x86_64.tar.gz
   - tar -xf cmake-3.3.1-Darwin-x86_64.tar.gz -C /tmp/cmake --strip-components=1
   - ln -s /tmp/cmake/CMake.app/Contents/bin /tmp/cmake/bin
+  - brew update
+  - brew install portmidi
+  - brew install portaudio
 
   # Prepare compiler
 #  - if [ "$CXX" = "clang++" ]; then export CXX="clang++-3.6" CC="clang-3.6"; fi
