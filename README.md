@@ -29,7 +29,16 @@ As a header-only library there is nothing to build for Jamoma itself. You only b
 
 Now open an individual Xcode project from `examples` or `tests`.  Alternatively open the Xcode project at the top level to build everything and run all unit tests.
 
+In order for this to all work you need to meet the prerequisites listed below.
+
+## Prerequisites
+
 If you don't have CMake you can get it from [http://www.cmake.org/](http://www.cmake.org/) .
+
+On the **Mac** some examples require PortAudio and PortMIDI. The easiest way to do this is to install Homebrew and then run `brew install portmidi` and `brew install portaudio`.
+
+The same is true on **Linux**, but but the easiest way to install these dependencies is with `sudo apt-get install libportmidi-dev` and `sudo apt-get install portaudio19-dev`.
+
 
 ## How to Contribute
 
