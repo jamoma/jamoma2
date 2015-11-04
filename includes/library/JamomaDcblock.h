@@ -88,10 +88,12 @@ namespace Jamoma {
 			or if the feedback has become corrupted (such as might happen if a NaN is fed in) 
 			then it may be neccesary to clear the filter by calling this method.
 		 */
-		Message			clear = { "clear", [this]{
-									mX.fill(0.0);
-									mY.fill(0.0);
-								}
+		Message			clear = {	"clear",
+									"Reset the filter",
+									[this]{
+										mX.fill(0.0);
+										mY.fill(0.0);
+									}
 		};
 		
 		
