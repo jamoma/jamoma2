@@ -358,7 +358,7 @@ public:
         
         Jamoma::DelayWithLinearInterpolation my_delay;
         my_delay.sampleRate = 44100;
-        my_delay.size = 100.2;
+        my_delay.size = 100.20000000000000284;
         
         Jamoma::SampleBundle out_samples1 = my_delay( impulse() );
         Jamoma::SampleBundle out_samples2 = my_delay( zero );
@@ -370,29 +370,29 @@ public:
         int badSampleCount = 0;
         
         temp = out_samples2[0][36];
-        tempExpected = 0.8;
-        if (! mTest->compare(temp, tempExpected, true, 6)) {
+        tempExpected = 0.79999999999999716;
+        if (! mTest->compare(temp, tempExpected, true, 8)) {
             badSampleCount++;
             std::cout << "expected value " << tempExpected << " but instead it was " << temp << std::endl;
         }
         
         temp = out_samples2[0][37];
-        tempExpected = 0.2;
-        if (! mTest->compare(temp, tempExpected, true, 6)) {
+        tempExpected = 0.20000000000000284;
+        if (! mTest->compare(temp, tempExpected, true, 8)) {
             badSampleCount++;
             std::cout << "expected value " << tempExpected << " but instead it was " << temp << std::endl;
         }
         
         temp = out_samples2[1][36];
-        tempExpected = 0.8;
-        if (! mTest->compare(temp, tempExpected, true, 6)) {
+        tempExpected = 0.79999999999999716;
+        if (! mTest->compare(temp, tempExpected, true, 8)) {
             badSampleCount++;
             std::cout << "expected value " << tempExpected << " but instead it was " << temp << std::endl;
         }
         
         temp = out_samples2[1][37];
-        tempExpected = 0.2;
-        if (! mTest->compare(temp, tempExpected, true, 6)) {
+        tempExpected = 0.20000000000000284;
+        if (! mTest->compare(temp, tempExpected, true, 8)) {
             badSampleCount++;
             std::cout << "expected value " << tempExpected << " but instead it was " << temp << std::endl;
         }
