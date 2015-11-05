@@ -4,20 +4,8 @@ cmake_minimum_required(VERSION 3.0)
 project(simple)
 
 
-
-# Build the PortAudio dependency
-SET(PORTAUDIO_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../../dependencies/portaudio)
-
-include(ExternalProject)
-ExternalProject_Add(
-  portaudio
-  SOURCE_DIR ${PORTAUDIO_DIR}
-  CONFIGURE_COMMAND ${PORTAUDIO_DIR}/configure --prefix=${PORTAUDIO_DIR}/build
-  PREFIX ${PORTAUDIO_DIR}
-  BUILD_COMMAND make
-  BUILD_IN_SOURCE 1
-)
-
+find_path(PORTMIDI_INCLUDES "portmidi.h")
+find_path(PORTAUDIO_INCLUDES "portaudio.h")
 
 include_directories( 
 	"${PROJECT_SOURCE_DIR}/../../includes"
@@ -29,7 +17,8 @@ include_directories(
 	"${PROJECT_SOURCE_DIR}/../../dependencies/Murmur3"
 	"${PROJECT_SOURCE_DIR}/../../dependencies/readerwriterqueue-master"
 
-	"${PORTAUDIO_DIR}/include"
+	"${PORTMIDI_INCLUDES}"
+	"${PORTAUDIO_INCLUDES}"
 )
 file(GLOB_RECURSE PROJECT_HEADERS ${PROJECT_SOURCE_DIR}/../../includes/*)
 
@@ -45,21 +34,9 @@ add_executable( ${PROJECT_NAME}
 )
 
 
-if (APPLE)
-	target_link_libraries(${PROJECT_NAME} PUBLIC "${PORTAUDIO_DIR}/build/lib/libportaudio.a")	
-	
-	find_library(THE_LIBRARY "Carbon")
-	target_link_libraries(${PROJECT_NAME} PUBLIC ${THE_LIBRARY})
+# Link Installed Dynamic Libraries
+find_library(PORTMIDI_LIB "portmidi")
+target_link_libraries(${PROJECT_NAME} ${PORTMIDI_LIB} ${SUPPORT_LIBS})
 
-	find_library(THE_LIBRARY2 "CoreAudio")
-	target_link_libraries(${PROJECT_NAME} PUBLIC ${THE_LIBRARY2})
-
-	find_library(THE_LIBRARY3 "AudioUnit")
-	target_link_libraries(${PROJECT_NAME} PUBLIC ${THE_LIBRARY3})
-
-	find_library(THE_LIBRARY4 "AudioToolbox")
-	target_link_libraries(${PROJECT_NAME} PUBLIC ${THE_LIBRARY4})
-else() # Assume Linux
-	# NOTE: can't use find_library() because we haven't built it yet
-	target_link_libraries(${PROJECT_NAME} PUBLIC "${PORTAUDIO_DIR}/portaudio/build/lib/libportaudio.so")
-endif()
+find_library(PORTAUDIO_LIB "portaudio")
+target_link_libraries(${PROJECT_NAME} ${PORTAUDIO_LIB} ${SUPPORT_LIBS})

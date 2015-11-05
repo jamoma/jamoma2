@@ -22,12 +22,6 @@ namespace Jamoma {
 	class Message {
 	public:
 		
-		// TODO: Do we really need this variation of the constructor?  YAGNI!
-		Message(String name, Function fn)
-		: mFunction(fn)
-		{}
-		
-		
 		/** Define a Message.
 			@param	name		The name of the Message when called on your Object dynamically.
 			@param	synopsis	A description of what the Message does.
@@ -43,6 +37,10 @@ namespace Jamoma {
 		Error operator ()() {
 			mFunction();
 			return Error::none;	// TODO: what's the point of returning an error code in this case?
+		}
+		
+		const Synopsis& synopsis() {
+			return mSynopsis;
 		}
 		
 	private:
