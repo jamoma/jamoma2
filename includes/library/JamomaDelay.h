@@ -172,18 +172,23 @@ namespace Jamoma {
             
             Jamoma::SampleBundle tailPull(x.channelCount(), x.frameCount()+2);
             // need one extra frame for interpolation
+            Jamoma::Sample tailBeforeWrite = 0.0;
             
             for (int channel=0; channel < x.channelCount(); ++channel) {
-                //mHistory[channel].resize(mIntegralDelay+2);
+                // we need to grab one sample before the write to protect
+                // delay sizes that span two SampleBundles
+                tailBeforeWrite = mHistory[channel].tail(0-mIntegralDelay-1);
                 
                 // write first (then read) so that we can acheive a zero-sample delay
                 mHistory[channel].write(x[channel]);
                 mHistory[channel].tail(tailPull[channel]);
                 
+                // compute the first value with the value we stashed in tailBeforeWrite
                 out[0][channel][0] =
-                    fractionalDelay() * mHistory[channel].tail(x.frameCount()+1) +
+                    fractionalDelay() * tailBeforeWrite +
                     oneMinusFractionalDelay() * tailPull[channel][0];
                 
+                // then run through the rest with the tailPull SampleBundle
                 for (int frame=1; frame < x.frameCount(); ++frame) {
                     out[0][channel][frame] =
                         fractionalDelay() * tailPull[channel][frame-1] +
