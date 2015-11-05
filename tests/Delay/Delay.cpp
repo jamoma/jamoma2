@@ -401,7 +401,7 @@ public:
         mTest->TEST_ASSERT("InterpolatingDelayGreaterThanOneVectorSize produced non-zero samples in the wrong place", badSampleCount == 0);
         
         // NW: then test to see how many non-zero samples were produced
-        // is this count is right, it may be that the delay size is set incorrectly
+        // if this count is not right, it may be that the delay size is set incorrectly
         int nonZeroSampleCount = 0;
         
         // first 64 samples should all be zero
@@ -491,6 +491,37 @@ public:
         }
         
         mTest->TEST_ASSERT("InterpolatingDelayAtVectorEdge produced non-zero samples in the wrong place", badSampleCount == 0);
+        
+        // NW: then test to see how many non-zero samples were produced
+        // if this count is not right, it may be that the delay size is set incorrectly
+        int nonZeroSampleCount = 0;
+        
+        // first 64 samples should should produce 1 non-zero values per channel, 2 total
+        for (auto& channel : out_samples1) {
+            for (auto& sample : channel) {
+                if (sample != 0.0) {
+                    nonZeroSampleCount++;
+                    if (badSampleCount) std::cout << "an out_samples1 item is " << sample << std::endl;
+                }
+            }
+        }
+        
+        // this group of samples should produce 1 non-zero values per channel, 2 total
+        for (auto& channel : out_samples2) {
+            for (auto& sample : channel) {
+                if (sample != 0.0) {
+                    nonZeroSampleCount++;
+                    if (badSampleCount) std::cout << "an out_samples2 item is " << sample << std::endl;
+                }
+            }
+        }
+        
+        if (nonZeroSampleCount != 4) {
+            std::cout << "the output has " << nonZeroSampleCount << " non-zero samples" << std::endl;
+        }
+        
+        mTest->TEST_ASSERT("InterpolatingDelayAtVectorEdge produced correct number of non-zero samples", nonZeroSampleCount == 4);
+
         
     }
 
