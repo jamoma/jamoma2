@@ -10,8 +10,8 @@
 clear
 
 % starting values
-frequency = 1000.0;
-initialPhase = 0.0;
+frequency = -0.5;
+initialPhase = 0.1;
 sampleRate = 44100.0;
 
 % algorithm variables
