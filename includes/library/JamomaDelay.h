@@ -25,12 +25,14 @@ namespace Jamoma {
 		const std::size_t			mCapacity;
 		CircularSampleBufferGroup	mHistory;
 
-		Observer				mChannelCountObserver = Function( [this]{
-			if ((mHistory.size() && mHistory[0].size() != size+frameCount) || mHistory.size() != (size_t)channelCount) {
-																			mHistory.clear(); // ugly: doing this to force the reconstruction of the storage to the correct size
-																			mHistory.resize(channelCount, std::make_pair(mCapacity+frameCount, (size_t)size+frameCount));
+        Observer				mChannelCountObserver = { std::bind(&Delay::resizeHistory, this) };
+			
+        void resizeHistory() {
+            if ((mHistory.size() && mHistory[0].size() != size+frameCount) || mHistory.size() != (size_t)channelCount) {
+                mHistory.clear(); // ugly: doing this to force the reconstruction of the storage to the correct size
+				mHistory.resize(channelCount, std::make_pair(mCapacity+frameCount, (size_t)size+frameCount));
 			}
-		} );
+		}
 
 	public:
 		static constexpr Classname classname = { "delay" };
@@ -107,12 +109,14 @@ namespace Jamoma {
         double                      mOneMinusFractionalDelay;
         
         // NW: according to TAP this ensures that mHistory is resized when necessary
-        Observer				mChannelCountObserver = Function( [this]{
+        Observer				mChannelCountObserver = { std::bind(&DelayWithLinearInterpolation::resizeHistory, this) };
+        
+        void resizeHistory() {
             if ((mHistory.size() && mHistory[0].size() != mIntegralDelay+frameCount) || mHistory.size() != (size_t)channelCount) {
                 mHistory.clear(); // ugly: doing this to force the reconstruction of the storage to the correct size
                 mHistory.resize(channelCount, std::make_pair(mCapacity+frameCount, (size_t)size+frameCount));
             }
-        } );
+        }
         
     public:
         static constexpr Classname classname = { "delayWithLinearInterpolation" };
