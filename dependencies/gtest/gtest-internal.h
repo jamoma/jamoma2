@@ -260,9 +260,8 @@ class FloatingPoint {
     // The IEEE standard says that any comparison operation involving
     // a NAN must return false.
     if (is_nan() || rhs.is_nan()) return false;
-
-    return DistanceBetweenSignAndMagnitudeNumbers(u_.bits_, rhs.u_.bits_)
-        <= maxulps;
+	auto result = DistanceBetweenSignAndMagnitudeNumbers(u_.bits_, rhs.u_.bits_);
+	return result <= maxulps;
   }
 
  private:
