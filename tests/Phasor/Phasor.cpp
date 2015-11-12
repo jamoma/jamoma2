@@ -24,12 +24,6 @@ namespace Jamoma {
 			testParameterSetting();
 			testOutputValues();
 		}
-		
-		
-		void testOutputValues()
-		{
-			// TODO: implement
-		}
 
 		
 		void testParameterSetting()
@@ -81,8 +75,21 @@ namespace Jamoma {
 
 		}
         
-        void testPhasorOutput()
+        void testOutputValues()
         {
+            
+            Jamoma::Phasor my_phasor;
+            
+            my_phasor.sampleRate = 44100;
+            my_phasor.phase = 0.0;
+            my_phasor.frequency = 100.0;
+            
+            Jamoma::UnitImpulse impulse;
+            
+            impulse.channelCount = 1;
+            impulse.frameCount = 64;
+            
+            auto out_samples = my_phasor( impulse() );
             
             // The following output was generated using the Octave code
             // in PhasorTargetOutput.m by NW with the following starting values:
@@ -156,6 +163,29 @@ namespace Jamoma {
                 0.1428571428571429
             };
             
+            int badSampleCount = 0;
+            Jamoma::Sample temp = 0.0;
+            Jamoma::Sample tempExpected = 0.0;
+            
+            for (int i = 0; i < expectedOutput1.size(); i++) {
+                temp = out_samples[0][0][i];
+                tempExpected = expectedOutput1[i];
+                if (! mTest->compare(temp, tempExpected, true, 8) ) {
+                    badSampleCount++;
+                    std::cout << "sample " << i << " had a difference of " << std::fabs(temp - tempExpected) << std::endl;
+                }
+            }
+            
+            std::cout << "the impulse response of my_phasor has " << badSampleCount << " bad samples" << std::endl;
+            mTest->TEST_ASSERT("Bad Sample Count", badSampleCount == 0);
+            
+            
+            my_phasor.sampleRate = 96000;
+            my_phasor.phase = 0.25;
+            my_phasor.frequency = 1.0;
+            
+            out_samples = my_phasor( impulse() );
+            
             // The following output was generated using the Octave code
             // in PhasorTargetOutput.m by NW with the following starting values:
             // frequency = 1.0;
@@ -227,6 +257,7 @@ namespace Jamoma {
                 0.2506458333333341, 
                 0.2506562500000008
             };
+
         }
 	};
 
