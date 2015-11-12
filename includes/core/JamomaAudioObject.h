@@ -79,13 +79,13 @@ namespace Jamoma {
 			TODO: should get an intelligent default from the graph that owns this object (if there is a one)
 		 */
 		Parameter<int>	channelCount = { this, "channelCount", 1,
-			[this]{
+			Setter ([this]{
 				mOutput.resizeChannels(channelCount);
 				
 				// resize all AdaptingSampleVector instances for this class
 				for (auto* asb : mAdaptingSampleBundles)
 					asb->resizeChannels(channelCount);
-			}
+			})
 		};
 		
 		
@@ -94,7 +94,7 @@ namespace Jamoma {
 			TODO: should get an intelligent default from the graph that owns this object (if there is a one)
 		 */
 		Parameter<int>	frameCount = { this, "frameCount", 1,
-									  [this]{ mOutput.resizeFrames(frameCount); }
+									  Setter([this]{ mOutput.resizeFrames(frameCount); })
 		};
 		
 		

@@ -53,10 +53,10 @@ namespace Jamoma {
 			TODO: dataspace integration for units other than samples
          */
 		Parameter<int>	size = { this, "size", 1,
-								[this]{
+								Setter([this]{
 									for (auto& channel : mHistory)
 										channel.resize((int)size);
-								}
+								})
 		};
 		
 
@@ -137,15 +137,15 @@ namespace Jamoma {
          TODO: dataspace integration for units other than samples
          */
         Parameter<double>	size = { this, "size", 1.0,
-            [this]{
+            Setter([this]{
                 mIntegralDelay = (int)size;
                 mFractionalDelay = size - mIntegralDelay;
                 mOneMinusFractionalDelay = 1.0 - mFractionalDelay;
                 
                 for (auto& channel : mHistory)
                     channel.resize(mIntegralDelay);
-                    }
-        };
+			})
+		};
         
         
         Message			clear = { "clear",

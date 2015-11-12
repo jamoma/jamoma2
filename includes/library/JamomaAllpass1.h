@@ -55,12 +55,12 @@ namespace Jamoma {
 			TODO: dataspace integration for units other than samples
 		 */
 		Parameter<int>	size = { this, "size", 1,
-								[this]{
+								Setter([this]{
 									for (auto& channel : mFeedforwardHistory)
 										channel.resize((int)size);
 									for (auto& channel : mFeedbackHistory)
 										channel.resize((int)size);
-								}
+								})
 		};
 
 		
@@ -68,16 +68,12 @@ namespace Jamoma {
 			An alias of the #size parameter.
 			TODO: dataspace with Native Unit in samples
          */
-		Parameter<int>		delay = { this, "delay", 1, [this] { size = (int)delay; } };
+		Parameter<int>		delay = { this, "delay", 1, Setter([this] { size = (int)delay; }) };
 		
 	
 		/** Feedback coefficient.
          */
-		Parameter<double>	gain = { this, "gain", 0.0,
-			[this]{
-				;
-			}
-		};
+		Parameter<double>	gain = { this, "gain", 0.0 };
 
 		
 		/**	This algorithm is an IIR filter, meaning that it relies on feedback.  If the filter should

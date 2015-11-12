@@ -36,37 +36,38 @@ namespace Jamoma {
 		static constexpr auto tags = { "dspGeneratorLib", "audio", "generator", "oscillator" };
 		
 
-		Parameter<double, NativeUnit::None<double>, RangeLimit::wrap>	phase		= { this,
+		Parameter<double, Limit::Wrap<double>, NativeUnit::None<double>>	phase		= { this,
 																						"phase",
 																						0.0,
 																						Range<double>(0.0, 1.0),
-																						[this]{
+																						Setter([this]{
 																							mPhase = phase;
 																							if (frequency < 0)
 																								mPhase += 1.0;
-																						}
+																						})
 		};
 		
 
-		Parameter<double, NativeUnit::None<double>, RangeLimit::fold>	frequency	= {	this,
+		Parameter<double, Limit::Fold<double>, NativeUnit::None<double>>	frequency	= {	this,
 																						"frequency",
 																						1.0,
 																						Range<double>(0.0, sampleRate * 0.5),
-																						[this]{
+																						Setter( [this]{
 																							double lFrequency = frequency;
 																							if (lFrequency == 0)
 																								mRampSamples = 0xFFFFFFFF;
 																							else
 																								mRampSamples = long(sampleRate / fabs(lFrequency));
 																							setStep();
-																						}
+																						} ),
+																						Synopsis("Rate at which to cycle")
 		};
 
 		
-		Parameter<double, NativeUnit::LinearGain>						gain = { this, "gain", 1.0 };		///< scaling applied to the output
+		Parameter<double, Limit::None<double>, NativeUnit::LinearGain>		gain = { this, "gain", 1.0 };		///< scaling applied to the output
 
 		
-		Parameter<double>												offset = { this, "offset", 0.0 };	///< shift applied to the output
+		Parameter<double>													offset = { this, "offset", 0.0 };	///< shift applied to the output
 
 		
 

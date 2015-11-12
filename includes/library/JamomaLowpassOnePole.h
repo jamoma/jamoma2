@@ -30,21 +30,23 @@ namespace Jamoma {
 		
 		
         /** Filter coefficient. */
-		Parameter<double, NativeUnit::None<double>, RangeLimit::clip> coefficient = { this,
+		Parameter<double, Limit::Clip<double>, NativeUnit::None<double>> coefficient = { this,
                                                             "coefficient",
                                                             0.5,
                                                             Range<double>(0.0, 1.0),
-                                                            [this]{
+                                                            Setter([this]{
                                                                 mA0 = coefficient;
                                                                 mB1 = 1 - coefficient;
-                                                            }
+                                                            })
         };
 		
 		
 		/** Set filter coefficient using a cutoff frequency.
 			@see http://musicdsp.org/showArchiveComment.php?ArchiveID=237
 		 */
-		Parameter<double, NativeUnit::Hz> frequency = { this, "frequency", 1000.0, [this]{coefficient = 1.0 - exp(-2.0 * 3.1415 * frequency / sampleRate);} };
+		Parameter<double, Limit::None<double>, NativeUnit::Hz> frequency = { this, "frequency", 1000.0,
+			Setter([this]{coefficient = 1.0 - exp(-2.0 * 3.1415 * frequency / sampleRate);})
+		};
 		
 		
 		/**	This algorithm is an IIR filter, meaning that it relies on feedback.  If the filter should

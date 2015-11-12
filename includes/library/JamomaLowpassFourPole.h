@@ -66,18 +66,18 @@ namespace Jamoma {
             The frequency setting will tend to sound flat below 1000 Hz and goes sharp above 1000 Hz.
             In addition, the cutoff frequency is only stable below about one-fourth the sampling rate.
          */
-		Parameter<double, NativeUnit::None<double>, RangeLimit::clip>	frequency = {	this,
+		Parameter<double, Limit::Clip<double>, NativeUnit::None<double>>	frequency = {	this,
 															"frequency",
 															1000.0,
 															Range<double>(20.0, sampleRate * 0.475),
-															[this]{
+															Setter([this]{
 																//double	radians = hertzToRadians(frequency);
 																double  fNormalizedToHalfNyquist = frequency * 4 / sampleRate;
                                                                 mCoefficientF = fNormalizedToHalfNyquist * 1.4716;
 																mCoefficientSquaredF = mCoefficientF * mCoefficientF;
 																mOneMinusCoefficientF = 1.0 - mCoefficientF;
 																calculateCoefficients();
-															}
+															})
 		};
 		// addAttributeProperty(Frequency,			description,	TT("Cutoff Frequency in Hertz"));
 		
@@ -93,10 +93,10 @@ namespace Jamoma {
 			TODO: determine if the above is indeed relevant to this filter.
          */
 		Parameter<double>	resonance = { this, "resonance", 1.0,
-			[this]{
+			Setter([this]{
 				mDeciResonance = resonance * 0.1;
 				calculateCoefficients();
-			}
+			})
 		};
 		// addAttributeProperty(resonance,			range,			TTValue(0.01, 100.0));
 		// addAttributeProperty(resonance,			rangeChecking,	TT("cliplow"));
