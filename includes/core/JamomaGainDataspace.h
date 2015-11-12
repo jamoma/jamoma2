@@ -126,7 +126,7 @@ namespace Jamoma {
 				return mUnit->fromNeutral( sUnits[unit]->toNeutral(x) );
 			}
 
-			T operator()(const T& x, uint32_t& unit)
+			T operator()(const T& x, uint32_t unit)
 			{
 				return (*this)(x, (GainUnit)unit);
 			}
