@@ -21,19 +21,22 @@ namespace Jamoma {
 	namespace Interpolation {
 		
 		
-		class Generic {};
+		/**	Shared base class for all interpolation types.	*/
+		class Base {
+		protected:
+			constexpr Base() noexcept {};
+		};
 		
 	
-		
+		/**	No interpolation */
 		template<class T>
-		class None : Generic {
+		class None : Base {
 		public:
 			static const int 	delay = 0;
 			
-			T operator()(T x0) {
+			constexpr T operator()(T x0) noexcept {
 				return x0;
 			}
-			
 		};
 
 		
@@ -42,21 +45,15 @@ namespace Jamoma {
 			@param x1		Sample value at next integer index
 			@param delta 	Linear interpolation between x0 (delta=0) and x1 (delta=1)
 			@return			The interpolated value.
-
-			@seealso		TTInterpolateCosine
-			@seealso		TTInterpolateCubic
-			@seealso		TTInterpolateSpline
-			@seealso		TTInterpolateHermite
 		 */
 		template<class T>
-		class Linear : Generic {
+		class Linear : Base {
 		public:
 			static const int 	delay = 1;
 			
-			T operator()(T x0, T x1, double delta) {
+			constexpr T operator()(T x0, T x1, double delta) noexcept {
 				return x0 + delta * (x1-x0);
 			}
-			
 		};
 		
 
@@ -67,15 +64,14 @@ namespace Jamoma {
 			@return			The interpolated value
 		 */
 		template<class T>
-		class Cosine : Generic {
+		class Cosine : Base {
 		public:
 			static const int 	delay = 1;
 			
-			T operator()(T x0, T x1, double delta) {
+			constexpr T operator()(T x0, T x1, double delta) noexcept {
 				T a = 0.5 * (1.0 - cos(delta * kPi));
 				return x0 + a * (x1-x0);
 			}
-			
 		};
 
 		
@@ -114,17 +110,16 @@ namespace Jamoma {
 			@return		The interpolated value.
 		 */
 		template<class T>
-		class Cubic : Generic {
+		class Cubic : Base {
 		public:
 			static const int 	delay = 3;
 			
-			T operator()(T x0, T x1, T x2, T x3, double delta) {
+			constexpr T operator()(T x0, T x1, T x2, T x3, double delta) noexcept {
 				T a = (-x0 + 3.*x1 - 3*x2 + x3)*0.5;
 				T b = x0 - 2.5*x1 + 2.*x2 - 0.5*x3;
 				T c = (x2-x0)*0.5;
 				return ( (a*delta + b)*delta + c)*delta + x1;
 			}
-			
 		};
 		
 		
@@ -137,11 +132,11 @@ namespace Jamoma {
 			@return		The interpolated value.
 		 */
 		template<class T>
-		class Spline : Generic {
+		class Spline : Base {
 		public:
 			static const int 	delay = 3;
 
-			T operator()(T w, T x, T y, T z, double a) {
+			constexpr T operator()(T w, T x, T y, T z, double a) noexcept {
 				T a2 = a*a;
 				T f0 = -0.5*w + 1.5*x - 1.5*y + 0.5*z;
 				T f1 = w - 2.5*x + 2.0*y - 0.5*z;
@@ -160,13 +155,13 @@ namespace Jamoma {
 			@return		The interpolated value.
 		 */
 		template<class T>
-		class Hermite : Generic {
+		class Hermite : Base {
 		public:
 			static const int 	delay = 3;
 			double				bias = 0.0;		// attribute
 			double				tension = 0.0;	// attribute
 
-			T operator()(T w, T x, T y, T z, double a) {
+			constexpr T operator()(T w, T x, T y, T z, double a) noexcept {
 				T aa = a*a;
 				T aaa = a*aa;
 				T bp = 1+bias;
