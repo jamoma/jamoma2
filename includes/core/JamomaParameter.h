@@ -29,7 +29,7 @@ namespace Jamoma {
 
 		// TODO: the above raw pointer will lead to dangling references ?!?!?!?!
 
-		ParameterBase(Object* owner, const String& name )
+		ParameterBase(Object* owner, const String& name ) noexcept
 		: mOwner(owner)
 		, mName(name)
 		{}
@@ -39,27 +39,25 @@ namespace Jamoma {
 		{}
 		
 	public:
-		String& name()
-		{
+		String& name() {
 			return mName;
 		}
 		
-		friend bool operator == (const ParameterBase& lhs, const char* rhs)
-		{
+		
+		friend bool operator == (const ParameterBase& lhs, const char* rhs) {
 			return lhs.mName == rhs;
 		}
+		
 		
 		virtual ParameterBase& operator = (const VarBase& input) = 0;
 		
 		
-		void addObserver(Observer& anObserver)
-		{
+		void addObserver(Observer& anObserver) {
 			mObservers.push_back(&anObserver);
 		}
 		
 		
-		void removeObserver(Observer& anObserver)
-		{
+		void removeObserver(Observer& anObserver) {
 			// documentation of the below: https://en.wikipedia.org/wiki/Erase%E2%80%93remove_idiom
 			mObservers.erase(std::remove(mObservers.begin(), mObservers.end(), &anObserver), mObservers.end());
 		}
@@ -86,27 +84,27 @@ namespace Jamoma {
 		/** constructor utility: handle an argument defining a parameter's synopsis	
 		 */
 		template <typename U>
-		typename std::enable_if<std::is_same<U, Synopsis>::value>::type assignFromArgument(const U& arg) {
+		constexpr typename std::enable_if<std::is_same<U, Synopsis>::value>::type assignFromArgument(const U& arg) noexcept {
 			mSynopsis = arg;
 		}
 		
 		/** constructor utility: handle an argument defining a parameter's range	
 		 */
 		template <typename U>
-		typename std::enable_if<std::is_same<U, Range<T>>::value>::type assignFromArgument(const U& arg) {
+		constexpr typename std::enable_if<std::is_same<U, Range<T>>::value>::type assignFromArgument(const U& arg) noexcept {
 			mRange = arg;
 		}
 		
 		/** constructor utility: handle an argument defining a parameter's setter function	
 		 */
 		template <typename U>
-		typename std::enable_if<std::is_same<U, Setter>::value>::type assignFromArgument(const U& arg) {
+		constexpr typename std::enable_if<std::is_same<U, Setter>::value>::type assignFromArgument(const U& arg) noexcept {
 			mSetter = arg;
 		}
 		
 		/** constructor utility: empty argument handling (required for recursive variadic templates)	
 		 */
-		void handleArguments() {
+		constexpr void handleArguments() noexcept {
 			;
 		}
 		
@@ -114,7 +112,7 @@ namespace Jamoma {
 			and matching them to the type-matched routine above. 
 		 */
 		template <typename FIRST_ARG, typename ...REMAINING_ARGS>
-		void handleArguments(FIRST_ARG const& first, REMAINING_ARGS const& ...args) {
+		constexpr void handleArguments(FIRST_ARG const& first, REMAINING_ARGS const& ...args) noexcept {
 			assignFromArgument(first);
 			if (sizeof...(args))
 				handleArguments(args...);		// recurse
@@ -129,7 +127,7 @@ namespace Jamoma {
 			@param	...args	N arguments specifying optional properties of a parameter such as Setter, Range, Synopsis, etc.
 		 */
 		template <typename...ARGS>
-		Parameter(Object* owner, String name, T initial, ARGS...args)
+		constexpr Parameter(Object* owner, const String& name, T initial, ARGS...args) noexcept
 		: ParameterBase(owner, name)
 		, mValue(initial)
 		{
@@ -172,7 +170,7 @@ namespace Jamoma {
 		
 		/**	Get the value of the Parameter
 		 */
-		operator T() const {
+		operator T() const noexcept {
 			return this->mValue;
 		}
 
@@ -181,7 +179,7 @@ namespace Jamoma {
 		
 		/** worker fn for setters: naked values have no dataspace unit specified, so set them directly
 		 */
-		void set(T input) {
+		constexpr void set(T input) {
 			this->mValue = LimitType::apply(input, this->mRange.first, this->mRange.second);
 			if (this->mSetter)
 				this->mSetter();
@@ -192,7 +190,7 @@ namespace Jamoma {
 
 		/** worker fn for setters: set values using a dataspace conversion
 		 */
-		void set(T input, Unit unit) {
+		constexpr void set(T input, Unit unit) {
 			set(mDataspace(input, (uint32_t)unit));
 		}
 		
