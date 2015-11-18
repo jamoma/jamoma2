@@ -23,6 +23,7 @@ namespace Jamoma {
 		{
 			testParameterSetting();
 			testOutputValues();
+            testPhaseWrapping();
 		}
 
 		
@@ -83,14 +84,10 @@ namespace Jamoma {
             my_phasor.channelCount = 1;
             my_phasor.frameCount = 64;
             
+            // settings group 1
             my_phasor.sampleRate = 44100;
             my_phasor.phase = 0.0;
             my_phasor.frequency = 100.0;
-            
-            Jamoma::UnitImpulse impulse;
-            
-            impulse.channelCount = 1;
-            impulse.frameCount = 64;
             
             auto out_samples = my_phasor();
             
@@ -179,10 +176,10 @@ namespace Jamoma {
                 }
             }
             
-            std::cout << "impulse response 1 of my_phasor has " << badSampleCount << " bad samples" << std::endl;
-            mTest->TEST_ASSERT("Bad Sample Count", badSampleCount == 0);
+            std::cout << "output from my_phasor has " << badSampleCount << " bad samples" << std::endl;
+            mTest->TEST_ASSERT("settings group 1 produces expected output samples", badSampleCount == 0);
             
-            
+            // settings group 2
             my_phasor.sampleRate = 96000;
             my_phasor.phase = 0.25;
             my_phasor.frequency = 1.0;
@@ -275,15 +272,27 @@ namespace Jamoma {
                 }
             }
             
-            std::cout << "impulse response 2 of my_phasor has " << badSampleCount << " bad samples" << std::endl;
-            mTest->TEST_ASSERT("Bad Sample Count", badSampleCount == 0);
+            std::cout << "output from my_phasor has " << badSampleCount << " bad samples" << std::endl;
+            mTest->TEST_ASSERT("settings group 2 produces expected output samples", badSampleCount == 0);
+            
+        }
+        
+        void testPhaseWrapping()
+        {
+            
+            Jamoma::Phasor my_phasor;
+            
+            my_phasor.channelCount = 1;
+            my_phasor.frameCount = 64;
 
             my_phasor.sampleRate = 48000;
             my_phasor.phase = 0.1;
             my_phasor.frequency = -2000.0;
             
-            out_samples = my_phasor();
+            auto out_samples = my_phasor();
             
+            
+            // NEGATIVE STEPS WRAPPING THOUGH 0.0
             // The following output was generated using the Octave code
             // in PhasorTargetOutput.m by NW with the following starting values:
             // frequency = -2000.0;
@@ -356,10 +365,9 @@ namespace Jamoma {
                 0.475000000000001
             };
             
-            // reset variables
-            badSampleCount = 0;
-            temp = 0.0;
-            tempExpected = 0.0;
+            int badSampleCount = 0;
+            Jamoma::Sample temp = 0.0;
+            Jamoma::Sample tempExpected = 0.0;
             
             for (int i = 0; i < expectedOutput3.size(); i++) {
                 temp = out_samples[0][0][i];
@@ -370,8 +378,8 @@ namespace Jamoma {
                 }
             }
             
-            std::cout << "impulse response 3 of my_phasor has " << badSampleCount << " bad samples" << std::endl;
-            mTest->TEST_ASSERT("Bad Sample Count", badSampleCount == 0);
+            std::cout << "output from my_phasor has " << badSampleCount << " bad samples" << std::endl;
+            mTest->TEST_ASSERT("negative frequency wrapping test produces expected samples", badSampleCount == 0);
         
         }
 	};
