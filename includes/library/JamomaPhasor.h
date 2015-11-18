@@ -73,9 +73,9 @@ namespace Jamoma {
 		Sample operator()(const Sample x)
 		{
 			if (mPhase > 1.0)
-				mPhase = 0.0;
+				mPhase -= 1.0;
 			else if (mPhase < 0.0)
-				mPhase = 1.0;
+				mPhase += 1.0;
 			
 			Sample y = mPhase * gain + offset;
 			
