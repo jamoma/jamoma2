@@ -26,7 +26,7 @@ namespace Jamoma {
 		static constexpr auto tags = { "dspEffectsLib", "audio", "processor", "dynamics" };
 		
 
-		Parameter<double, NativeUnit::LinearGain>	gain = { this, "gain", 1.0 };	///< Linear gain to be applied to the input signal.
+		Parameter<double, Limit::None<double>, NativeUnit::LinearGain>	gain = { this, "gain", 1.0 };	///< Linear gain to be applied to the input signal.
 
 		
 		/** Process one sample.

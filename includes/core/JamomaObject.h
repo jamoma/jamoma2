@@ -39,12 +39,16 @@ namespace Jamoma {
 	
 
 	/** The behavior of a Parameter when the suggested Range is exceeded. */
-	enum class RangeLimit : uint32_t {
-		none = Hash("none"),			///< Don't do anything.
-		clip = Hash("clip"),			///< Limit to the min and max values defined by the Range.
-		wrap = Hash("wrap"),			///< Wrap back around to the low/high value if the Range is exceeded.
-		fold = Hash("fold")				///< Mirror the value back down into the defined Range.
-	};
+//	enum class RangeLimit : uint32_t {
+//		none = Hash("none"),			///< Don't do anything.
+//		clip = Hash("clip"),			///< Limit to the min and max values defined by the Range.
+//		wrap = Hash("wrap"),			///< Wrap back around to the low/high value if the Range is exceeded.
+//		fold = Hash("fold")				///< Mirror the value back down into the defined Range.
+//	};
+	
+	
+	/**	Custom code to be executed when parameters are set.	*/
+	using Setter = Function;
 	
 
 	class ParameterBase; // forward-declartion needed by Object
@@ -54,7 +58,7 @@ namespace Jamoma {
 		Such classes maybe used with traditional C++ compile-time linking or addressed dynamically my sending messages.
 	 */
 	class Object {
-		template <class T, class U, RangeLimit> friend class Parameter;
+		template <class T, class U, class V> friend class Parameter;
 		
 		// we really just care that we have a pointer, not about the type of the attribute
 		// attributes can be raw pointers because they are only accessed and owned by our class

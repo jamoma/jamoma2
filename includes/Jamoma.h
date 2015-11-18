@@ -32,7 +32,7 @@ namespace Jamoma {
 
 		
 	/**	A brief string documenting a Function/Parameter/Message/Notification/Class/Etc.	*/
-	using Synopsis = const char*;
+	using Synopsis = String;
 
 
 	enum class Error {
