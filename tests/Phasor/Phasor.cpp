@@ -80,6 +80,9 @@ namespace Jamoma {
             
             Jamoma::Phasor my_phasor;
             
+            my_phasor.channelCount = 1;
+            my_phasor.frameCount = 64;
+            
             my_phasor.sampleRate = 44100;
             my_phasor.phase = 0.0;
             my_phasor.frequency = 100.0;
@@ -89,7 +92,7 @@ namespace Jamoma {
             impulse.channelCount = 1;
             impulse.frameCount = 64;
             
-            auto out_samples = my_phasor( impulse() );
+            auto out_samples = my_phasor();
             
             // The following output was generated using the Octave code
             // in PhasorTargetOutput.m by NW with the following starting values:
@@ -184,7 +187,7 @@ namespace Jamoma {
             my_phasor.phase = 0.25;
             my_phasor.frequency = 1.0;
             
-            out_samples = my_phasor( impulse() );
+            out_samples = my_phasor();
             
             // The following output was generated using the Octave code
             // in PhasorTargetOutput.m by NW with the following starting values:
@@ -279,7 +282,7 @@ namespace Jamoma {
             my_phasor.phase = 0.1;
             my_phasor.frequency = -2000.0;
             
-            out_samples = my_phasor( impulse() );
+            out_samples = my_phasor();
             
             // The following output was generated using the Octave code
             // in PhasorTargetOutput.m by NW with the following starting values:

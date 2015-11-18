@@ -88,12 +88,13 @@ namespace Jamoma {
 			@param	x	SharedSampleBundleGroup to be processed.
 			@return		Processed SharedSampleBundleGroup.
 		 */
-		SharedSampleBundleGroup operator()(const SampleBundle& x)
+		SharedSampleBundleGroup operator()(const SampleBundle& x = kSampleBundleNone)
 		{
-			auto out = adapt(x);
+			auto out = mOutput;
 
 			for (int channel=0; channel<x.channelCount(); ++channel)
-				std::transform(x[channel].begin(), x[channel].end(), out[0][channel].begin(), *this);
+                for	(auto& sample : out[0][channel])
+                    sample = (*this)(0.0);
 			return out;
 		}
 		
