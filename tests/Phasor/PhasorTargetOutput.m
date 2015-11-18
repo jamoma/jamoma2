@@ -10,9 +10,9 @@
 clear
 
 % starting values
-frequency = -2000.0;
-initialPhase = 0.1;
-sampleRate = 48000.0;
+frequency = 3000.0;
+initialPhase = 0.4;
+sampleRate = 22050.0;
 
 % algorithm variables
 stepSize = frequency / sampleRate;

@@ -284,6 +284,8 @@ namespace Jamoma {
             
             my_phasor.channelCount = 1;
             my_phasor.frameCount = 64;
+            
+            // NEGATIVE STEPS WRAPPING THOUGH 0.0
 
             my_phasor.sampleRate = 48000;
             my_phasor.phase = 0.1;
@@ -291,8 +293,6 @@ namespace Jamoma {
             
             auto out_samples = my_phasor();
             
-            
-            // NEGATIVE STEPS WRAPPING THOUGH 0.0
             // The following output was generated using the Octave code
             // in PhasorTargetOutput.m by NW with the following starting values:
             // frequency = -2000.0;
@@ -380,7 +380,104 @@ namespace Jamoma {
             
             std::cout << "output from my_phasor has " << badSampleCount << " bad samples" << std::endl;
             mTest->TEST_ASSERT("negative frequency wrapping test produces expected samples", badSampleCount == 0);
+            
+            // POSITIVE STEPS WRAPPING THOUGH 1.0
+
+            my_phasor.sampleRate = 22050;
+            my_phasor.phase = 0.4;
+            my_phasor.frequency = 3000.0;
+            
+            out_samples = my_phasor();
         
+            // The following output was generated using the Octave code
+            // in PhasorTargetOutput.m by NW with the following starting values:
+            // frequency = 3000.0;
+            // initialPhase = 0.4;
+            // sampleRate = 22050.0;
+            Jamoma::SampleVector expectedOutput4 = {
+                0.4,
+                0.5360544217687075,
+                0.6721088435374151,
+                0.8081632653061226,
+                0.9442176870748301,
+                0.08027210884353764,
+                0.2163265306122451,
+                0.3523809523809526,
+                0.4884353741496601,
+                0.6244897959183676,
+                0.7605442176870751,
+                0.8965986394557827,
+                0.03265306122449019,
+                0.1687074829931977,
+                0.3047619047619052,
+                0.4408163265306126,
+                0.5768707482993202,
+                0.7129251700680277,
+                0.8489795918367352,
+                0.9850340136054427,
+                0.1210884353741501,
+                0.2571428571428577,
+                0.3931972789115652,
+                0.5292517006802727,
+                0.6653061224489802,
+                0.8013605442176878,
+                0.9374149659863953,
+                0.0734693877551027,
+                0.2095238095238102,
+                0.3455782312925177,
+                0.4816326530612252,
+                0.6176870748299327,
+                0.7537414965986402,
+                0.8897959183673477,
+                0.02585034013605525,
+                0.1619047619047627,
+                0.2979591836734702,
+                0.4340136054421777, 
+                0.5700680272108852, 
+                0.7061224489795928, 
+                0.8421768707483003, 
+                0.9782312925170078, 
+                0.1142857142857152, 
+                0.2503401360544227, 
+                0.3863945578231303, 
+                0.5224489795918378, 
+                0.6585034013605453, 
+                0.7945578231292528, 
+                0.9306122448979604, 
+                0.06666666666666776, 
+                0.2027210884353753, 
+                0.3387755102040828, 
+                0.4748299319727902, 
+                0.6108843537414977, 
+                0.7469387755102053, 
+                0.8829931972789128, 
+                0.01904761904762031, 
+                0.1551020408163278, 
+                0.2911564625850353, 
+                0.4272108843537428, 
+                0.5632653061224503, 
+                0.6993197278911578, 
+                0.8353741496598653,
+                0.9714285714285729
+            };
+            
+            // reset variables
+            badSampleCount = 0;
+            temp = 0.0;
+            tempExpected = 0.0;
+            
+            for (int i = 0; i < expectedOutput4.size(); i++) {
+                temp = out_samples[0][0][i];
+                tempExpected = expectedOutput4[i];
+                if (! mTest->compare(temp, tempExpected, true, 8) ) {
+                    badSampleCount++;
+                    std::cout << "sample " << i << " had a difference of " << std::fabs(temp - tempExpected) << std::endl;
+                }
+            }
+            
+            std::cout << "output from my_phasor has " << badSampleCount << " bad samples" << std::endl;
+            mTest->TEST_ASSERT("positive frequency wrapping test produces expected samples", badSampleCount == 0);
+            
         }
 	};
 
