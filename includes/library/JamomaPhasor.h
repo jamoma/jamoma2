@@ -20,11 +20,10 @@ namespace Jamoma {
 	class Phasor : public AudioObject {
 		double	mPhase = 0.0;
 		double	mStep = 0.0;
-		long	mRampSamples = 0;
 		
 		void setStep()
 		{
-			mStep = 1.0 / double(mRampSamples - 1.0);	// 1.0 is the destination
+            mStep = frequency / sampleRate;
 			if (frequency < 0)
 				mStep = -mStep;
 			ZeroDenormal(mStep);
@@ -53,11 +52,6 @@ namespace Jamoma {
 																						1.0,
 																						Range<double>(0.0, sampleRate * 0.5),
 																						Setter( [this]{
-																							double lFrequency = frequency;
-																							if (lFrequency == 0)
-																								mRampSamples = 0xFFFFFFFF;
-																							else
-																								mRampSamples = long(sampleRate / fabs(lFrequency));
 																							setStep();
 																						} ),
 																						Synopsis("Rate at which to cycle")
