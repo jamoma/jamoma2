@@ -275,6 +275,101 @@ namespace Jamoma {
             std::cout << "impulse response 2 of my_phasor has " << badSampleCount << " bad samples" << std::endl;
             mTest->TEST_ASSERT("Bad Sample Count", badSampleCount == 0);
 
+            my_phasor.sampleRate = 48000;
+            my_phasor.phase = 0.1;
+            my_phasor.frequency = -2000.0;
+            
+            out_samples = my_phasor( impulse() );
+            
+            // The following output was generated using the Octave code
+            // in PhasorTargetOutput.m by NW with the following starting values:
+            // frequency = -2000.0;
+            // initialPhase = 0.1;
+            // sampleRate = 48000.0;
+            Jamoma::SampleVector expectedOutput3 = {
+                0.1,
+                0.05833333333333334,
+                0.01666666666666668,
+                0.975,
+                0.9333333333333333,
+                0.8916666666666667,
+                0.8500000000000001,
+                0.8083333333333335,
+                0.7666666666666668,
+                0.7250000000000002,
+                0.6833333333333336,
+                0.6416666666666669,
+                0.6000000000000003,
+                0.5583333333333337,
+                0.5166666666666671,
+                0.4750000000000004,
+                0.4333333333333337,
+                0.391666666666667,
+                0.3500000000000003,
+                0.3083333333333336,
+                0.2666666666666669,
+                0.2250000000000003,
+                0.1833333333333336,
+                0.141666666666667,
+                0.1000000000000003,
+                0.05833333333333365,
+                0.01666666666666698,
+                0.9750000000000003,
+                0.9333333333333337,
+                0.8916666666666671,
+                0.8500000000000004,
+                0.8083333333333338,
+                0.7666666666666672,
+                0.7250000000000005,
+                0.6833333333333339,
+                0.6416666666666673,
+                0.6000000000000006,
+                0.558333333333334,
+                0.5166666666666674,
+                0.4750000000000007,
+                0.433333333333334,
+                0.3916666666666673, 
+                0.3500000000000006, 
+                0.308333333333334, 
+                0.2666666666666673, 
+                0.2250000000000006, 
+                0.183333333333334, 
+                0.1416666666666673, 
+                0.1000000000000006, 
+                0.05833333333333398, 
+                0.01666666666666732, 
+                0.9750000000000006, 
+                0.933333333333334, 
+                0.8916666666666674, 
+                0.8500000000000008, 
+                0.8083333333333341, 
+                0.7666666666666675, 
+                0.7250000000000009, 
+                0.6833333333333342, 
+                0.6416666666666676, 
+                0.600000000000001, 
+                0.5583333333333343, 
+                0.5166666666666677, 
+                0.475000000000001
+            };
+            
+            // reset variables
+            badSampleCount = 0;
+            temp = 0.0;
+            tempExpected = 0.0;
+            
+            for (int i = 0; i < expectedOutput3.size(); i++) {
+                temp = out_samples[0][0][i];
+                tempExpected = expectedOutput3[i];
+                if (! mTest->compare(temp, tempExpected, true, 8) ) {
+                    badSampleCount++;
+                    std::cout << "sample " << i << " had a difference of " << std::fabs(temp - tempExpected) << std::endl;
+                }
+            }
+            
+            std::cout << "impulse response 3 of my_phasor has " << badSampleCount << " bad samples" << std::endl;
+            mTest->TEST_ASSERT("Bad Sample Count", badSampleCount == 0);
+        
         }
 	};
 
