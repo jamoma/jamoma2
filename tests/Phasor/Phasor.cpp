@@ -176,7 +176,7 @@ namespace Jamoma {
                 }
             }
             
-            std::cout << "the impulse response of my_phasor has " << badSampleCount << " bad samples" << std::endl;
+            std::cout << "impulse response 1 of my_phasor has " << badSampleCount << " bad samples" << std::endl;
             mTest->TEST_ASSERT("Bad Sample Count", badSampleCount == 0);
             
             
@@ -257,6 +257,23 @@ namespace Jamoma {
                 0.2506458333333341, 
                 0.2506562500000008
             };
+            
+            // reset variables
+            badSampleCount = 0;
+            temp = 0.0;
+            tempExpected = 0.0;
+            
+            for (int i = 0; i < expectedOutput2.size(); i++) {
+                temp = out_samples[0][0][i];
+                tempExpected = expectedOutput2[i];
+                if (! mTest->compare(temp, tempExpected, true, 8) ) {
+                    badSampleCount++;
+                    std::cout << "sample " << i << " had a difference of " << std::fabs(temp - tempExpected) << std::endl;
+                }
+            }
+            
+            std::cout << "impulse response 2 of my_phasor has " << badSampleCount << " bad samples" << std::endl;
+            mTest->TEST_ASSERT("Bad Sample Count", badSampleCount == 0);
 
         }
 	};
