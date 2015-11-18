@@ -65,13 +65,13 @@ namespace Jamoma {
 			mTest->TEST_ASSERT("setting frequency param within range", mTest->compare( (double)p.frequency, 1000.0) );
 
 			p.frequency = 50000.0;
-			mTest->TEST_ASSERT("setting frequency param way above range", mTest->compare( (double)p.frequency, 46000.0) );
+			mTest->TEST_ASSERT("setting frequency param way above range 1", mTest->compare( (double)p.frequency, 46000.0) );
 
 			p.frequency = 98000.0;
-			mTest->TEST_ASSERT("setting frequency param way above range", mTest->compare( (double)p.frequency, 2000.0) );
+			mTest->TEST_ASSERT("setting frequency param way above range 2", mTest->compare( (double)p.frequency, -2000.0) );
 			
 			p.frequency = -2000.0;
-			mTest->TEST_ASSERT("setting frequency param below range", mTest->compare( (double)p.frequency, 2000.0) );
+			mTest->TEST_ASSERT("setting frequency param below range", mTest->compare( (double)p.frequency, -2000.0) );
 
 		}
         
