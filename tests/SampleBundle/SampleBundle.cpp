@@ -22,6 +22,7 @@ namespace Jamoma {
 		: mTest(test)
 		{
 			testBasic();
+            testAutoCreatedSampleBundleGroup();
 		}
 
 		
@@ -46,6 +47,57 @@ namespace Jamoma {
 			auto foo = in_samples[0][0];
 			mTest->TEST_ASSERT("setting and getting", mTest->compare(foo, 2.0));
 		}
+        
+        void testAutoCreatedSampleBundleGroup() {
+            
+            // NW: this behavoir was noticed while working on tests for Phasor
+            // it appears that sample values in first auto created vector change
+            // as each subseqent vector is processed
+            
+            Jamoma::Phasor my_phasor16;
+            
+            my_phasor16.channelCount = 1;
+            my_phasor16.frameCount = 16;
+            
+            my_phasor16.sampleRate = 48000;
+            my_phasor16.phase = 0.0;
+            my_phasor16.frequency = 1.0;
+            
+            // process vector 1 and stash a value
+            auto out_samples16_1 = my_phasor16();
+            
+            Jamoma::Sample stash_value1 = out_samples16_1[0][0][0];
+            
+            // process vector 2 and stash a value
+            auto out_samples16_2 = my_phasor16();
+            
+            // grab same value from first vector, should be the same?
+            Jamoma::Sample stash_value2 = out_samples16_1[0][0][0];
+            
+            // process vector 3 and stash a value
+            auto out_samples16_3 = my_phasor16();
+            
+            // grab same value from first vector, should be the same?
+            Jamoma::Sample stash_value3 = out_samples16_1[0][0][0];
+            
+            // process vector 4 and stash a value
+            auto out_samples16_4 = my_phasor16();
+            
+            // grab same value from first vector, should be the same?
+            Jamoma::Sample stash_value4 = out_samples16_1[0][0][0];
+            
+            // I would expect all these to be equal, but they are NOT
+            // Maybe I misunderstand what auto does?
+            // But it is also possible auto is creating wrong type (i.e. not ImmutableSampleBundleGroup)
+            // Let's be sure.
+            mTest->TEST_ASSERT("stashed value 1 = 2", mTest->compare(stash_value1, stash_value2));
+            mTest->TEST_ASSERT("stashed value 1 = 3", mTest->compare(stash_value1, stash_value3));
+            mTest->TEST_ASSERT("stashed value 1 = 4", mTest->compare(stash_value1, stash_value4));
+            mTest->TEST_ASSERT("stashed value 2 = 3", mTest->compare(stash_value2, stash_value3));
+            mTest->TEST_ASSERT("stashed value 2 = 4", mTest->compare(stash_value2, stash_value4));
+            mTest->TEST_ASSERT("stashed value 3 = 4", mTest->compare(stash_value3, stash_value4));
+            
+        }
 	};
 
 } // namespace Jamoma
