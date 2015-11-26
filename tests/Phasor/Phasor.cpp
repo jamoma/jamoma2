@@ -24,6 +24,7 @@ namespace Jamoma {
 			testParameterSetting();
 			testOutputValues();
             testPhaseWrapping();
+            testOutputAcrossMultipleOutputVectors();
 		}
 
 		
@@ -477,6 +478,40 @@ namespace Jamoma {
             
             std::cout << "output from my_phasor has " << badSampleCount << " bad samples" << std::endl;
             mTest->TEST_ASSERT("positive frequency wrapping test produces expected samples", badSampleCount == 0);
+            
+        }
+        
+        void testOutputAcrossMultipleOutputVectors() {
+            
+            Jamoma::Phasor my_phasor16;
+            
+            my_phasor16.channelCount = 1;
+            my_phasor16.frameCount = 16;
+            
+            my_phasor16.sampleRate = 48000;
+            my_phasor16.phase = 0.0;
+            my_phasor16.frequency = 1.0;
+            
+            // store four vectors for testing
+            auto out_samples16_1 = my_phasor16();
+            auto out_samples16_2 = my_phasor16();
+            auto out_samples16_3 = my_phasor16();
+            auto out_samples16_4 = my_phasor16();
+            
+            // test is really about consistency,
+            // so we will use Jamoma to generate target not Octave
+            Jamoma::Phasor my_phasor64;
+            
+            my_phasor64.channelCount = 1;
+            my_phasor64.frameCount = 64;
+            
+            my_phasor64.sampleRate = 48000;
+            my_phasor64.phase = 0.0;
+            my_phasor64.frequency = 1.0;
+            
+            // store four vectors for testing
+            auto out_samples64 = my_phasor64();
+            
             
         }
 	};
