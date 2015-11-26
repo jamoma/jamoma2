@@ -493,10 +493,10 @@ namespace Jamoma {
             my_phasor16.frequency = 1.0;
             
             // store four vectors for testing
-            auto out_samples16_1 = my_phasor16();
-            auto out_samples16_2 = my_phasor16();
-            auto out_samples16_3 = my_phasor16();
-            auto out_samples16_4 = my_phasor16();
+            Jamoma::SampleBundle out_samples16_1 = my_phasor16();
+            Jamoma::SampleBundle out_samples16_2 = my_phasor16();
+            Jamoma::SampleBundle out_samples16_3 = my_phasor16();
+            Jamoma::SampleBundle out_samples16_4 = my_phasor16();
             
             // test is really about consistency,
             // so we will use Jamoma to generate target not Octave
@@ -510,15 +510,24 @@ namespace Jamoma {
             my_phasor64.frequency = 1.0;
             
             // store four vectors for testing
-            auto out_samples64 = my_phasor64();
+            Jamoma::SampleBundle out_samples64 = my_phasor64();
             
             int badSampleCount = 0;
             Jamoma::Sample temp = 0.0;
             Jamoma::Sample tempExpected = 0.0;
             
-            for (int i = 0; i < out_samples16_1[0][0].size(); i++) {
-                temp = out_samples64[0][0][i];
-                tempExpected = out_samples16_1[0][0][i];
+            for (int i = 0; i < out_samples16_1[0].size(); i++) {
+                temp = out_samples64[0][i];
+                tempExpected = out_samples16_1[0][i];
+                if (! mTest->compare(temp, tempExpected, true, 8) ) {
+                    badSampleCount++;
+                    std::cout << "sample " << i << " had a difference of " << std::fabs(temp - tempExpected) << std::endl;
+                }
+            }
+            
+            for (int i = 16; i < out_samples16_2[0].size(); i++) {
+                temp = out_samples64[0][i+16];
+                tempExpected = out_samples16_2[0][i];
                 if (! mTest->compare(temp, tempExpected, true, 8) ) {
                     badSampleCount++;
                     std::cout << "sample " << i << " had a difference of " << std::fabs(temp - tempExpected) << std::endl;
