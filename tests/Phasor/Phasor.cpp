@@ -512,6 +512,22 @@ namespace Jamoma {
             // store four vectors for testing
             auto out_samples64 = my_phasor64();
             
+            int badSampleCount = 0;
+            Jamoma::Sample temp = 0.0;
+            Jamoma::Sample tempExpected = 0.0;
+            
+            for (int i = 0; i < out_samples16_1[0][0].size(); i++) {
+                temp = out_samples64[0][0][i];
+                tempExpected = out_samples16_1[0][0][i];
+                if (! mTest->compare(temp, tempExpected, true, 8) ) {
+                    badSampleCount++;
+                    std::cout << "sample " << i << " had a difference of " << std::fabs(temp - tempExpected) << std::endl;
+                }
+            }
+            
+            std::cout << "output from my_phasor16 has " << badSampleCount << " bad samples" << std::endl;
+            mTest->TEST_ASSERT("out across multiple vectors produces expected samples", badSampleCount == 0);
+            
             
         }
 	};
