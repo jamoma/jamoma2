@@ -34,7 +34,6 @@ public:
         testInterpolatingDelayZero();
         
         testInterpolatingDelayGreaterThanOneVectorSize();
-        // NW: this test currently produces bad samples
         testInterpolatingDelayAtVectorEdge();
 	}
 
