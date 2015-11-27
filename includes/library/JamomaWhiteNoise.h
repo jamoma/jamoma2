@@ -28,13 +28,19 @@ namespace Jamoma {
 		static constexpr Classname classname = { "noise" };
 		static constexpr auto tags = { "dspGeneratorLib", "audio", "generator", "noise" };
 		
-		
+        /** Process one sample.
+         @param	x	Sample to be processed.
+         @return		Processed sample
+         */
 		Sample operator()(Sample x)
 		{
 			return mTwister.rand(2.0) - 1.0;
 		}
 		
-		
+        /** Process a SharedSampleBundleGroup.
+         @param	x	SharedSampleBundleGroup to be processed.
+         @return		Processed SharedSampleBundleGroup.
+         */
 		SharedSampleBundleGroup operator()(const SampleBundle& x = kSampleBundleNone)
 		{
 			auto out = mOutput;

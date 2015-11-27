@@ -26,13 +26,19 @@ namespace Jamoma {
         static constexpr Classname classname = { "unitimpulse" };
         static constexpr auto tags = { "dspGeneratorLib, audio, generator, impulse" };
 		
-		
+        /** Process one sample.
+         @param	x	Sample to be processed.
+         @return		Processed sample
+         */
         Sample operator()(Sample x)
         {
             return 1.0;
         }
 		
-		
+        /** Process a SharedSampleBundleGroup.
+         @param	x	SharedSampleBundleGroup to be processed.
+         @return		Processed SharedSampleBundleGroup.
+         */
         SharedSampleBundleGroup operator()(const SampleBundle& x = kSampleBundleNone)
         {
             auto out = mOutput;

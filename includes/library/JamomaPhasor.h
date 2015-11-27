@@ -2,7 +2,7 @@
 	
 	@ingroup 	jamoma2
  
-	@author		Timothy Place
+	@author		Timothy Place, Nathan Wolek
 	@copyright	Copyright (c) 2005-2015 The Jamoma Group, http://jamoma.org.
 	@license	This project is released under the terms of the MIT License.
  */
@@ -15,7 +15,8 @@
 namespace Jamoma {
 
 	
-	/**	Phasor object -- a non-bandlimited ramp wave oscillator.
+	/**	This AudioObject generates a non-bandlimited <a href="https://en.wikipedia.org/wiki/Sawtooth_wave">sawtooth wave</a> oscillator. 
+        This function is typically used as a control signal for <a href="https://en.wikipedia.org/wiki/Phase_(waves)">phase</a> ramping.
 	 */
 	class Phasor : public AudioObject {
 		double	mPhase = 0.0;
