@@ -53,19 +53,86 @@ public:
 	
 	void testLinear() {
 		int		badSampleCount = 0;
-		auto 	x0 =  3.0;
-		auto	x1 = -1.0;
+		auto 	x0 = -1.0;
+		auto	x1 =  2.0;
 	
-		mTest->log("");
-		mTest->log("Testing linear interpolation");
+        // The following output was generated using the Octave code
+        // in InterpolationTargetOutput.m by NW
+        Jamoma::SampleVector expectedOutputLinear = {
+            -0.953125,
+            -0.90625,
+            -0.859375,
+            -0.8125,
+            -0.765625,
+            -0.71875,
+            -0.671875,
+            -0.625,
+            -0.578125,
+            -0.53125,
+            -0.484375,
+            -0.4375,
+            -0.390625,
+            -0.34375,
+            -0.296875,
+            -0.25,
+            -0.203125,
+            -0.15625,
+            -0.109375,
+            -0.0625,
+            -0.015625,
+            0.03125,
+            0.078125,
+            0.125,
+            0.171875,
+            0.21875,
+            0.265625,
+            0.3125,
+            0.359375,
+            0.40625,
+            0.453125, 
+            0.5, 
+            0.546875, 
+            0.59375, 
+            0.640625, 
+            0.6875, 
+            0.734375, 
+            0.78125, 
+            0.828125, 
+            0.875, 
+            0.921875, 
+            0.96875, 
+            1.015625, 
+            1.0625, 
+            1.109375, 
+            1.15625, 
+            1.203125, 
+            1.25, 
+            1.296875, 
+            1.34375, 
+            1.390625, 
+            1.4375, 
+            1.484375, 
+            1.53125, 
+            1.578125, 
+            1.625, 
+            1.671875, 
+            1.71875, 
+            1.765625, 
+            1.8125, 
+            1.859375, 
+            1.90625, 
+            1.953125, 
+            2
+        };
 	
-		badSampleCount += !interpolateAndTest<Jamoma::Interpolation::Linear<Jamoma::Sample>>(x0, x1, 0.00,  3.0);
-		badSampleCount += !interpolateAndTest<Jamoma::Interpolation::Linear<Jamoma::Sample>>(x0, x1, 0.25,  2.0);
-		badSampleCount += !interpolateAndTest<Jamoma::Interpolation::Linear<Jamoma::Sample>>(x0, x1, 0.50,  1.0);
-		badSampleCount += !interpolateAndTest<Jamoma::Interpolation::Linear<Jamoma::Sample>>(x0, x1, 0.75,  0.0);
-		badSampleCount += !interpolateAndTest<Jamoma::Interpolation::Linear<Jamoma::Sample>>(x0, x1, 1.00, -1.0);
+        Jamoma::Sample temp = 0.0;
+        Jamoma::Sample tempExpected = 0.0;
+        
+        for (int i = 0; i < expectedOutputLinear.size(); i++) {
+            
+        }
 
-		mTest->TEST_ASSERT("Bad Sample Count", badSampleCount == 0);		
+		mTest->TEST_ASSERT("Bad Sample Count", badSampleCount == 0);
 	}
 	
 	
