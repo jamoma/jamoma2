@@ -132,7 +132,7 @@ public:
         double delta = 0.0;
         
         for (int i = 0; i < expectedOutputLinear.size(); i++) {
-            delta = i + 1.0 / 64.0;
+            delta = (i + 1.0) / 64.0;
             temp = my_interp(x0,x1,delta);
             tempExpected = expectedOutputLinear[i];
             if (! mTest->compare(temp, tempExpected, true, 8) ) {
