@@ -53,6 +53,8 @@ public:
 	
 	void testLinear() {
 		int		badSampleCount = 0;
+        Jamoma::Interpolation::Linear<Jamoma::Sample> my_interp;
+        
 		auto 	x0 = -1.0;
 		auto	x1 =  2.0;
 	
@@ -127,9 +129,16 @@ public:
 	
         Jamoma::Sample temp = 0.0;
         Jamoma::Sample tempExpected = 0.0;
+        double delta = 0.0;
         
         for (int i = 0; i < expectedOutputLinear.size(); i++) {
-            
+            delta = i + 1.0 / 64.0;
+            temp = my_interp(x0,x1,delta);
+            tempExpected = expectedOutputLinear[i];
+            if (! mTest->compare(temp, tempExpected, true, 8) ) {
+                badSampleCount++;
+                std::cout << "sample " << i << " had a difference of " << std::fabs(temp - tempExpected) << std::endl;
+            }
         }
 
 		mTest->TEST_ASSERT("Bad Sample Count", badSampleCount == 0);
