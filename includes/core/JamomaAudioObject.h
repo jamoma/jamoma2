@@ -1,17 +1,15 @@
 /** @file
 	
-	@ingroup jamoma2
+	@ingroup 	jamoma2
 	
-	@brief Create Jamoma AudioObject instances.
+	@brief 		Create Jamoma AudioObject instances.
 	
-	@details Parent class for all AudioObjects within the Jamoma library. 
-	Defines common features such as frameCount, sampleRate and operator().
+	@details 	Parent class for all AudioObjects within the Jamoma library. 
+				Defines common features such as frameCount, sampleRate and operator().
 	
-	@author Timothy Place, Nathan Wolek
-	
-	@copyright Copyright © 2015 by Jamoma authors and contributors @n
-	This code is licensed under the terms of the "BSD 3-Clause License" @n
-	https://github.com/jamoma/jamoma2/blob/master/LICENSE.md @n
+	@author		Timothy Place, Nathan Wolek
+	@copyright	Copyright (c) 2005-2015 The Jamoma Group, http://jamoma.org.
+	@license	This project is released under the terms of the MIT License.
  */
 
 #pragma once
@@ -81,13 +79,13 @@ namespace Jamoma {
 			TODO: should get an intelligent default from the graph that owns this object (if there is a one)
 		 */
 		Parameter<int>	channelCount = { this, "channelCount", 1,
-			[this]{
+			Setter ([this]{
 				mOutput.resizeChannels(channelCount);
 				
 				// resize all AdaptingSampleVector instances for this class
 				for (auto* asb : mAdaptingSampleBundles)
 					asb->resizeChannels(channelCount);
-			}
+			})
 		};
 		
 		
@@ -96,7 +94,7 @@ namespace Jamoma {
 			TODO: should get an intelligent default from the graph that owns this object (if there is a one)
 		 */
 		Parameter<int>	frameCount = { this, "frameCount", 1,
-									  [this]{ mOutput.resizeFrames(frameCount); }
+									  Setter([this]{ mOutput.resizeFrames(frameCount); })
 		};
 		
 		
@@ -114,6 +112,7 @@ namespace Jamoma {
 		auto adapt(const SampleBundle& x)
 		{
 			mOutput.adapt(x);
+			frameCount = (int)x.frameCount();
 			channelCount = (int)x.channelCount();
 			return mOutput;
 		}

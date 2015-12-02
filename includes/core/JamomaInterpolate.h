@@ -1,122 +1,181 @@
 /** @file
 	
-	@ingroup jamoma2
+	@ingroup 	jamoma2
 	
-	@brief Various functions for limiting the range of a value.
+	@brief 		Interpolation implementations
+
+	@details	Defines several functions for <a href="http://en.wikipedia.org/wiki/Interpolation">interpolating</a> between discrete data points such as those found in an array or matrix. 
+				These methods are commonly used in digital audio whenever we alter the rate at which a signal is read.
+				These functions require known discrete values to be passed by reference along with a double between 0 and 1 representing the fractional location desired. 
+				They return the interpolated value.
  
-	@author Timothy Place, Nils Peters, Tristan Matthews
-	
-	@copyright Copyright © 2015 by Jamoma authors and contributors @n
-	This code is licensed under the terms of the "BSD 3-Clause License" @n
-	https://github.com/jamoma/jamoma2/blob/master/LICENSE.md @n
+	@author 	Timothy Place
+	@copyright	Copyright (c) 2005-2015 The Jamoma Group, http://jamoma.org.
+	@license	This project is released under the terms of the MIT License.
  */
 
 #pragma once
 
 
 namespace Jamoma {
-
-
-	template <typename T>
-	T Limit(T input, T low, T high)
-	{
-		return std::min(std::max(input, low), high);
-	}
-
+	namespace Interpolation {
+		
+		
+		/**	Shared base class for all interpolation types.	*/
+		class Base {
+		protected:
+			constexpr Base() noexcept {};
+		};
+		
 	
-	/**	Limit input to power-of-two values.
-		Non-power-of-two values are increased to the next-highest power-of-two upon return.
-		Only works for ints up to 32-bits.
-		@seealso http://graphics.stanford.edu/~seander/bithacks.html#RoundUpPowerOf2
-	 */
-	template<class T>
-	void TTLimitPowerOfTwo(T value)
-	{
-		value--;
-		value |= value >> 1;
-		value |= value >> 2;
-		value |= value >> 4;
-		value |= value >> 8;
-		value |= value >> 16;
-		value++;
-		return value;
-	}
-	
-	
-	/**	Determine id a value is a power-of-two. Only works for ints. */
-	template<class T>
-	bool IsPowerOfTwo(T value)
-	{
-		return (value > 0) && ((value & (value-1)) == 0);
-	}
-
-
-	/** This routine wrapping around the range as much as necessary */
-	template<class T>
-	T Wrap(T input, const T low_bound, const T high_bound)
-	{
-		if ((input >= low_bound) && (input < high_bound))
-			return input; //nothing to wrap
-		else if (input - low_bound >= 0)
-			return (fmod((double)input  - low_bound, fabs((double)low_bound - high_bound)) + low_bound);
-		else
-			return (-1.0 * fmod(-1.0 * (input - low_bound), fabs((double)low_bound - high_bound)) + high_bound);
-	}
+		/**	No interpolation */
+		template<class T>
+		class None : Base {
+		public:
+			static const int 	delay = 0;
+			
+			constexpr T operator()(T x0) noexcept {
+				return x0;
+			}
+		};
 
 		
-	/** A fast routine for wrapping around the range once.  This is faster than doing an expensive module, where you know the range of the input
-	will not equal or exceed twice the range. */
-	template<class T>
-	T WrapOnce(T input, const T low_bound, const T high_bound)
-	{
-		if ((input >= low_bound) && (input < high_bound))
-			return input;
-		else if (input >= high_bound)
-			return ((low_bound - 1) + (input - high_bound));
-		else
-			return ((high_bound + 1) - (low_bound - input));
-	}
-
-
-	/** This routine folds numbers into the data range */
-	template<typename T>
-	T Fold(T input, const T low_bound, const T high_bound)
-	{
-		double foldRange;
+		/** Linear interpolation.
+			@param x0		Sample value at prior integer index
+			@param x1		Sample value at next integer index
+			@param delta 	Linear interpolation between x0 (delta=0) and x1 (delta=1)
+			@return			The interpolated value.
+		 */
+		template<class T>
+		class Linear : Base {
+		public:
+			static const int 	delay = 1;
+			
+			constexpr T operator()(T x0, T x1, double delta) noexcept {
+				return x0 + delta * (x1-x0);
+			}
+		};
 		
-		if ((input >= low_bound) && (input <= high_bound))
-			return input; //nothing to fold
-		else {
-			foldRange = 2 * fabs((double)low_bound - high_bound);
-			return fabs(remainder(input - low_bound, foldRange)) + low_bound;
-		}
-	}
+
+		/** Cosine interpolation
+			@param x0		Sample value at prior integer index
+			@param x1		Sample value at next integer index
+			@param delta 	Fractional location between x(0) and x(1)
+			@return			The interpolated value
+		 */
+		template<class T>
+		class Cosine : Base {
+		public:
+			static const int 	delay = 1;
+			
+			constexpr T operator()(T x0, T x1, double delta) noexcept {
+				T a = 0.5 * (1.0 - cos(delta * kPi));
+				return x0 + a * (x1-x0);
+			}
+		};
 
 		
-	/** A utility for scaling one range of values onto another range of values. */
-	template<class T>
-	static T Scale(T value, T inlow, T inhigh, T outlow, T outhigh)
-	{
-		double inscale, outdiff;
-		
-		inscale = 1 / (inhigh - inlow);
-		outdiff = outhigh - outlow;
-		
-		value = (value - inlow) * inscale;
-		value = (value * outdiff) + outlow;
-		return(value);
-	}
-	
-	
-	/** Rounding utility. */
-	template<class T>
-	auto Round(T value)
-	{
-		if (value > 0)
-			return((long)(value + 0.5));
-		else
-			return((long)(value - 0.5));
-	}
+		/** Cubic interpolation
+			This interpolation algorithms calculate the coefficients a, b, c, d
+			of the 3rd order polynomial
 
+			f(delta)	= a*aDelta^3 + b*aDelta^2 + c*aDelta + d
+			= ( (a*aDelta + b )*aDelta + c)*aDelta + d)
 
+			so that the function fulfill the following four conditions:
+
+			-# f(0)  = x1 @n
+			-# f(1)  = x2 @n
+			-# f'(0) = (x2-x0)/2 @n
+			-# f'(1) = (x3-x1)/2
+
+			The two last conditions use a symetric estimate of the difference at the end points
+			of the region to interpolate over: 0 ≤ aDelta ≤ 1
+
+			These asumptions ensure that the resulting interpolated function, when moving over several
+			subsequent sections, is:
+
+			-# Continuous (no sudden jump)
+			-# Has a continuous derivative (no break pints with hard edges)
+
+			However, the 2nd order derivate will generally be discontinuous on the points connecting two sections.
+
+			@param x0		Sample value at integer index prior to x0
+			@param x1		Sample value at prior integer index
+			@param x2		Sample value at next integer index
+			@param x3		Sample value at integer index after x2
+			@param aDelta	Fractional location where we want to do the interpolation. @n
+							aDelta = 0 => interpolatedeValue = x1 @n
+							aDelta = 1 => interpolatedeValue = x2
+			@return		The interpolated value.
+		 */
+		template<class T>
+		class Cubic : Base {
+		public:
+			static const int 	delay = 3;
+			
+			constexpr T operator()(T x0, T x1, T x2, T x3, double delta) noexcept {
+				T a = (-x0 + 3.*x1 - 3*x2 + x3)*0.5;
+				T b = x0 - 2.5*x1 + 2.*x2 - 0.5*x3;
+				T c = (x2-x0)*0.5;
+				return ( (a*delta + b)*delta + c)*delta + x1;
+			}
+		};
+		
+		
+		/** Spline interpolation based on the Breeuwsma catmull-rom spline
+			@param w	Sample value at integer index prior to x
+			@param x	Sample value at prior integer index
+			@param y	Sample value at next integer index
+			@param z	Sample value at integer index after y
+			@param a	Fractional location between x (0) and y (1)
+			@return		The interpolated value.
+		 */
+		template<class T>
+		class Spline : Base {
+		public:
+			static const int 	delay = 3;
+
+			constexpr T operator()(T w, T x, T y, T z, double a) noexcept {
+				T a2 = a*a;
+				T f0 = -0.5*w + 1.5*x - 1.5*y + 0.5*z;
+				T f1 = w - 2.5*x + 2.0*y - 0.5*z;
+				T f2 = -0.5*w + 0.5*y;
+				return f0*a*a2 + f1*a2 + f2*a + x;
+			}
+		};
+		
+		
+		/** Hermite interpolation
+			@param w	Sample value at integer index prior to x
+			@param x	Sample value at prior integer index
+			@param y	Sample value at next integer index
+			@param z	Sample value at integer index after y
+			@param a	Fractional location between x (0) and y (1)
+			@return		The interpolated value.
+		 */
+		template<class T>
+		class Hermite : Base {
+		public:
+			static const int 	delay = 3;
+			double				bias = 0.0;		// attribute
+			double				tension = 0.0;	// attribute
+
+			constexpr T operator()(T w, T x, T y, T z, double a) noexcept {
+				T aa = a*a;
+				T aaa = a*aa;
+				T bp = 1+bias;
+				T bm = 1-bias;
+				T mt = (1-tension)*0.5;
+				T m0 = ((x-w)*bp + (y-x)*bm) * mt;
+				T m1 = ((y-x)*bp + (z-y)*bm) * mt;
+				T a0 = 2*aaa - 3*aa + 1;
+				T a1 = aaa - 2*aa + a;
+				T a2 = aaa - aa;
+				T a3 = -2*aaa + 3*aa;
+				return a0*x + a1*m0 + a2*m1 + a3*y;
+			}
+		};
+		
+	}	// namespace Interpolation
 }  // namespace Jamoma

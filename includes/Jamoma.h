@@ -1,38 +1,38 @@
 /** @file
 	
-	@ingroup jamoma2
+	@ingroup 	jamoma2
 	
-	@brief Jamoma.h is the starting point for the jamoma2 library.
+	@brief 		Jamoma.h is the starting point for the jamoma2 library.
 	
-	@details Jamoma.h can be used to include the entire jamoma2 library in a coding project. 
-	Using the follow syntax will enable your code to find relevant functions with jamoma2: <CODE>#include "jamoma.h"</CODE>
+	@details 	Jamoma.h can be used to include the entire jamoma2 library in a coding project. 
 	
-	@author Timothy Place, Nathan Wolek
-	
-	@copyright Copyright © 2015 by Jamoma authors and contributors @n
-	This code is licensed under the terms of the "BSD 3-Clause License" @n
-	https://github.com/jamoma/jamoma2/blob/master/LICENSE.md @n
+	@author		Timothy Place, Nathan Wolek
+	@copyright	Copyright (c) 2005-2015 The Jamoma Group, http://jamoma.org.
+	@license	This project is released under the terms of the MIT License.
  */
 
 #pragma once
 
+#include <array>
 #include <cassert>
 #include <iostream>
 #include <string>
+#include <typeinfo>
 #include <unordered_map>
+#include <vector>
 
 
 namespace Jamoma {
 
 	using String = std::string;
-	using Function = std::function<void(void)>;
 	using Text = char[];
 	using Classname = Text;
 	//using Tags = std::array<Text, 10>; // probably make this a vector of symbols instead
+	using TimePoint = std::chrono::high_resolution_clock::time_point;
 
 		
 	/**	A brief string documenting a Function/Parameter/Message/Notification/Class/Etc.	*/
-	using Synopsis = const char*;
+	using Synopsis = String;
 
 
 	enum class Error {
@@ -99,7 +99,7 @@ namespace Jamoma {
 
 // Dependencies
 
-#include "readerwriterqueue.h"
+//#include "readerwriterqueue.h"
 
 
 
@@ -121,22 +121,29 @@ constexpr inline uint32_t Hash(const char *const str, const uint32_t seed = 0xAE
 // Core
 
 #include "JamomaLimits.h"
-#include "JamomaValue.h"
 #include "JamomaDataspace.h"
+#include "JamomaInterpolate.h"
+#include "JamomaVar.h"
+#include "JamomaFunction.h"
+
 #include "JamomaObject.h"
 #include "JamomaMessage.h"
+#include "JamomaNotification.h"
 #include "JamomaParameter.h"
 #include "JamomaAudioObject.h"
 #include "JamomaSample.h"
 
 
 #include "JamomaCircularStorage.h"
+#include "JamomaDelay.h"
 #include "JamomaUnitTest.h"
 
 
 // Units
 
+#include "JamomaAllpass1.h"
 #include "JamomaDcblock.h"
+#include "JamomaDelay.h"
 #include "JamomaGain.h"
 #include "JamomaLimiter.h"
 #include "JamomaLowpassOnePole.h"

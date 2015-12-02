@@ -1,14 +1,12 @@
 /** @file
 	
-	@ingroup jamoma2
+	@ingroup 	jamoma2
 	
-	@brief Define a message to a JamomaObject
+	@brief 		Define a message to a JamomaObject
  
-	@author Timothy Place
-	
-	@copyright Copyright © 2015 by Jamoma authors and contributors @n
-	This code is licensed under the terms of the "BSD 3-Clause License" @n
-	https://github.com/jamoma/jamoma2/blob/master/LICENSE.md @n
+	@author		Timothy Place
+	@copyright	Copyright (c) 2005-2015 The Jamoma Group, http://jamoma.org.
+	@license	This project is released under the terms of the MIT License.
  */
 
 #pragma once
@@ -23,12 +21,6 @@ namespace Jamoma {
 	 */
 	class Message {
 	public:
-		
-		// TODO: Do we really need this variation of the constructor?  YAGNI!
-		Message(String name, Function fn)
-		: mFunction(fn)
-		{}
-		
 		
 		/** Define a Message.
 			@param	name		The name of the Message when called on your Object dynamically.
@@ -45,6 +37,10 @@ namespace Jamoma {
 		Error operator ()() {
 			mFunction();
 			return Error::none;	// TODO: what's the point of returning an error code in this case?
+		}
+		
+		const Synopsis& synopsis() {
+			return mSynopsis;
 		}
 		
 	private:

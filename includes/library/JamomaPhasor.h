@@ -1,12 +1,10 @@
 /** @file
 	
-	@ingroup jamoma2
+	@ingroup 	jamoma2
  
-	@author Timothy Place
-	
-	@copyright Copyright © 2015 by Jamoma authors and contributors @n
-	This code is licensed under the terms of the "BSD 3-Clause License" @n
-	https://github.com/jamoma/jamoma2/blob/master/LICENSE.md @n
+	@author		Timothy Place, Nathan Wolek
+	@copyright	Copyright (c) 2005-2015 The Jamoma Group, http://jamoma.org.
+	@license	This project is released under the terms of the MIT License.
  */
 
 #pragma once
@@ -17,18 +15,16 @@
 namespace Jamoma {
 
 	
-	/**	Phasor object -- a non-bandlimited ramp wave oscillator.
+	/**	This AudioObject generates a non-bandlimited <a href="https://en.wikipedia.org/wiki/Sawtooth_wave">sawtooth wave</a> oscillator. 
+        This function is typically used as a control signal for <a href="https://en.wikipedia.org/wiki/Phase_(waves)">phase</a> ramping.
 	 */
 	class Phasor : public AudioObject {
 		double	mPhase = 0.0;
 		double	mStep = 0.0;
-		long	mRampSamples = 0;
 		
 		void setStep()
 		{
-			mStep = 1.0 / double(mRampSamples - 1.0);	// 1.0 is the destination
-			if (frequency < 0)
-				mStep = -mStep;
+            mStep = frequency / sampleRate;
 			ZeroDenormal(mStep);
 		}
 
@@ -38,37 +34,31 @@ namespace Jamoma {
 		static constexpr auto tags = { "dspGeneratorLib", "audio", "generator", "oscillator" };
 		
 
-		Parameter<double, NativeUnit::None<double>, RangeLimit::wrap>	phase		= { this,
+		Parameter<double, Limit::Wrap<double>, NativeUnit::None<double>>	phase		= { this,
 																						"phase",
 																						0.0,
 																						Range<double>(0.0, 1.0),
-																						[this]{
+																						Setter([this]{
 																							mPhase = phase;
-																							if (frequency < 0)
-																								mPhase += 1.0;
-																						}
+																						})
 		};
 		
 
-		Parameter<double, NativeUnit::None<double>, RangeLimit::fold>	frequency	= {	this,
+		Parameter<double, Limit::Fold<double>, NativeUnit::None<double>>	frequency	= {	this,
 																						"frequency",
 																						1.0,
-																						Range<double>(0.0, sampleRate * 0.5),
-																						[this]{
-																							double lFrequency = frequency;
-																							if (lFrequency == 0)
-																								mRampSamples = 0xFFFFFFFF;
-																							else
-																								mRampSamples = long(sampleRate / fabs(lFrequency));
+																						Range<double>(sampleRate * -0.5, sampleRate * 0.5),
+																						Setter( [this]{
 																							setStep();
-																						}
+																						} ),
+																						Synopsis("Rate at which to cycle")
 		};
 
 		
-		Parameter<double, NativeUnit::LinearGain>						gain = { this, "gain", 1.0 };		///< scaling applied to the output
+		Parameter<double, Limit::None<double>, NativeUnit::LinearGain>		gain = { this, "gain", 1.0 };		///< scaling applied to the output
 
 		
-		Parameter<double>												offset = { this, "offset", 0.0 };	///< shift applied to the output
+		Parameter<double>													offset = { this, "offset", 0.0 };	///< shift applied to the output
 
 		
 
@@ -84,9 +74,9 @@ namespace Jamoma {
 		Sample operator()(const Sample x)
 		{
 			if (mPhase > 1.0)
-				mPhase = 0.0;
+				mPhase -= 1.0;
 			else if (mPhase < 0.0)
-				mPhase = 1.0;
+				mPhase += 1.0;
 			
 			Sample y = mPhase * gain + offset;
 			
@@ -99,12 +89,13 @@ namespace Jamoma {
 			@param	x	SharedSampleBundleGroup to be processed.
 			@return		Processed SharedSampleBundleGroup.
 		 */
-		SharedSampleBundleGroup operator()(const SampleBundle& x)
+		SharedSampleBundleGroup operator()(const SampleBundle& x = kSampleBundleNone)
 		{
-			auto out = adapt(x);
+			auto out = mOutput;
 
-			for (int channel=0; channel<x.channelCount(); channel++)
-				std::transform(x[channel].begin(), x[channel].end(), out[0][channel].begin(), *this);
+			for (int channel=0; channel<x.channelCount(); ++channel)
+                for	(auto& sample : out[0][channel])
+                    sample = (*this)(0.0);
 			return out;
 		}
 		

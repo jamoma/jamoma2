@@ -1,14 +1,12 @@
 /** @file
 	
-	@ingroup jamoma2
+	@ingroup 	jamoma2
 	
-	@brief Apply a fourth-order low-pass filter to samples.
+	@brief 		Apply a fourth-order low-pass filter to samples.
 	
-	@author Timothy Place, Nathan Wolek
-	
-	@copyright Copyright © 2015 by Jamoma authors and contributors @n
-	This code is licensed under the terms of the "BSD 3-Clause License" @n
-	https://github.com/jamoma/jamoma2/blob/master/LICENSE.md @n
+	@author		Timothy Place, Nathan Wolek
+	@copyright	Copyright (c) 2005-2015 The Jamoma Group, http://jamoma.org.
+	@license	This project is released under the terms of the MIT License.
  */
 
 #pragma once
@@ -68,18 +66,18 @@ namespace Jamoma {
             The frequency setting will tend to sound flat below 1000 Hz and goes sharp above 1000 Hz.
             In addition, the cutoff frequency is only stable below about one-fourth the sampling rate.
          */
-		Parameter<double, NativeUnit::None<double>, RangeLimit::clip>	frequency = {	this,
+		Parameter<double, Limit::Clip<double>, NativeUnit::None<double>>	frequency = {	this,
 															"frequency",
 															1000.0,
 															Range<double>(20.0, sampleRate * 0.475),
-															[this]{
+															Setter([this]{
 																//double	radians = hertzToRadians(frequency);
 																double  fNormalizedToHalfNyquist = frequency * 4 / sampleRate;
                                                                 mCoefficientF = fNormalizedToHalfNyquist * 1.4716;
 																mCoefficientSquaredF = mCoefficientF * mCoefficientF;
 																mOneMinusCoefficientF = 1.0 - mCoefficientF;
 																calculateCoefficients();
-															}
+															})
 		};
 		// addAttributeProperty(Frequency,			description,	TT("Cutoff Frequency in Hertz"));
 		
@@ -95,10 +93,10 @@ namespace Jamoma {
 			TODO: determine if the above is indeed relevant to this filter.
          */
 		Parameter<double>	resonance = { this, "resonance", 1.0,
-			[this]{
+			Setter([this]{
 				mDeciResonance = resonance * 0.1;
 				calculateCoefficients();
-			}
+			})
 		};
 		// addAttributeProperty(resonance,			range,			TTValue(0.01, 100.0));
 		// addAttributeProperty(resonance,			rangeChecking,	TT("cliplow"));
@@ -173,8 +171,8 @@ namespace Jamoma {
 		{
 			auto out = adapt(x);
 			
-			for (int channel=0; channel < x.channelCount(); channel++) {
-				for	(int i=0; i < x.frameCount(); i++)
+			for (int channel=0; channel < x.channelCount(); ++channel) {
+				for	(int i=0; i < x.frameCount(); ++i)
 					out[0][channel][i] = (*this)(x[channel][i], channel);
 			}
 			return out;

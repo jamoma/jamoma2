@@ -1,14 +1,12 @@
 /** @file
 	
-	@ingroup jamoma2
+	@ingroup 	jamoma2
 	
-	@brief Gain Dataspace
+	@brief 		Gain Dataspace
 	
-	@author Trond Lossius, Tim Place, Nils Peters
-	
-	@copyright Copyright © 2015 by Jamoma authors and contributors @n
-	This code is licensed under the terms of the "BSD 3-Clause License" @n
-	https://github.com/jamoma/jamoma2/blob/master/LICENSE.md @n
+	@author 	Trond Lossius, Timothy Place, Nils Peters
+	@copyright	Copyright (c) 2005-2015 The Jamoma Group, http://jamoma.org.
+	@license	This project is released under the terms of the MIT License.
  */
 
 #pragma once
@@ -128,7 +126,7 @@ namespace Jamoma {
 				return mUnit->fromNeutral( sUnits[unit]->toNeutral(x) );
 			}
 
-			T operator()(const T& x, uint32_t& unit)
+			T operator()(const T& x, uint32_t unit)
 			{
 				return (*this)(x, (GainUnit)unit);
 			}
