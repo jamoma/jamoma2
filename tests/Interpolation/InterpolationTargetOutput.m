@@ -21,7 +21,7 @@ output_hermite = double (1 : 64);
 output_spline = double (1 : 64);
 
 for i = 1:64
-	current_delta = 1.0 + i / 64;
+	current_delta = 2.0 + i / 64;
 	output_linear(i) = interp1(x,current_delta);
 	output_hermite(i) = interp1(x,current_delta,"pchip");
 	output_spline(i) = interp1(x,current_delta,"spline");
