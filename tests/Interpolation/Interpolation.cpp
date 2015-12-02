@@ -143,7 +143,7 @@ public:
             }
         }
 
-		mTest->TEST_ASSERT("Bad Sample Count", badSampleCount == 0);
+		mTest->TEST_ASSERT("testLinear produced correct interpolation output", badSampleCount == 0);
 	}
 	
 	
@@ -152,16 +152,13 @@ public:
 		auto 	x0 =  3.0;
 		auto	x1 = -1.0;
 		
-		mTest->log("");
-		mTest->log("Testing cosine interpolation");
-		
 		badSampleCount += !interpolateAndTest<Jamoma::Interpolation::Cosine<double>>(x0, x1, 0.00,     3.0);
 		badSampleCount += !interpolateAndTest<Jamoma::Interpolation::Cosine<double>>(x0, x1, 1.0/3.0,  2.0);
 		badSampleCount += !interpolateAndTest<Jamoma::Interpolation::Cosine<double>>(x0, x1, 0.50,     1.0);
 		badSampleCount += !interpolateAndTest<Jamoma::Interpolation::Cosine<double>>(x0, x1, 2.0/3.0,  0.00000000000000044408920985006262);
 		badSampleCount += !interpolateAndTest<Jamoma::Interpolation::Cosine<double>>(x0, x1, 1.00,    -1.0);
 		
-		mTest->TEST_ASSERT("Bad Sample Count", badSampleCount == 0);
+		mTest->TEST_ASSERT("testCosine produced correct interpolation output", badSampleCount == 0);
 	}
 	
 	
@@ -202,15 +199,12 @@ public:
 		float	x2 =  1.0;
 		float	x3 =  4.0;
 		
-		mTest->log("");
-		mTest->log("Testing cubic interpolation");
-		
 		badSampleCount += !interpolateAndTest<Jamoma::Interpolation::Cubic<float>>(x0, x1, x2, x3, -1.00, -9.0);
 		badSampleCount += !interpolateAndTest<Jamoma::Interpolation::Cubic<float>>(x0, x1, x2, x3,  0.00,  2.0);
 		badSampleCount += !interpolateAndTest<Jamoma::Interpolation::Cubic<float>>(x0, x1, x2, x3,  1.00,  1.0);
 		badSampleCount += !interpolateAndTest<Jamoma::Interpolation::Cubic<float>>(x0, x1, x2, x3,  2.00, 12.0);
 		
-		mTest->TEST_ASSERT("Bad Sample Count", badSampleCount == 0);
+		mTest->TEST_ASSERT("testCubic produced correct interpolation output", badSampleCount == 0);
 	}
     
     void testHermite() {
@@ -305,7 +299,7 @@ public:
             }
         }
         
-        mTest->TEST_ASSERT("Bad Sample Count", badSampleCount == 0);
+        mTest->TEST_ASSERT("testHermite produced correct interpolation output", badSampleCount == 0);
     }
     
     void testSpline() {
@@ -400,7 +394,7 @@ public:
             }
         }
         
-        mTest->TEST_ASSERT("Bad Sample Count", badSampleCount == 0);
+        mTest->TEST_ASSERT("testSpline produced correct interpolation output", badSampleCount == 0);
     }
 
 };
