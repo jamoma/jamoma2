@@ -291,6 +291,20 @@ public:
             1
         };
         
+        Jamoma::Sample temp = 0.0;
+        Jamoma::Sample tempExpected = 0.0;
+        double delta = 0.0;
+        
+        for (int i = 0; i < expectedOutputHermite.size(); i++) {
+            delta = (i + 1.0) / 64.0;
+            temp = my_interp(x0,x1,x2,x3,delta);
+            tempExpected = expectedOutputHermite[i];
+            if (! mTest->compare(temp, tempExpected, true, 8) ) {
+                badSampleCount++;
+                std::cout << "sample " << i << " had a difference of " << std::fabs(temp - tempExpected) << std::endl;
+            }
+        }
+        
         mTest->TEST_ASSERT("Bad Sample Count", badSampleCount == 0);
     }
     
@@ -371,6 +385,20 @@ public:
             1.005691528320312, 
             1
         };
+        
+        Jamoma::Sample temp = 0.0;
+        Jamoma::Sample tempExpected = 0.0;
+        double delta = 0.0;
+        
+        for (int i = 0; i < expectedOutputSpline.size(); i++) {
+            delta = (i + 1.0) / 64.0;
+            temp = my_interp(x0,x1,x2,x3,delta);
+            tempExpected = expectedOutputSpline[i];
+            if (! mTest->compare(temp, tempExpected, true, 8) ) {
+                badSampleCount++;
+                std::cout << "sample " << i << " had a difference of " << std::fabs(temp - tempExpected) << std::endl;
+            }
+        }
         
         mTest->TEST_ASSERT("Bad Sample Count", badSampleCount == 0);
     }
