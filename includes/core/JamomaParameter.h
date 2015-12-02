@@ -133,18 +133,20 @@ namespace Jamoma {
 		{
 			handleArguments(args...);
 		}
-	
+
 		
-		Parameter(Object* owner, String name, std::pair<T, Unit>initial,  Function setter = nullptr)
+		/** constructor for when default value is defined using a dataspace conversion
+			@param	owner	A pointer to the object instance to whom the parameter belongs (pass `this` from your class)
+			@param	name	A string specifying the name of the parmeter when dynamically addressed or inspected
+			@param	initial	Initial value for the parameter
+			@param	...args	N arguments specifying optional properties of a parameter such as Setter, Range, Synopsis, etc.
+		 */
+		template <typename...ARGS>
+		constexpr Parameter(Object* owner, const String& name, const std::pair<T,Unit>& initial, ARGS...args) noexcept
 		: ParameterBase(owner, name)
 		{
-			// 1. iterate args
-			// 2. determine their types
-			// 3. do something appropriate for their given type
-			// 4. can we make this whole process constexpr ?
-			
-			owner->parameters[name] = this;
-			set(initial.first, initial.second);
+			handleArguments(args...);
+			(*this) = initial;
 		}
 
 		
