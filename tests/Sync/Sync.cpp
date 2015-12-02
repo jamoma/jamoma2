@@ -1,9 +1,9 @@
 /** @file
 	@ingroup 	jamoma2
  
-	@brief 		Unit test for the Gain class
+	@brief 		Unit test for the Sync class
  
-	@author		Timothy Place
+	@author		Timothy Place, Nathan Wolek
 	@copyright	Copyright (c) 2005-2015 The Jamoma Group, http://jamoma.org.
 	@license	This project is released under the terms of the MIT License.
 
@@ -13,87 +13,87 @@
 
 namespace Jamoma {
 
-	class PhasorTest {
+	class SyncTest {
 		
-		UnitTest<PhasorTest>*	mTest;
+		UnitTest<SyncTest>*	mTest;
 		
 	public:
-		PhasorTest(Jamoma::UnitTest<PhasorTest>* test)
+		SyncTest(Jamoma::UnitTest<SyncTest>* test)
 		: mTest(test)
 		{
 			testParameterSetting();
 			testOutputValues();
             testPhaseWrapping();
-            testOutputAcrossMultipleOutputVectors();
+            testOutputAcrossMultipleVectors();
 		}
 
 		
 		void testParameterSetting()
 		{
-			Jamoma::Phasor	p;
+			Jamoma::Sync	s;
 			
 			using namespace Dataspace;
 			using namespace std;
 
 			// Gain parameter (gain dataspace)
 			
-			p.gain = make_pair(0.25, Unit::linearGain);
-			mTest->TEST_ASSERT("setting gain param linearly", mTest->compare( (double)p.gain, 0.25) );
+			s.gain = make_pair(0.25, Unit::linearGain);
+			mTest->TEST_ASSERT("setting gain param linearly", mTest->compare( (double)s.gain, 0.25) );
 
-			p.gain = make_pair(-6.0, Unit::db);
-			mTest->TEST_ASSERT("setting gain param in db", mTest->compare( (double)p.gain, 0.50118723362727224) );
+			s.gain = make_pair(-6.0, Unit::db);
+			mTest->TEST_ASSERT("setting gain param in db", mTest->compare( (double)s.gain, 0.50118723362727224) );
 
-			p.gain = make_pair(110.0, Unit::midiGain);
-			mTest->TEST_ASSERT("setting gain param with midi", mTest->compare( (double)p.gain, 1.5826306885735968) );
+			s.gain = make_pair(110.0, Unit::midiGain);
+			mTest->TEST_ASSERT("setting gain param with midi", mTest->compare( (double)s.gain, 1.5826306885735968) );
 			
 			// Phase parameter (range wrapping)
-			p.phase = 0.25;
-			mTest->TEST_ASSERT("setting phase param within range", mTest->compare( (double)p.phase, 0.25) );
+			s.phase = 0.25;
+			mTest->TEST_ASSERT("setting phase param within range", mTest->compare( (double)s.phase, 0.25) );
 		
-			p.phase = 1.3;
-			mTest->TEST_ASSERT("setting phase param over range", mTest->compare( (double)p.phase, 0.3) );
+			s.phase = 1.3;
+			mTest->TEST_ASSERT("setting phase param over range", mTest->compare( (double)s.phase, 0.3) );
 			
-			p.phase = 2.45;
-			mTest->TEST_ASSERT("setting phase param way over range", mTest->compare( (double)p.phase, 0.45) );
+			s.phase = 2.45;
+			mTest->TEST_ASSERT("setting phase param way over range", mTest->compare( (double)s.phase, 0.45) );
 			
-			p.phase = -1.3;
-			mTest->TEST_ASSERT("setting phase param under range", mTest->compare( (double)p.phase, 0.7) );
+			s.phase = -1.3;
+			mTest->TEST_ASSERT("setting phase param under range", mTest->compare( (double)s.phase, 0.7) );
 			
 			// Frequency parameter (range folding)
 			
-			p.sampleRate = 96000;
+			s.sampleRate = 96000;
 			
-			p.frequency = 1000.0;
-			mTest->TEST_ASSERT("setting frequency param within range", mTest->compare( (double)p.frequency, 1000.0) );
+			s.frequency = 1000.0;
+			mTest->TEST_ASSERT("setting frequency param within range", mTest->compare( (double)s.frequency, 1000.0) );
 
-			p.frequency = 50000.0;
-			mTest->TEST_ASSERT("setting frequency param way above range 1", mTest->compare( (double)p.frequency, 46000.0) );
+			s.frequency = 50000.0;
+			mTest->TEST_ASSERT("setting frequency param way above range 1", mTest->compare( (double)s.frequency, 46000.0) );
 
-			p.frequency = 98000.0;
-			mTest->TEST_ASSERT("setting frequency param way above range 2", mTest->compare( (double)p.frequency, -2000.0) );
+			s.frequency = 98000.0;
+			mTest->TEST_ASSERT("setting frequency param way above range 2", mTest->compare( (double)s.frequency, -2000.0) );
 			
-			p.frequency = -2000.0;
-			mTest->TEST_ASSERT("setting frequency param below range", mTest->compare( (double)p.frequency, -2000.0) );
+			s.frequency = -2000.0;
+			mTest->TEST_ASSERT("setting frequency param below range", mTest->compare( (double)s.frequency, -2000.0) );
 
 		}
         
         void testOutputValues()
         {
             
-            Jamoma::Phasor my_phasor;
+            Jamoma::Sync my_sync;
             
-            my_phasor.channelCount = 1;
-            my_phasor.frameCount = 64;
+            my_sync.channelCount = 1;
+            my_sync.frameCount = 64;
             
             // settings group 1
-            my_phasor.sampleRate = 44100;
-            my_phasor.phase = 0.0;
-            my_phasor.frequency = 100.0;
+            my_sync.sampleRate = 44100;
+            my_sync.phase = 0.0;
+            my_sync.frequency = 100.0;
             
-            auto out_samples = my_phasor();
+            auto out_samples = my_sync();
             
             // The following output was generated using the Octave code
-            // in PhasorTargetOutput.m by NW with the following starting values:
+            // in SyncTargetOutput.m by NW with the following starting values:
             // frequency = 100.0;
             // initialPhase = 0.0;
             // sampleRate = 44100.0;
@@ -177,18 +177,18 @@ namespace Jamoma {
                 }
             }
             
-            std::cout << "output from my_phasor has " << badSampleCount << " bad samples" << std::endl;
+            std::cout << "output from my_sync has " << badSampleCount << " bad samples" << std::endl;
             mTest->TEST_ASSERT("settings group 1 produces expected output samples", badSampleCount == 0);
             
             // settings group 2
-            my_phasor.sampleRate = 96000;
-            my_phasor.phase = 0.25;
-            my_phasor.frequency = 1.0;
+            my_sync.sampleRate = 96000;
+            my_sync.phase = 0.25;
+            my_sync.frequency = 1.0;
             
-            out_samples = my_phasor();
+            out_samples = my_sync();
             
             // The following output was generated using the Octave code
-            // in PhasorTargetOutput.m by NW with the following starting values:
+            // in SyncTargetOutput.m by NW with the following starting values:
             // frequency = 1.0;
             // initialPhase = 0.25;
             // sampleRate = 96000.0;
@@ -273,7 +273,7 @@ namespace Jamoma {
                 }
             }
             
-            std::cout << "output from my_phasor has " << badSampleCount << " bad samples" << std::endl;
+            std::cout << "output from my_sync has " << badSampleCount << " bad samples" << std::endl;
             mTest->TEST_ASSERT("settings group 2 produces expected output samples", badSampleCount == 0);
             
         }
@@ -281,21 +281,21 @@ namespace Jamoma {
         void testPhaseWrapping()
         {
             
-            Jamoma::Phasor my_phasor;
+            Jamoma::Sync my_sync;
             
-            my_phasor.channelCount = 1;
-            my_phasor.frameCount = 64;
+            my_sync.channelCount = 1;
+            my_sync.frameCount = 64;
             
             // NEGATIVE STEPS WRAPPING THOUGH 0.0
 
-            my_phasor.sampleRate = 48000;
-            my_phasor.phase = 0.1;
-            my_phasor.frequency = -2000.0;
+            my_sync.sampleRate = 48000;
+            my_sync.phase = 0.1;
+            my_sync.frequency = -2000.0;
             
-            auto out_samples = my_phasor();
+            auto out_samples = my_sync();
             
             // The following output was generated using the Octave code
-            // in PhasorTargetOutput.m by NW with the following starting values:
+            // in SyncTargetOutput.m by NW with the following starting values:
             // frequency = -2000.0;
             // initialPhase = 0.1;
             // sampleRate = 48000.0;
@@ -379,19 +379,19 @@ namespace Jamoma {
                 }
             }
             
-            std::cout << "output from my_phasor has " << badSampleCount << " bad samples" << std::endl;
+            std::cout << "output from my_sync has " << badSampleCount << " bad samples" << std::endl;
             mTest->TEST_ASSERT("negative frequency wrapping test produces expected samples", badSampleCount == 0);
             
             // POSITIVE STEPS WRAPPING THOUGH 1.0
 
-            my_phasor.sampleRate = 22050;
-            my_phasor.phase = 0.4;
-            my_phasor.frequency = 3000.0;
+            my_sync.sampleRate = 22050;
+            my_sync.phase = 0.4;
+            my_sync.frequency = 3000.0;
             
-            out_samples = my_phasor();
+            out_samples = my_sync();
         
             // The following output was generated using the Octave code
-            // in PhasorTargetOutput.m by NW with the following starting values:
+            // in SyncTargetOutput.m by NW with the following starting values:
             // frequency = 3000.0;
             // initialPhase = 0.4;
             // sampleRate = 22050.0;
@@ -476,41 +476,41 @@ namespace Jamoma {
                 }
             }
             
-            std::cout << "output from my_phasor has " << badSampleCount << " bad samples" << std::endl;
+            std::cout << "output from my_sync has " << badSampleCount << " bad samples" << std::endl;
             mTest->TEST_ASSERT("positive frequency wrapping test produces expected samples", badSampleCount == 0);
             
         }
         
-        void testOutputAcrossMultipleOutputVectors() {
+        void testOutputAcrossMultipleVectors() {
             
-            Jamoma::Phasor my_phasor16;
+            Jamoma::Sync my_sync16;
             
-            my_phasor16.channelCount = 1;
-            my_phasor16.frameCount = 16;
+            my_sync16.channelCount = 1;
+            my_sync16.frameCount = 16;
             
-            my_phasor16.sampleRate = 48000;
-            my_phasor16.phase = 0.0;
-            my_phasor16.frequency = 1.0;
+            my_sync16.sampleRate = 48000;
+            my_sync16.phase = 0.0;
+            my_sync16.frequency = 1.0;
             
             // store four vectors for testing
-            Jamoma::SampleBundle out_samples16_1 = my_phasor16();
-            Jamoma::SampleBundle out_samples16_2 = my_phasor16();
-            Jamoma::SampleBundle out_samples16_3 = my_phasor16();
-            Jamoma::SampleBundle out_samples16_4 = my_phasor16();
+            Jamoma::SampleBundle out_samples16_1 = my_sync16();
+            Jamoma::SampleBundle out_samples16_2 = my_sync16();
+            Jamoma::SampleBundle out_samples16_3 = my_sync16();
+            Jamoma::SampleBundle out_samples16_4 = my_sync16();
             
             // test is really about consistency,
             // so we will use Jamoma to generate target not Octave
-            Jamoma::Phasor my_phasor64;
+            Jamoma::Sync my_sync64;
             
-            my_phasor64.channelCount = 1;
-            my_phasor64.frameCount = 64;
+            my_sync64.channelCount = 1;
+            my_sync64.frameCount = 64;
             
-            my_phasor64.sampleRate = 48000;
-            my_phasor64.phase = 0.0;
-            my_phasor64.frequency = 1.0;
+            my_sync64.sampleRate = 48000;
+            my_sync64.phase = 0.0;
+            my_sync64.frequency = 1.0;
             
             // store four vectors for testing
-            Jamoma::SampleBundle out_samples64 = my_phasor64();
+            Jamoma::SampleBundle out_samples64 = my_sync64();
             
             int badSampleCount = 0;
             Jamoma::Sample temp = 0.0;
@@ -552,7 +552,7 @@ namespace Jamoma {
                 }
             }
             
-            std::cout << "output from my_phasor16 has " << badSampleCount << " bad samples" << std::endl;
+            std::cout << "output from my_sync16 has " << badSampleCount << " bad samples" << std::endl;
             mTest->TEST_ASSERT("out across multiple vectors produces expected samples", badSampleCount == 0);
             
             
@@ -564,6 +564,6 @@ namespace Jamoma {
 
 int main(int argc, const char * argv[])
 {
-	Jamoma::UnitTest<Jamoma::PhasorTest>	aUnitTestInstance;
+	Jamoma::UnitTest<Jamoma::SyncTest>	aUnitTestInstance;
 	return aUnitTestInstance.failureCount();
 }
