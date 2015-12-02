@@ -62,9 +62,9 @@ namespace Jamoma {
 		
 		/** may be one of two symbols: "linear" or "exponential". */
 		Parameter<Mode>								mode = {this, "mode", Mode::linear,
-															[this] {
+															Setter([this] {
 																setRecover();
-															}
+															})
 		};
 		
 
@@ -72,12 +72,12 @@ namespace Jamoma {
 		
 		
 		// linear gain scaling factor prior to limiting (attr setter used dB).
-		Parameter<double, NativeUnit::LinearGain>	preamp = {	this,
+		Parameter<double, Limit::None<double>, NativeUnit::LinearGain>	preamp = {	this,
 																"preamp",
-																Tag(0.0, Unit::Db),
-																[this]{
+																Tag(0.0, Unit::db),
+																Setter([this]{
 																	mPreampObject.gain = (double)preamp;
-																}
+																})
 		};
 		
 		
@@ -87,27 +87,27 @@ namespace Jamoma {
 		
 		/** number of seconds for the release to recover after a peak in the audio signal. */
 		Parameter<double>							release = { this, "release", 1000.0,
-																[this]{
+																Setter([this]{
 																	setRecover();
-																}
+																})
 		};
 		
 		
 		/** number of samples by which to look forward. */
 		Parameter<int>								lookahead = {this, "lookahead", 100,
-																[this]{
-																	lookahead = Limit<int>(lookahead, 1, maxBufferSize-1);
+																Setter([this]{
+																	lookahead = Clip<int>(lookahead, 1, maxBufferSize-1);
 																	lookaheadInv = 1.0 / double(lookahead);
-																}
+																})
 		};
 		
 		
 		/** amplitude threshold at which the limiting should kick in */
-		Parameter<double, NativeUnit::LinearGain>	threshold = { this, "threshold", Tag(0.0, Unit::Db) };
+		Parameter<double, Limit::None<double>, NativeUnit::LinearGain>	threshold = { this, "threshold", Tag(0.0, Unit::db) };
 		
 		
 		/** Gain applied after the limiting (attr setter used dB). */
-		Parameter<double, NativeUnit::LinearGain>	postamp = { this, "postamp", Tag(0.0, Unit::Db) };
+		Parameter<double, Limit::None<double>, NativeUnit::LinearGain>	postamp = { this, "postamp", Tag(0.0, Unit::db) };
 	
 		
 		/** Clear the history: reset the limiter. */
@@ -129,7 +129,7 @@ namespace Jamoma {
 		};
 
 
-		Sample operator()(Sample x)
+		Sample operator()(Sample x) override
 		{
 			assert(false);	// single-sample function is inappropriate for the Limiter
 							// TODO: find a way for this fail at **compile-time**

@@ -136,7 +136,7 @@ namespace Jamoma {
 	
 		
 		Parameter(Object* owner, String name, std::pair<T, Unit>initial,  Function setter = nullptr)
-		: ParameterBase(owner, name, "", RangeLimit::none, setter)
+		: ParameterBase(owner, name)
 		{
 			// 1. iterate args
 			// 2. determine their types
