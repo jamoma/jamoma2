@@ -23,6 +23,8 @@ public:
 		testLinear();
 		testCosine();
 		testCubic();
+        testHermite();
+        testSpline();
 	}
 
 	
@@ -210,6 +212,40 @@ public:
 		
 		mTest->TEST_ASSERT("Bad Sample Count", badSampleCount == 0);
 	}
+    
+    void testHermite() {
+        int		badSampleCount = 0;
+        Jamoma::Interpolation::Hermite<Jamoma::Sample> my_interp;
+        
+        auto 	x0 = -1.0;
+        auto	x1 =  2.0;
+        auto    x2 =  1.0;
+        auto    x3 =  4.0;
+        
+        // The following output was generated using the Octave code
+        // in InterpolationTargetOutput.m by NW
+        Jamoma::SampleVector expectedOutputHermite = {
+        };
+        
+        mTest->TEST_ASSERT("Bad Sample Count", badSampleCount == 0);
+    }
+    
+    void testSpline() {
+        int		badSampleCount = 0;
+        Jamoma::Interpolation::Spline<Jamoma::Sample> my_interp;
+        
+        auto 	x0 = -1.0;
+        auto	x1 =  2.0;
+        auto    x2 =  1.0;
+        auto    x3 =  4.0;
+        
+        // The following output was generated using the Octave code
+        // in InterpolationTargetOutput.m by NW
+        Jamoma::SampleVector expectedOutputSpline = {
+        };
+        
+        mTest->TEST_ASSERT("Bad Sample Count", badSampleCount == 0);
+    }
 
 };
 
