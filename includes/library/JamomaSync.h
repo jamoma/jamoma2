@@ -18,7 +18,7 @@ namespace Jamoma {
 	/**	This AudioObject generates a non-bandlimited <a href="https://en.wikipedia.org/wiki/Sawtooth_wave">sawtooth wave</a> oscillator. 
         This function is typically used as a control signal for <a href="https://en.wikipedia.org/wiki/Phase_(waves)">phase</a> ramping.
 	 */
-	class Phasor : public AudioObject {
+	class Sync : public AudioObject {
 		double	mPhase = 0.0;
 		double	mStep = 0.0;
 		
@@ -30,7 +30,7 @@ namespace Jamoma {
 
 		
 	public:
-		static constexpr Classname classname = { "phasor" };
+		static constexpr Classname classname = { "sync" };
 		static constexpr auto tags = { "dspGeneratorLib", "audio", "generator", "oscillator" };
 		
 

@@ -50,7 +50,7 @@ namespace Jamoma {
         
         void testAutoCreatedSampleBundleGroup() {
             
-            /*  NW: this behavior was noticed while working on tests for Phasor & logged as issue #63.
+            /*  NW: this behavior was noticed while working on tests for Sync & logged as issue #63.
                 It is caused by the return type of SharedSampleBundleGroup from our AudioObject.
                 The SharedSampleBundleGroup is a shared_ptr, meaning the thing that it points to can and does change.
                 This test has been preserved to demonstrate the expected behavior for future reference.
@@ -58,34 +58,34 @@ namespace Jamoma {
                 should explicitly specify a type of SampleBundle instead of using auto.
             */
             
-            Jamoma::Phasor my_phasor16;
+            Jamoma::Sync my_sync16;
             
-            my_phasor16.channelCount = 1;
-            my_phasor16.frameCount = 16;
+            my_sync16.channelCount = 1;
+            my_sync16.frameCount = 16;
             
-            my_phasor16.sampleRate = 48000;
-            my_phasor16.phase = 0.0;
-            my_phasor16.frequency = 1.0;
+            my_sync16.sampleRate = 48000;
+            my_sync16.phase = 0.0;
+            my_sync16.frequency = 1.0;
             
             // process vector 1 and stash a value
-            auto out_samples16_1 = my_phasor16();
+            auto out_samples16_1 = my_sync16();
             
             Jamoma::Sample stash_value1 = out_samples16_1[0][0][0];
             
             // process vector 2 and stash a value
-            auto out_samples16_2 = my_phasor16();
+            auto out_samples16_2 = my_sync16();
             
             // grab same value from first vector, should be the same?
             Jamoma::Sample stash_value2 = out_samples16_1[0][0][0];
             
             // process vector 3 and stash a value
-            auto out_samples16_3 = my_phasor16();
+            auto out_samples16_3 = my_sync16();
             
             // grab same value from first vector, should be the same?
             Jamoma::Sample stash_value3 = out_samples16_1[0][0][0];
             
             // process vector 4 and stash a value
-            auto out_samples16_4 = my_phasor16();
+            auto out_samples16_4 = my_sync16();
             
             // grab same value from first vector, should be the same?
             Jamoma::Sample stash_value4 = out_samples16_1[0][0][0];
