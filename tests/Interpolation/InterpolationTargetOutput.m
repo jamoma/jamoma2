@@ -17,13 +17,13 @@ x3 =  4.0;
 x = [x0,x1,x2,x3];
 
 output_linear = double (1 : 64);
-output_cubic = double (1 : 64);
+output_hermite = double (1 : 64);
 
 for i = 1:64
 	current_delta = 1.0 + i / 64;
 	output_linear(i) = interp1(x,current_delta);
-	output_cubic(i) = interp1(x,current_delta,"cubic");
+	output_hermite(i) = interp1(x,current_delta,"pchip");
 endfor
 
 save expectedOutput.mat output_linear
-save -append expectedOutput.mat output_cubic
+save -append expectedOutput.mat output_hermite
