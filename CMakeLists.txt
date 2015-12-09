@@ -2,10 +2,18 @@ cmake_minimum_required(VERSION 3.0)
 
 project(Jamoma)
 
+####### PREREQUISITES
+
+message(STATUS "Updating Git Submodules")
+execute_process(
+	COMMAND				git submodule update --init --recursive
+	WORKING_DIRECTORY	"${PROJECT_SOURCE_DIR}"
+)
+
 
 ####### EXAMPLES
 
-add_subdirectory(examples/simple)
+add_subdirectory(src/filtered-noise-example)
 
 
 ####### UNIT TESTS
@@ -25,10 +33,10 @@ ENDMACRO()
 
 enable_testing()
 
-SUBDIRLIST(TESTDIRS ${CMAKE_CURRENT_SOURCE_DIR}/tests)
+SUBDIRLIST(TESTDIRS ${CMAKE_CURRENT_SOURCE_DIR}/test)
 foreach(testdir ${TESTDIRS})
 	MESSAGE("Generating Unit Test: ${testdir}")
-	add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/tests/${testdir})
+	add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/test/${testdir})
 	add_test(NAME ${testdir}
-	         COMMAND ${CMAKE_CURRENT_BINARY_DIR}/tests/${testdir}/${testdir}.test)
+	         COMMAND ${CMAKE_CURRENT_BINARY_DIR}/test/${testdir}/${testdir}.test)
 endforeach()
