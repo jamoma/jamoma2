@@ -1,7 +1,7 @@
 % @file
 % @ingroup 	jamoma2
 % 
-% @brief 		Generates the Expected Target Output for Phasor using Octave
+% @brief 		Generates the Expected Target Output for Sync using Octave
 %
 % @author		Nathan Wolek
 % @copyright	Copyright (c) 2005-2015 The Jamoma Group, http://jamoma.org.
