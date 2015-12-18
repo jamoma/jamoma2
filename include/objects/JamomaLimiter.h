@@ -5,10 +5,8 @@
 	@brief Lookahead limiter processor for controlling the dynamics of an input.
  
 	@author Timothy Place
-	
-	@copyright Copyright © 2015 by Jamoma authors and contributors @n
-	This code is licensed under the terms of the "BSD 3-Clause License" @n
-	https://github.com/jamoma/jamoma2/blob/master/LICENSE.md @n
+	@copyright	Copyright (c) 2005-2015 The Jamoma Group, http://jamoma.org.
+	@license	This project is released under the terms of the MIT License.
  */
 
 #pragma once
@@ -40,8 +38,8 @@ namespace Jamoma {
 		static constexpr Classname classname = { "limiter" };
 		static constexpr auto tags = { "dspEffectsLib", "audio", "processor", "dynamics", "limiter" };
 
-		AdaptingSampleBundle	mLookaheadBuffer;			///< keep a lookahead buffer for each channel
-		AdaptingSampleBundle	mGain;						///< keep a gain for each channel
+		AdaptingSampleBundle	mLookaheadBuffer = {this};	///< keep a lookahead buffer for each channel
+		AdaptingSampleBundle	mGain = {this};				///< keep a gain for each channel
 		
 		Dcblock					mDcblockerObject;
 		Gain					mPreampObject;
