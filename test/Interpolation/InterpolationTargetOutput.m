@@ -21,6 +21,7 @@ output_linear = double (1 : 64);
 output_hermite = double (1 : 64);
 output_hermitegen = double (1 : 64);
 output_spline = double (1 : 64);
+output_splinegen = double (1 : 64);
 
 % the following function is adapted from gen~.interpolation example from Max 7.1
 function retval = interp_hermitegen(v,delta)
@@ -47,15 +48,33 @@ function retval = interp_hermitegen(v,delta)
    	retval = a0*x + a1*m0 + a2*m1 + a3*y;
 endfunction
 
+% the following function is adapted from gen~.interpolation example from Max 7.1
+function retval = interp_splinegen(v,delta)
+	retval = 0.0;
+	delta_int = fix(delta);
+	a = delta - delta_int;
+	w = v(delta_int-1);
+	x = v(delta_int);
+	y = v(delta_int+1);
+	z = v(delta_int+2);
+	a2 = a*a;
+	f0 = -0.5*w + 1.5*x - 1.5*y + 0.5*z;
+	f1 = w - 2.5*x + 2*y - 0.5*z;
+	f2 = -0.5*w + 0.5*y;
+	retval = f0*a*a2 + f1*a2 + f2*a + x;
+endfunction
+
 for i = 1:64
 	current_delta = 2.0 + i / 64;
 	output_linear(i) = interp1(x,current_delta);
 	output_hermite(i) = interp1(x,current_delta,"pchip");
 	output_hermitegen(i) = interp_hermitegen(x,current_delta);
 	output_spline(i) = interp1(x,current_delta,"spline");
+	output_splinegen(i) = interp_splinegen(x,current_delta);
 endfor
 
 save expectedOutput.mat output_linear
 save -append expectedOutput.mat output_hermite
 save -append expectedOutput.mat output_hermitegen
 save -append expectedOutput.mat output_spline
+save -append expectedOutput.mat output_splinegen
