@@ -148,15 +148,88 @@ public:
 	
 	
 	void testCosine() {
-		int		badSampleCount = 0;
-		auto 	x0 =  3.0;
-		auto	x1 = -1.0;
+        int		badSampleCount = 0;
+        Jamoma::Interpolation::Cosine<Jamoma::Sample> my_interp;
+        
+        auto 	x0 = -1.0;
+        auto	x1 =  2.0;
+        auto    x2 =  1.0;
+        auto    x3 =  4.0;
+        
+        // The following output was generated using the Octave code
+        // in InterpolationTargetOutput.m by NW
+        Jamoma::SampleVector expectedOutputCosine = {
+            1.999397728102586,
+            1.997592363336099,
+            1.994588254982391,
+            1.990392640201615,
+            1.985015626597272,
+            1.978470167866104,
+            1.97077203259151,
+            1.961939766255643,
+            1.951994646561722,
+            1.940960632174177,
+            1.928864305000136,
+            1.915734806151273,
+            1.901603765740322,
+            1.886505226681368,
+            1.87047556267748,
+            1.853553390593274,
+            1.835779477423509,
+            1.817196642081823,
+            1.797849652246217,
+            1.777785116509801,
+            1.757051372096611,
+            1.735698368412999,
+            1.713777546715141,
+            1.691341716182545,
+            1.66844492669611,
+            1.645142338627231,
+            1.621490089951632,
+            1.597545161008064,
+            1.573365237227681,
+            1.54900857016478,
+            1.524533837163709,
+            1.5,
+            1.475466162836291,
+            1.45099142983522,
+            1.426634762772319,
+            1.402454838991936,
+            1.378509910048368,
+            1.354857661372769,
+            1.33155507330389,
+            1.308658283817455,
+            1.286222453284859,
+            1.264301631587001,
+            1.242948627903389,
+            1.222214883490199,
+            1.202150347753783,
+            1.182803357918177,
+            1.164220522576491,
+            1.146446609406726,
+            1.129524437322521,
+            1.113494773318632,
+            1.098396234259678,
+            1.084265193848727,
+            1.071135694999864,
+            1.059039367825823,
+            1.048005353438278,
+            1.038060233744357,
+            1.02922796740849,
+            1.021529832133896,
+            1.014984373402728,
+            1.009607359798385,
+            1.005411745017609,
+            1.002407636663902,
+            1.000602271897414,
+            1
+        };
 		
-		badSampleCount += !interpolateAndTest<Jamoma::Interpolation::Cosine<double>>(x0, x1, 0.00,     3.0);
-		badSampleCount += !interpolateAndTest<Jamoma::Interpolation::Cosine<double>>(x0, x1, 1.0/3.0,  2.0);
-		badSampleCount += !interpolateAndTest<Jamoma::Interpolation::Cosine<double>>(x0, x1, 0.50,     1.0);
-		badSampleCount += !interpolateAndTest<Jamoma::Interpolation::Cosine<double>>(x0, x1, 2.0/3.0,  0.00000000000000044408920985006262);
-		badSampleCount += !interpolateAndTest<Jamoma::Interpolation::Cosine<double>>(x0, x1, 1.00,    -1.0);
+		badSampleCount += !interpolateAndTest<Jamoma::Interpolation::Cosine<double>>(x1, x2, 0.00,     3.0);
+		badSampleCount += !interpolateAndTest<Jamoma::Interpolation::Cosine<double>>(x1, x2, 1.0/3.0,  2.0);
+		badSampleCount += !interpolateAndTest<Jamoma::Interpolation::Cosine<double>>(x1, x2, 0.50,     1.0);
+		badSampleCount += !interpolateAndTest<Jamoma::Interpolation::Cosine<double>>(x1, x2, 2.0/3.0,  0.00000000000000044408920985006262);
+		badSampleCount += !interpolateAndTest<Jamoma::Interpolation::Cosine<double>>(x1, x2, 1.00,    -1.0);
 		
 		mTest->TEST_ASSERT("testCosine produced correct interpolation output", badSampleCount == 0);
 	}
@@ -193,11 +266,82 @@ public:
 		The following test compares interpolated values to expected values for this function.
 	 */
 	void testCubic() {
-		int		badSampleCount = 0;
-		float	x0 = -1.0;
-		float	x1 =  2.0;
-		float	x2 =  1.0;
-		float	x3 =  4.0;
+        int		badSampleCount = 0;
+        Jamoma::Interpolation::Cubic<Jamoma::Sample> my_interp;
+        
+        auto 	x0 = -1.0;
+        auto	x1 =  2.0;
+        auto    x2 =  1.0;
+        auto    x3 =  4.0;
+        
+        // The following output was generated using the Octave code
+        // in InterpolationTargetOutput.m by NW
+        Jamoma::SampleVector expectedOutputCubic = {
+            2.029075622558594,
+            2.05389404296875,
+            2.074592590332031,
+            2.09130859375,
+            2.104179382324219,
+            2.11334228515625,
+            2.118934631347656,
+            2.12109375,
+            2.119956970214844,
+            2.11566162109375,
+            2.108345031738281,
+            2.09814453125,
+            2.085197448730469,
+            2.06964111328125,
+            2.051612854003906,
+            2.03125,
+            2.008689880371094,
+            1.98406982421875,
+            1.957527160644531,
+            1.92919921875,
+            1.899223327636719,
+            1.86773681640625,
+            1.834877014160156,
+            1.80078125,
+            1.765586853027344,
+            1.72943115234375,
+            1.692451477050781,
+            1.65478515625,
+            1.616569519042969,
+            1.57794189453125,
+            1.539039611816406,
+            1.5,
+            1.460960388183594,
+            1.42205810546875,
+            1.383430480957031,
+            1.34521484375,
+            1.307548522949219,
+            1.27056884765625,
+            1.234413146972656,
+            1.19921875,
+            1.165122985839844,
+            1.13226318359375,
+            1.100776672363281,
+            1.07080078125,
+            1.042472839355469,
+            1.01593017578125,
+            0.9913101196289062,
+            0.96875,
+            0.9483871459960938,
+            0.93035888671875,
+            0.9148025512695312,
+            0.90185546875,
+            0.8916549682617188,
+            0.88433837890625,
+            0.8800430297851562,
+            0.87890625,
+            0.8810653686523438,
+            0.88665771484375,
+            0.8958206176757812,
+            0.90869140625,
+            0.9254074096679688,
+            0.94610595703125,
+            0.9709243774414062,
+            1
+        };
 		
 		badSampleCount += !interpolateAndTest<Jamoma::Interpolation::Cubic<float>>(x0, x1, x2, x3, -1.00, -9.0);
 		badSampleCount += !interpolateAndTest<Jamoma::Interpolation::Cubic<float>>(x0, x1, x2, x3,  0.00,  2.0);
