@@ -41,6 +41,25 @@ public:
         
         s.sampleRate = -2000;
         mTest->TEST_ASSERT("setting sampleRate param below range", s.sampleRate == 1 );
+        
+        
+        
+        // testing the sampleRate limits again with a common processing class
+        Jamoma::Dcblock dc;
+        
+        dc.sampleRate = 1000;
+        mTest->TEST_ASSERT("setting sampleRate param within range", dc.sampleRate == 1000 );
+        
+        dc.sampleRate = 500000;
+        mTest->TEST_ASSERT("setting sampleRate param way above range", dc.sampleRate == 96000 );
+        
+        dc.sampleRate = 96010;
+        mTest->TEST_ASSERT("setting sampleRate param slightly above range", dc.sampleRate == 96000 );
+        
+        dc.sampleRate = -2000;
+        mTest->TEST_ASSERT("setting sampleRate param below range", dc.sampleRate == 1 );
+        
+
 	}
 	
 };
