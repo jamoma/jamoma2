@@ -151,10 +151,10 @@ public:
         int		badSampleCount = 0;
         Jamoma::Interpolation::Cosine<Jamoma::Sample> my_interp;
         
-        auto 	x0 = -1.0;
+        //auto 	x0 = -1.0;
         auto	x1 =  2.0;
         auto    x2 =  1.0;
-        auto    x3 =  4.0;
+        //auto    x3 =  4.0;
         
         // The following output was generated using the Octave code
         // in InterpolationTargetOutput.m by NW
@@ -225,11 +225,19 @@ public:
             1
         };
 		
-		badSampleCount += !interpolateAndTest<Jamoma::Interpolation::Cosine<double>>(x1, x2, 0.00,     3.0);
-		badSampleCount += !interpolateAndTest<Jamoma::Interpolation::Cosine<double>>(x1, x2, 1.0/3.0,  2.0);
-		badSampleCount += !interpolateAndTest<Jamoma::Interpolation::Cosine<double>>(x1, x2, 0.50,     1.0);
-		badSampleCount += !interpolateAndTest<Jamoma::Interpolation::Cosine<double>>(x1, x2, 2.0/3.0,  0.00000000000000044408920985006262);
-		badSampleCount += !interpolateAndTest<Jamoma::Interpolation::Cosine<double>>(x1, x2, 1.00,    -1.0);
+        Jamoma::Sample temp = 0.0;
+        Jamoma::Sample tempExpected = 0.0;
+        double delta = 0.0;
+        
+        for (int i = 0; i < expectedOutputCosine.size(); i++) {
+            delta = (i + 1.0) / 64.0;
+            temp = my_interp(x1,x2,delta);
+            tempExpected = expectedOutputCosine[i];
+            if (! mTest->compare(temp, tempExpected, true, 8) ) {
+                badSampleCount++;
+                std::cout << "sample " << i << " had a difference of " << std::fabs(temp - tempExpected) << std::endl;
+            }
+        }
 		
 		mTest->TEST_ASSERT("testCosine produced correct interpolation output", badSampleCount == 0);
 	}
@@ -343,10 +351,19 @@ public:
             1
         };
 		
-		badSampleCount += !interpolateAndTest<Jamoma::Interpolation::Cubic<float>>(x0, x1, x2, x3, -1.00, -9.0);
-		badSampleCount += !interpolateAndTest<Jamoma::Interpolation::Cubic<float>>(x0, x1, x2, x3,  0.00,  2.0);
-		badSampleCount += !interpolateAndTest<Jamoma::Interpolation::Cubic<float>>(x0, x1, x2, x3,  1.00,  1.0);
-		badSampleCount += !interpolateAndTest<Jamoma::Interpolation::Cubic<float>>(x0, x1, x2, x3,  2.00, 12.0);
+        Jamoma::Sample temp = 0.0;
+        Jamoma::Sample tempExpected = 0.0;
+        double delta = 0.0;
+        
+        for (int i = 0; i < expectedOutputCubic.size(); i++) {
+            delta = (i + 1.0) / 64.0;
+            temp = my_interp(x0,x1,x2,x3,delta);
+            tempExpected = expectedOutputCubic[i];
+            if (! mTest->compare(temp, tempExpected, true, 8) ) {
+                badSampleCount++;
+                std::cout << "sample " << i << " had a difference of " << std::fabs(temp - tempExpected) << std::endl;
+            }
+        }
 		
 		mTest->TEST_ASSERT("testCubic produced correct interpolation output", badSampleCount == 0);
 	}
