@@ -41,6 +41,16 @@ namespace Jamoma {
 	};
 
 	
+	/**	Tag a value with some sort of marker such as a unit of measure, a label, etc.
+		@param	a		The value
+		@param	tag		The tag
+		@return			A pair containing both the value and the tag.
+	 */
+	template<typename T, typename U>
+	auto Tag(T a, U tag) {
+		return std::make_pair(a, tag);
+	}
+	
 		
 		
 	constexpr double kPi				= 3.141592653589793238462643383279502884197169399375105820974944592307816406286208998628034825342117068;
@@ -135,6 +145,7 @@ constexpr inline uint32_t Hash(const char *const str, const uint32_t seed = 0xAE
 #include "JamomaDcblock.h"
 #include "JamomaDelay.h"
 #include "JamomaGain.h"
+#include "JamomaLimiter.h"
 #include "JamomaLowpassOnePole.h"
 #include "JamomaLowpassFourPole.h"
 #include "JamomaSync.h"

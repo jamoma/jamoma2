@@ -9,14 +9,13 @@ SET(CMAKE_CXX_COMPILER clang++)
 
 
 include_directories( 
-	"${PROJECT_SOURCE_DIR}/../../includes"
-	"${PROJECT_SOURCE_DIR}/../../includes/core"
-	"${PROJECT_SOURCE_DIR}/../../includes/library"
+	"${PROJECT_SOURCE_DIR}/../../include"
+	"${PROJECT_SOURCE_DIR}/../../include/core"
+	"${PROJECT_SOURCE_DIR}/../../include/objects"
 	
-	"${PROJECT_SOURCE_DIR}/../../dependencies/gtest"
-	"${PROJECT_SOURCE_DIR}/../../dependencies/Mersenne-1.1"
-	"${PROJECT_SOURCE_DIR}/../../dependencies/Murmur3"
-	"${PROJECT_SOURCE_DIR}/../../dependencies/readerwriterqueue-master"
+	"${PROJECT_SOURCE_DIR}/../../include/third-party/gtest"
+	"${PROJECT_SOURCE_DIR}/../../include/third-party/mersenne"
+	"${PROJECT_SOURCE_DIR}/../../include/third-party/murmur"
 )
 
 
