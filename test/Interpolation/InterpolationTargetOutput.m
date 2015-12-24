@@ -22,6 +22,8 @@ output_hermite = double (1 : 64);
 output_hermitegen = double (1 : 64);
 output_spline = double (1 : 64);
 output_splinegen = double (1 : 64);
+output_cubicgen = double (1 : 64);
+output_cosinegen = double (1 : 64);
 
 % the following function is adapted from gen~.interpolation example from Max 7.1
 function retval = interp_hermitegen(v,delta)
@@ -64,6 +66,33 @@ function retval = interp_splinegen(v,delta)
 	retval = f0*a*a2 + f1*a2 + f2*a + x;
 endfunction
 
+% the following function is adapted from gen~.interpolation example from Max 7.1
+function retval = interp_cubicgen(v,delta)
+	retval = 0.0;
+	delta_int = fix(delta);
+	a = delta - delta_int;
+	w = v(delta_int-1);
+	x = v(delta_int);
+	y = v(delta_int+1);
+	z = v(delta_int+2);
+	a2 = a*a;
+	f0 = z - y - w + x;
+	f1 = w - x - f0;
+	f2 = y - w;
+	retval = f0*a*a2 + f1*a2 + f2*a + x;
+endfunction
+
+% the following function is adapted from gen~.interpolation example from Max 7.1
+function retval = interp_cosinegen(v,delta)
+	retval = 0.0;
+	delta_int = fix(delta);
+	a = delta - delta_int;
+	x = v(delta_int);
+	y = v(delta_int+1);
+	a2 = 0.5*(1-cos(a*pi));
+	retval = x + a2*(y-x);
+endfunction
+
 for i = 1:64
 	current_delta = 2.0 + i / 64;
 	output_linear(i) = interp1(x,current_delta);
@@ -71,6 +100,8 @@ for i = 1:64
 	output_hermitegen(i) = interp_hermitegen(x,current_delta);
 	output_spline(i) = interp1(x,current_delta,"spline");
 	output_splinegen(i) = interp_splinegen(x,current_delta);
+	output_cubicgen(i) = interp_cubicgen(x,current_delta);
+	output_cosinegen(i) = interp_cosinegen(x,current_delta);
 endfor
 
 save expectedOutput.mat output_linear
@@ -78,3 +109,5 @@ save -append expectedOutput.mat output_hermite
 save -append expectedOutput.mat output_hermitegen
 save -append expectedOutput.mat output_spline
 save -append expectedOutput.mat output_splinegen
+save -append expectedOutput.mat output_cubicgen
+save -append expectedOutput.mat output_cosinegen
