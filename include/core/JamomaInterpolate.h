@@ -9,7 +9,7 @@
 				These functions require known discrete values to be passed by reference along with a double between 0 and 1 representing the fractional location desired. 
 				They return the interpolated value.
  
-	@author 	Timothy Place
+	@author 	Timothy Place, Nathan Wolek
 	@copyright	Copyright (c) 2005-2015 The Jamoma Group, http://jamoma.org.
 	@license	This project is released under the terms of the MIT License.
  */

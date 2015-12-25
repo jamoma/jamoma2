@@ -3,7 +3,7 @@
  
 	@brief 		Unit test for Interpolation classes
  
-	@author		Timothy Place
+	@author		Timothy Place, Nathan Wolek
 	@copyright	Copyright (c) 2005-2015 The Jamoma Group, http://jamoma.org.
 	@license	This project is released under the terms of the MIT License.
 
@@ -242,37 +242,7 @@ public:
 		mTest->TEST_ASSERT("testCosine produced correct interpolation output", badSampleCount == 0);
 	}
 	
-	
-	/*	We perform the interpolation on four values of the following function:
-		g(delta) = cos (PI*delta) + delta + 1
 
-		This gives the following input values to the interpolating function:
-
-		g(-1) = -1
-		g( 0) =  2
-		g( 1) =  1
-		g( 2) =  4
-
-		The difference is calculated as
-		∆g(delta) = (g(delta+1)-g(delta-1)) / 2
-
-		This leads to:
-
-		∆g(0) = ( 1 -(-1) )/2 = 1
-		∆g(1) = ( 4 - 2)/2 = 1
-
-		The cubic interpolation function f(delta) is then required to fullfil the following four conditions:
-
-		(A) f( 0) =  2
-		(B) f( 1) =  1
-		(C) f'(0) = 1
-		(D) f'(1) = 1
-
-		Analytically, when solved, these four conditions are fulfilled by the following 3rd order polynomial:
-		f(delta) = 4 delta^3 - 6 delta^2 + delta + 2
-
-		The following test compares interpolated values to expected values for this function.
-	 */
 	void testCubic() {
         int		badSampleCount = 0;
         Jamoma::Interpolation::Cubic<Jamoma::Sample> my_interp;
