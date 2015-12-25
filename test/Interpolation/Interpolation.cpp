@@ -28,31 +28,6 @@ public:
 	}
 
 	
-	template <class InterpolationType>
-	auto interpolateAndTest(Jamoma::Sample x0, Jamoma::Sample x1, Jamoma::Sample aDelta, Jamoma::Sample anExpectedValue) {
-		InterpolationType	interpolator;
-		auto				interpolatedValue = interpolator(x0, x1, aDelta);
-		auto				result = mTest->compare(interpolatedValue , anExpectedValue);
-		
-		if (result == false)
-			mTest->log("BAD INTERPOLATION @ delta=%.5f  ( value=%.10f   expected=%.10f )", aDelta, interpolatedValue, anExpectedValue);
-		return result;
-	}
-	
-	// TODO: way to make a single function template that is variadic?
-	template <class InterpolationType>
-	auto interpolateAndTest(float x0, float x1,float x2, float x3, float aDelta, float anExpectedValue) {
-		InterpolationType	interpolator;
-		auto				interpolatedValue = interpolator(x0, x1, x2, x3, aDelta);
-		auto				result = mTest->compare(interpolatedValue , anExpectedValue);
-		
-		if (result == false)
-			mTest->log("BAD INTERPOLATION @ delta=%.5f  ( value=%.10f   expected=%.10f )", aDelta, interpolatedValue, anExpectedValue);
-		return result;
-	}
-
-	
-	
 	void testLinear() {
 		int		badSampleCount = 0;
         Jamoma::Interpolation::Linear<Jamoma::Sample> my_interp;
