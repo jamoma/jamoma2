@@ -76,30 +76,6 @@ namespace Jamoma {
 
 		
 		/** Cubic interpolation
-			This interpolation algorithms calculate the coefficients a, b, c, d
-			of the 3rd order polynomial
-
-			f(delta)	= a*aDelta^3 + b*aDelta^2 + c*aDelta + d
-			= ( (a*aDelta + b )*aDelta + c)*aDelta + d)
-
-			so that the function fulfill the following four conditions:
-
-			-# f(0)  = x1 @n
-			-# f(1)  = x2 @n
-			-# f'(0) = (x2-x0)/2 @n
-			-# f'(1) = (x3-x1)/2
-
-			The two last conditions use a symetric estimate of the difference at the end points
-			of the region to interpolate over: 0 ≤ aDelta ≤ 1
-
-			These asumptions ensure that the resulting interpolated function, when moving over several
-			subsequent sections, is:
-
-			-# Continuous (no sudden jump)
-			-# Has a continuous derivative (no break pints with hard edges)
-
-			However, the 2nd order derivate will generally be discontinuous on the points connecting two sections.
-
 			@param x0		Sample value at integer index prior to x0
 			@param x1		Sample value at prior integer index
 			@param x2		Sample value at next integer index
