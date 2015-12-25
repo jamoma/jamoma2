@@ -115,10 +115,11 @@ namespace Jamoma {
 			static const int 	delay = 3;
 			
 			constexpr T operator()(T x0, T x1, T x2, T x3, double delta) noexcept {
-				T a = (-x0 + 3.*x1 - 3*x2 + x3)*0.5;
-				T b = x0 - 2.5*x1 + 2.*x2 - 0.5*x3;
-				T c = (x2-x0)*0.5;
-				return ( (a*delta + b)*delta + c)*delta + x1;
+                double delta2 = delta*delta;
+                T a = x3 - x2 - x0 + x1;
+                T b = x0 - x1 - a;
+                T c = x2 - x0;
+                return a*delta*delta2 + b*delta2 + c*delta + x1;
 			}
 		};
 		

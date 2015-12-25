@@ -22,7 +22,7 @@ public:
 	{
 		testLinear();
 		testCosine();
-		//testCubic();
+		testCubic();
         testHermite();
         testSpline();
 	}
@@ -465,7 +465,7 @@ public:
     
     void testSpline() {
         int		badSampleCount = 0;
-        Jamoma::Interpolation::Cubic<Jamoma::Sample> my_interp;
+        Jamoma::Interpolation::Spline<Jamoma::Sample> my_interp;
         
         auto 	x0 = -1.0;
         auto	x1 =  2.0;
