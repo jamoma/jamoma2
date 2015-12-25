@@ -28,8 +28,8 @@ output_cosinegen = double (1 : 64);
 % the following function is adapted from gen~.interpolation example from Max 7.1
 function retval = interp_hermitegen(v,delta)
 	retval = 0.0;
-	bias = 0.0;
-	tension = 0.0;
+	bias = 0.5;
+	tension = 0.5;
 	delta_int = fix(delta);
 	a = delta - delta_int;
 	w = v(delta_int-1);

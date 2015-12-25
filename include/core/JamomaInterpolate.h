@@ -4,7 +4,7 @@
 	
 	@brief 		Interpolation implementations
 
-	@details	Defines several functions for <a href="http://en.wikipedia.org/wiki/Interpolation">interpolating</a> between discrete data points such as those found in an array or matrix. 
+	@details	Defines several functions for <a href="http://en.wikipedia.org/wiki/Interpolation">interpolating</a> between discrete data points such as those found in an array or matrix.
 				These methods are commonly used in digital audio whenever we alter the rate at which a signal is read.
 				These functions require known discrete values to be passed by reference along with a double between 0 and 1 representing the fractional location desired. 
 				They return the interpolated value.
@@ -124,6 +124,7 @@ namespace Jamoma {
 		
 		
 		/** Hermite interpolation
+            When bias and tension are both set to 0.0, this algorithm is equivalent to Spline.
 			@param w	Sample value at integer index prior to x
 			@param x	Sample value at prior integer index
 			@param y	Sample value at next integer index
