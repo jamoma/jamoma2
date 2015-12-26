@@ -195,14 +195,16 @@ namespace Jamoma {
                 
                 // compute the first out Sample with the value we stashed in tailBeforeWrite
                 out[0][channel][0] =
-                    fractionalDelay() * tailBeforeWrite +
-                    oneMinusFractionalDelay() * tailPull[channel][0];
+                    mInterpolation(tailPull[channel][0],
+                                   tailBeforeWrite,
+                                   fractionalDelay());
                 
                 // then for loop through the rest with the tailPull SampleBundle
                 for (int frame=1; frame < x.frameCount(); ++frame) {
                     out[0][channel][frame] =
-                        fractionalDelay() * tailPull[channel][frame-1] +
-                        oneMinusFractionalDelay() * tailPull[channel][frame];
+                        mInterpolation (tailPull[channel][frame],
+                                        tailPull[channel][frame-1],
+                                        fractionalDelay());
                     
                 }
 
