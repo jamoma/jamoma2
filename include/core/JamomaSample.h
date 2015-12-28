@@ -155,18 +155,20 @@ namespace Jamoma {
 		}
 		
 		
-		// TODO: Add some additional fill() options -- e.g. filling with a sine function, sinc function, etc.
-        // These can emulate options found here:
-        // https://github.com/jamoma/JamomaCore/blob/master/DSP/library/source/TTSampleMatrix.cpp#L254
-        
+		/** Fill the values with a specific shape (ramp, sine, triangle, etc)
+         @warning This function is experimental. Work will likely migrate elsewhere as issue #68 progresses.
+         */
         void fill_shape()
         {
-            class LineGen {
+            // NW: what follows are three examples (RampGen, SineGen, TriangleGen)
+            // these demo what a class designed to work with std:generate might look like
+            
+            class RampGen {
             private:
                 int current;
                 int max;
             public:
-                LineGen (int size = 1) : max(size){
+                RampGen (int size = 1) : max(size){
                     current=-1;
                 }
                 Sample operator()() {
@@ -209,8 +211,11 @@ namespace Jamoma {
                 }
             };
             
+            // NW: the following for loop does the actual work of filling
+            // change the last option to any of the three preceding classes to change the shape
+            
             for (auto& channel : mChannels)
-                std::generate(channel.begin(), channel.end(), TriangleGen(frameCount()));
+                std::generate(channel.begin(), channel.end(), SineGen(frameCount()));
         }
 		
 		

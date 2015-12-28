@@ -102,15 +102,16 @@ namespace Jamoma {
             
         }
         
+        // NW: created as a temporary place to see results from work on issue #68
         void testFillFunctions() {
             
-            Jamoma::SampleBundle	in_samples(4, 128);
+            Jamoma::SampleBundle	test_sample_bundle(4, 128);
             
-            in_samples.fill_shape();
+            test_sample_bundle.fill_shape();
             
-            for(int i = 0; i < in_samples[0].size(); i++) {
-                for(int j = 0; j < in_samples.channelCount(); j++) {
-                    std::cout << "sample " << i << " in channel " << j << " = " << in_samples[j][i] << std::endl;
+            for(int i = 0; i < test_sample_bundle[0].size(); i++) {
+                for(int j = 0; j < test_sample_bundle.channelCount(); j++) {
+                    std::cout << "sample " << i << " in channel " << j << " = " << test_sample_bundle[j][i] << std::endl;
                 }
             }
             
