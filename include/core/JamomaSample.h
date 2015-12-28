@@ -161,17 +161,21 @@ namespace Jamoma {
         
         void fill_line()
         {
-            struct j_line_gen {
+            class LineGen {
+            private:
                 int current;
-                //int max = frameCount();
-                j_line_gen() { current=-1; }
-                Sample operator()() {
-                    return (Sample)++current / 512.0;
+                int max;
+            public:
+                LineGen (int size = 1) : max(size){
+                    current=-1;
                 }
-            } LineGen;
+                Sample operator()() {
+                    return (Sample)++current / max;
+                }
+            };
             
             for (auto& channel : mChannels)
-                std::generate(channel.begin(), channel.end(), LineGen);
+                std::generate(channel.begin(), channel.end(), LineGen(frameCount()));
         }
 		
 		
