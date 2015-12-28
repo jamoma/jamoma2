@@ -104,12 +104,14 @@ namespace Jamoma {
         
         void testFillFunctions() {
             
-            Jamoma::SampleBundle	in_samples(2, 512);
+            Jamoma::SampleBundle	in_samples(4, 128);
             
             in_samples.fill_shape();
             
             for(int i = 0; i < in_samples[0].size(); i++) {
-                std::cout << "sample " << i << " = " << in_samples[0][i] << std::endl;
+                for(int j = 0; j < in_samples.channelCount(); j++) {
+                    std::cout << "sample " << i << " in channel " << j << " = " << in_samples[j][i] << std::endl;
+                }
             }
             
         }
