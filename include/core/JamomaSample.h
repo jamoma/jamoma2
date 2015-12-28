@@ -187,8 +187,30 @@ namespace Jamoma {
                 }
             };
             
+            class TriangleGen {
+            private:
+                int current;
+                int max;
+            public:
+                TriangleGen (int size = 1) : max(size){
+                    current = -1;
+                }
+                Sample operator()() {
+                    Sample out = 0.0;
+                    ++current;
+                    if (current <= max/4) {
+                        out = 4.0 * current / max;
+                    } else if (current >= 3*max/4) {
+                        out = -1.0 + 4.0 * (current-3*max/4) / max;
+                    } else {
+                        out = 2.0 - 4.0 * current / max;
+                    }
+                    return out;
+                }
+            };
+            
             for (auto& channel : mChannels)
-                std::generate(channel.begin(), channel.end(), SineGen(frameCount()));
+                std::generate(channel.begin(), channel.end(), TriangleGen(frameCount()));
         }
 		
 		
