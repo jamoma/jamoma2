@@ -23,6 +23,7 @@ namespace Jamoma {
 		{
 			testBasic();
             testAutoCreatedSampleBundleGroup();
+            testFillFunctions();
 		}
 
 		
@@ -100,6 +101,19 @@ namespace Jamoma {
             mTest->TEST_ASSERT("stashed value 3 = 4", mTest->compare(stash_value3, stash_value4, false));
             
         }
+        
+        void testFillFunctions() {
+            
+            Jamoma::SampleBundle	in_samples(2, 512);
+            
+            in_samples.fill_line();
+            
+            for(int i = 0; i < in_samples[0].size(); i++) {
+                std::cout << "sample " << i << " = " << in_samples[0][i] << std::endl;
+            }
+            
+        }
+        
 	};
 
 } // namespace Jamoma

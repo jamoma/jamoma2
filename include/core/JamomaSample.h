@@ -158,6 +158,21 @@ namespace Jamoma {
 		// TODO: Add some additional fill() options -- e.g. filling with a sine function, sinc function, etc.
         // These can emulate options found here:
         // https://github.com/jamoma/JamomaCore/blob/master/DSP/library/source/TTSampleMatrix.cpp#L254
+        
+        void fill_line()
+        {
+            struct j_line_gen {
+                int current;
+                //int max = frameCount();
+                j_line_gen() { current=-1; }
+                Sample operator()() {
+                    return (Sample)++current / 512.0;
+                }
+            } LineGen;
+            
+            for (auto& channel : mChannels)
+                std::generate(channel.begin(), channel.end(), LineGen);
+        }
 		
 		
 		/** Copy values into the SampleBundle from outside. 
