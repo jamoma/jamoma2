@@ -201,7 +201,7 @@ namespace Jamoma {
                     if (current <= max/4) {
                         out = 4.0 * current / max;
                     } else if (current >= 3*max/4) {
-                        out = -1.0 + 4.0 * (current-3*max/4) / max;
+                        out = -4.0 + 4.0 * current / max;
                     } else {
                         out = 2.0 - 4.0 * current / max;
                     }
