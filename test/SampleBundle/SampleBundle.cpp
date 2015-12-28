@@ -106,7 +106,7 @@ namespace Jamoma {
             
             Jamoma::SampleBundle	in_samples(2, 512);
             
-            in_samples.fill_line();
+            in_samples.fill_shape();
             
             for(int i = 0; i < in_samples[0].size(); i++) {
                 std::cout << "sample " << i << " = " << in_samples[0][i] << std::endl;

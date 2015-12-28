@@ -159,7 +159,7 @@ namespace Jamoma {
         // These can emulate options found here:
         // https://github.com/jamoma/JamomaCore/blob/master/DSP/library/source/TTSampleMatrix.cpp#L254
         
-        void fill_line()
+        void fill_shape()
         {
             class LineGen {
             private:
@@ -174,8 +174,21 @@ namespace Jamoma {
                 }
             };
             
+            class SineGen {
+            private:
+                int current;
+                int max;
+            public:
+                SineGen (int size = 1) : max(size){
+                    current=-1;
+                }
+                Sample operator()() {
+                    return (Sample) std::sin(++current * kTwoPi / max);
+                }
+            };
+            
             for (auto& channel : mChannels)
-                std::generate(channel.begin(), channel.end(), LineGen(frameCount()));
+                std::generate(channel.begin(), channel.end(), SineGen(frameCount()));
         }
 		
 		
