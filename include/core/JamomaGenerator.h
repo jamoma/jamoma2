@@ -24,9 +24,11 @@ namespace Jamoma {
 		template <typename T>
 		class Ramp {
 		public:
-			Ramp (int size = 1)
+			Ramp (int size)
 			: max(size)
-			{}
+			{
+                //TODO: we need way to protect against zero. static_assert did not work.
+            }
 			
 			T operator()() {
 				++current;
@@ -42,9 +44,11 @@ namespace Jamoma {
 		template <typename T>
 		class Sine {
 		public:
-			Sine (int size = 1)
+			Sine (int size)
 			: max(size)
-			{}
+            {
+                //TODO: we need way to protect against zero. static_assert did not work.
+            }
 			
 			T operator()() {
 				++current;
@@ -61,9 +65,11 @@ namespace Jamoma {
 		template <typename T>
 		class Triangle {
 		public:
-			Triangle (int size = 1)
+			Triangle (int size)
 			: max(size)
-			{}
+            {
+                //TODO: we need way to protect against zero. static_assert did not work.
+            }
 			
 			T operator()() {
 				T out = 0.0;
