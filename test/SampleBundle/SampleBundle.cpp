@@ -23,7 +23,6 @@ namespace Jamoma {
 		{
 			testBasic();
             testAutoCreatedSampleBundleGroup();
-            testGenerateFunctions();
 		}
 
 		
@@ -100,28 +99,6 @@ namespace Jamoma {
             mTest->TEST_ASSERT("stashed value 2 = 4", mTest->compare(stash_value2, stash_value4, false));
             mTest->TEST_ASSERT("stashed value 3 = 4", mTest->compare(stash_value3, stash_value4, false));
             
-        }
-        
-        // NW: created as a temporary place to see results from work on issue #68
-        void testGenerateFunctions() {
-            
-            Jamoma::SampleBundle	test_sample_bundle(4, 128);
-            
-            test_sample_bundle.generate();
-            
-            for(int i = 0; i < test_sample_bundle[0].size(); i++) {
-                for(int j = 0; j < test_sample_bundle.channelCount(); j++) {
-                    std::cout << "sample " << i << " in channel " << j << " = " << test_sample_bundle[j][i] << std::endl;
-                }
-            }
-			
-			
-			test_sample_bundle.generate<Jamoma::Generator::Triangle<Sample>>();
-			for (auto i=0; i < test_sample_bundle[0].size(); ++i) {
-				for (auto j=0; j < test_sample_bundle.channelCount(); ++j)
-					std::cout << "tri sample " << i << " in channel " << j << " = " << test_sample_bundle[j][i] << std::endl;
-			}
-			
         }
 		
 	};
