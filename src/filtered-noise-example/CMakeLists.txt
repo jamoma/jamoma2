@@ -19,7 +19,7 @@ include_directories(
 	"${PORTMIDI_INCLUDES}"
 	"${PORTAUDIO_INCLUDES}"
 )
-file(GLOB_RECURSE PROJECT_HEADERS ${PROJECT_SOURCE_DIR}/../../includes/*)
+file(GLOB_RECURSE PROJECT_HEADERS ${PROJECT_SOURCE_DIR}/../../include/Jamoma*.h)
 
 
 SET(CMAKE_C_COMPILER clang)
