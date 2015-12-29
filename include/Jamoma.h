@@ -120,6 +120,7 @@ constexpr inline uint32_t Hash(const char *const str, const uint32_t seed = 0xAE
 
 // Core
 
+#include "JamomaGenerators.h"
 #include "JamomaLimits.h"
 #include "JamomaDataspace.h"
 #include "JamomaInterpolate.h"

@@ -158,64 +158,9 @@ namespace Jamoma {
 		/** Fill the values with a specific shape (ramp, sine, triangle, etc)
          @warning This function is experimental. Work will likely migrate elsewhere as issue #68 progresses.
          */
-        void fill_shape()
-        {
-            // NW: what follows are three examples (RampGen, SineGen, TriangleGen)
-            // these demo what a class designed to work with std:generate might look like
-            
-            class RampGen {
-            private:
-                int current;
-                int max;
-            public:
-                RampGen (int size = 1) : max(size){
-                    current=-1;
-                }
-                Sample operator()() {
-                    return (Sample)++current / max;
-                }
-            };
-            
-            class SineGen {
-            private:
-                int current;
-                int max;
-            public:
-                SineGen (int size = 1) : max(size){
-                    current=-1;
-                }
-                Sample operator()() {
-                    return (Sample) std::sin(++current * kTwoPi / max);
-                }
-            };
-            
-            class TriangleGen {
-            private:
-                int current;
-                int max;
-            public:
-                TriangleGen (int size = 1) : max(size){
-                    current = -1;
-                }
-                Sample operator()() {
-                    Sample out = 0.0;
-                    ++current;
-                    if (current <= max/4) {
-                        out = 4.0 * current / max;
-                    } else if (current >= 3*max/4) {
-                        out = -4.0 + 4.0 * current / max;
-                    } else {
-                        out = 2.0 - 4.0 * current / max;
-                    }
-                    return out;
-                }
-            };
-            
-            // NW: the following for loop does the actual work of filling
-            // change the last option to any of the three preceding classes to change the shape
-            
+        void generate() {
             for (auto& channel : mChannels)
-                std::generate(channel.begin(), channel.end(), SineGen(frameCount()));
+				std::generate(channel.begin(), channel.end(), Generator::Sine<Sample>(frameCount()));
         }
 		
 		

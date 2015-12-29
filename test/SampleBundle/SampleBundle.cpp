@@ -107,7 +107,7 @@ namespace Jamoma {
             
             Jamoma::SampleBundle	test_sample_bundle(4, 128);
             
-            test_sample_bundle.fill_shape();
+            test_sample_bundle.generate();
             
             for(int i = 0; i < test_sample_bundle[0].size(); i++) {
                 for(int j = 0; j < test_sample_bundle.channelCount(); j++) {
