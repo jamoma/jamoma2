@@ -21,6 +21,8 @@ public:
 	: mTest(test)
 	{
         testRamp();
+        testSine();
+        testTriangle();
         //testGenerateFunctions();
 	}
     
@@ -113,6 +115,190 @@ public:
         }
 
         mTest->TEST_ASSERT("testRamp generated correct output", badSampleCount == 0);
+        
+    }
+    
+    void testSine() {
+        int		badSampleCount = 0;
+        Jamoma::SampleBundle	test_sample_bundle(1, 64);
+        
+        test_sample_bundle.generate<Jamoma::Generator::Sine<Jamoma::Sample>>();
+        
+        // The following output will be generated using the Octave code
+        // in GeneratorTargetOutput.m by NW
+        // For now, it is just zeros
+        Jamoma::SampleVector expectedOutputSine = {
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        };
+        
+        Jamoma::Sample temp = 0.0;
+        Jamoma::Sample tempExpected = 0.0;
+        
+        for (int i = 0; i < expectedOutputSine.size(); i++) {
+            temp = test_sample_bundle[0][i];
+            tempExpected = expectedOutputSine[i];
+            if (! mTest->compare(temp, tempExpected, true, 8) ) {
+                badSampleCount++;
+                std::cout << "sample " << i << " had a difference of " << std::fabs(temp - tempExpected) << std::endl;
+            }
+        }
+        
+        mTest->TEST_ASSERT("testSine generated correct output", badSampleCount == 0);
+        
+    }
+    
+    void testTriangle() {
+        int		badSampleCount = 0;
+        Jamoma::SampleBundle	test_sample_bundle(1, 64);
+        
+        test_sample_bundle.generate<Jamoma::Generator::Triangle<Jamoma::Sample>>();
+        
+        // The following output will be generated using the Octave code
+        // in GeneratorTargetOutput.m by NW
+        // For now, it is just zeros
+        Jamoma::SampleVector expectedOutputTriangle = {
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        };
+        
+        Jamoma::Sample temp = 0.0;
+        Jamoma::Sample tempExpected = 0.0;
+        
+        for (int i = 0; i < expectedOutputTriangle.size(); i++) {
+            temp = test_sample_bundle[0][i];
+            tempExpected = expectedOutputTriangle[i];
+            if (! mTest->compare(temp, tempExpected, true, 8) ) {
+                badSampleCount++;
+                std::cout << "sample " << i << " had a difference of " << std::fabs(temp - tempExpected) << std::endl;
+            }
+        }
+        
+        mTest->TEST_ASSERT("testTriangle generated correct output", badSampleCount == 0);
         
     }
     
