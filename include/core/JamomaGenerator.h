@@ -17,14 +17,11 @@
 namespace Jamoma {
 	namespace Generator {
 	
-		
-		// NW: what follows are three examples (Ramp, Sine, Triangle)
-		// these demo what a class designed to work with std:generate might look like
-		
+        
 		template <typename T>
-		class Ramp {
+		class UnipolarRamp {
 		public:
-			Ramp (int size)
+			UnipolarRamp (int size)
 			: mCycleSize(size)
 			{
                 //TODO: we need way to protect against zero. static_assert did not work.
