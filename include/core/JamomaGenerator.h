@@ -25,19 +25,19 @@ namespace Jamoma {
 		class Ramp {
 		public:
 			Ramp (int size)
-			: max(size)
+			: mCycleSize(size)
 			{
                 //TODO: we need way to protect against zero. static_assert did not work.
             }
 			
 			T operator()() {
-				++current;
-				return T(current) / max;
+				++mCurrent;
+				return T(mCurrent) / mCycleSize;
 			}
 			
 		private:
-			int current = -1;
-			int max;
+			int mCurrent = -1;
+			int mCycleSize; // required by constructor
 		};
 		
 		
@@ -45,20 +45,20 @@ namespace Jamoma {
 		class Sine {
 		public:
 			Sine (int size)
-			: max(size)
+			: mCycleSize(size)
             {
                 //TODO: we need way to protect against zero. static_assert did not work.
             }
 			
 			T operator()() {
-				++current;
-				auto output = std::sin(current * kTwoPi / max);
+				++mCurrent;
+				auto output = std::sin(mCurrent * kTwoPi / mCycleSize);
 				return T(output);
 			}
 			
 		private:
-			int current = -1;
-			int max;
+			int mCurrent = -1;
+			int mCycleSize; // required by constructor
 		};
 		
 		
@@ -66,27 +66,27 @@ namespace Jamoma {
 		class Triangle {
 		public:
 			Triangle (int size)
-			: max(size)
+			: mCycleSize(size)
             {
                 //TODO: we need way to protect against zero. static_assert did not work.
             }
 			
 			T operator()() {
 				T out = 0.0;
-				++current;
+				++mCurrent;
 				
-				if (current <= max/4)
-					out = 4.0 * current / max;
-				else if (current >= 3 * max / 4)
-					out = -4.0 + 4.0 * current / max;
+				if (mCurrent <= mCycleSize/4)
+					out = 4.0 * mCurrent / mCycleSize;
+				else if (mCurrent >= 3 * mCycleSize / 4)
+					out = -4.0 + 4.0 * mCurrent / mCycleSize;
 				else
-					out = 2.0 - 4.0 * current / max;
+					out = 2.0 - 4.0 * mCurrent / mCycleSize;
 				return out;
 			}
 			
 		private:
-			int current = -1;
-			int max;
+			int mCurrent = -1;
+			int mCycleSize; // required by constructor
 		};
 	
 	} // namespace Generator
