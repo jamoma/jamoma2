@@ -11,12 +11,27 @@ clear
 
 output_unipolarramp = double (1 : 64);
 output_sine = double (1 : 64);
+output_triangle = double (1 : 64);
+
+% the following function is adapted from the code in JamomaGenerators
+function retval = generate_trangle(delta)
+	retval = 0.0;
+	if ( delta <= 0.25 )
+		retval = delta / 0.25;
+	elseif ( delta >= 0.75 )
+		retval = -1.0 + (delta - 0.75) / 0.25;
+	else
+		retval = 1.0 - (delta - 0.25) / 0.25;
+	endif
+endfunction
 
 for i = 1:64
 	current_delta = (i - 1) / 64;
     output_unipolarramp(i) = current_delta;
 	output_sine(i) = sin (current_delta * 2.0 * pi);
+	output_triangle(i) = generate_trangle(current_delta);
 endfor
 
 save expectedOutput.mat output_unipolarramp
 save -append expectedOutput.mat output_sine
+save -append expectedOutput.mat output_triangle
