@@ -10,11 +10,13 @@
 clear
 
 output_unipolarramp = double (1 : 64);
+output_sine = double (1 : 64);
 
 for i = 1:64
 	current_delta = (i - 1) / 64;
     output_unipolarramp(i) = current_delta;
+	output_sine(i) = sin (current_delta * 2.0 * pi);
 endfor
 
 save expectedOutput.mat output_unipolarramp
-%save -append expectedOutput.mat MORE OUTPUT
+save -append expectedOutput.mat output_sine
