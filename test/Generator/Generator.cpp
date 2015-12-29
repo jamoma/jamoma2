@@ -20,8 +20,101 @@ public:
 	GeneratorTest(Jamoma::UnitTest<GeneratorTest>* test)
 	: mTest(test)
 	{
-        testGenerateFunctions();
+        testRamp();
+        //testGenerateFunctions();
 	}
+    
+    void testRamp() {
+        int		badSampleCount = 0;
+        Jamoma::SampleBundle	test_sample_bundle(1, 64);
+        
+        test_sample_bundle.generate<Jamoma::Generator::Ramp<Jamoma::Sample>>();
+        
+        // The following output will be generated using the Octave code
+        // in GeneratorTargetOutput.m by NW
+        // For now, it is just zeros
+        Jamoma::SampleVector expectedOutputRamp = {
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        };
+        
+        Jamoma::Sample temp = 0.0;
+        Jamoma::Sample tempExpected = 0.0;
+        
+        for (int i = 0; i < expectedOutputRamp.size(); i++) {
+            temp = test_sample_bundle[0][i];
+            tempExpected = expectedOutputRamp[i];
+            if (! mTest->compare(temp, tempExpected, true, 8) ) {
+                badSampleCount++;
+                std::cout << "sample " << i << " had a difference of " << std::fabs(temp - tempExpected) << std::endl;
+            }
+        }
+
+        mTest->TEST_ASSERT("testRamp generated correct output", badSampleCount == 0);
+        
+    }
     
     void testGenerateFunctions() {
         
