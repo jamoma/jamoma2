@@ -158,9 +158,10 @@ namespace Jamoma {
 		/** Fill the values with a specific shape (ramp, sine, triangle, etc)
          @warning This function is experimental. Work will likely migrate elsewhere as issue #68 progresses.
          */
+		template <class GeneratorType = Generator::Sine<Sample>>
         void generate() {
             for (auto& channel : mChannels)
-				std::generate(channel.begin(), channel.end(), Generator::Sine<Sample>(frameCount()));
+				std::generate(channel.begin(), channel.end(), GeneratorType(frameCount()));
         }
 		
 		

@@ -23,7 +23,7 @@ namespace Jamoma {
 		{
 			testBasic();
             testAutoCreatedSampleBundleGroup();
-            testFillFunctions();
+            testGenerateFunctions();
 		}
 
 		
@@ -103,7 +103,7 @@ namespace Jamoma {
         }
         
         // NW: created as a temporary place to see results from work on issue #68
-        void testFillFunctions() {
+        void testGenerateFunctions() {
             
             Jamoma::SampleBundle	test_sample_bundle(4, 128);
             
@@ -114,9 +114,16 @@ namespace Jamoma {
                     std::cout << "sample " << i << " in channel " << j << " = " << test_sample_bundle[j][i] << std::endl;
                 }
             }
-            
+			
+			
+			test_sample_bundle.generate<Jamoma::Generator::Triangle<Sample>>();
+			for (auto i=0; i < test_sample_bundle[0].size(); ++i) {
+				for (auto j=0; j < test_sample_bundle.channelCount(); ++j)
+					std::cout << "tri sample " << i << " in channel " << j << " = " << test_sample_bundle[j][i] << std::endl;
+			}
+			
         }
-        
+		
 	};
 
 } // namespace Jamoma
