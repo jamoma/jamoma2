@@ -24,8 +24,7 @@ public:
         testUnipolarRamp();
         testSine();
         testTriangle();
-        
-        //test across multi-channel SampleBundles
+        testConsistentAcrossMultipleChannels();
 	}
     
     void testRamp() {
@@ -392,24 +391,27 @@ public:
         
     }
     
-    void testGenerateFunctions() {
-        
-        Jamoma::SampleBundle	test_sample_bundle(4, 128);
+    void testConsistentAcrossMultipleChannels() {
+        int		badSampleCount = 0;
+        Jamoma::SampleBundle	test_sample_bundle(10, 128);
         
         test_sample_bundle.generate();
         
+        Jamoma::Sample temp = 0.0;
+        Jamoma::Sample tempExpected = 0.0;
+        
         for(int i = 0; i < test_sample_bundle[0].size(); i++) {
-            for(int j = 0; j < test_sample_bundle.channelCount(); j++) {
-                std::cout << "sample " << i << " in channel " << j << " = " << test_sample_bundle[j][i] << std::endl;
+            tempExpected = test_sample_bundle[0][i];
+            for(int j = 1; j < test_sample_bundle.channelCount(); j++) {
+                temp = test_sample_bundle[j][i];
+                if (! mTest->compare(temp, tempExpected, true) ) {
+                    badSampleCount++;
+                    std::cout << "bad sample " << i << " in channel " << j << " = " << test_sample_bundle[j][i] << std::endl;
+                }
             }
         }
         
-        
-        test_sample_bundle.generate<Jamoma::Generator::Triangle<Jamoma::Sample>>();
-        for (auto i=0; i < test_sample_bundle[0].size(); ++i) {
-            for (auto j=0; j < test_sample_bundle.channelCount(); ++j)
-                std::cout << "tri sample " << i << " in channel " << j << " = " << test_sample_bundle[j][i] << std::endl;
-        }
+        mTest->TEST_ASSERT("generated consistent output across multiple channels", badSampleCount == 0);
         
     }
 
