@@ -28,7 +28,14 @@ namespace Jamoma {
 		};
 		
 	
-		/**	No interpolation always returns the first sample passed to it */
+		/**	No interpolation always returns the first sample passed to it 
+            @param x0		Sample value that will be returned
+            @param x1		Unused sample value
+            @param x2		Unused sample value
+            @param x3		Unused sample value
+            @param delta	Unused fractional location
+            @return         The interpolated value.
+         */
 		template<class T>
 		class None : Base {
 		public:
@@ -47,7 +54,16 @@ namespace Jamoma {
             }
 		};
                 
-        /**	Nearest interpolation returns the closest sample by rounding the delta up or down. */
+        /**	Nearest interpolation returns the closest sample by rounding the delta up or down. 
+            @param x0		Returned sample value when rounding down
+            @param x1		Returned sample value when rounding up
+            @param x2		Unused sample value
+            @param x3		Unused sample value
+            @param delta	Fractional location between x0 and x1 @n
+                            delta < 0.5 => x0 @n
+                            delta >= 0.5 => x1
+            @return         The interpolated value.
+         */
         template<class T>
         class Nearest : Base {
         public:
