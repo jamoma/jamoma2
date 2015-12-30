@@ -20,12 +20,35 @@ public:
 	InterpolatorTest(Jamoma::UnitTest<InterpolatorTest>* test)
 	: mTest(test)
 	{
-		testLinear();
+        testNone();
+        testLinear();
 		testCosine();
 		testCubic();
         testHermite();
         testSpline();
-	}
+    }
+    
+    void testNone() {
+        Jamoma::Interpolator::None<Jamoma::Sample> my_interp;
+        
+        auto 	x0 = -1.0;
+        auto	x1 =  2.0;
+        auto    x2 =  1.0;
+        auto    x3 =  4.0;
+        
+        auto out = my_interp(x0);
+        
+        mTest->TEST_ASSERT("testNone with 1 sample produced correct output", out == x0);
+        
+        auto out2 = my_interp(x0,x1,0.25);
+        
+        mTest->TEST_ASSERT("testNone with 2 samples produced correct output", out2 == x0);
+        
+        auto out3 = my_interp(x0,x1,x2,x3,0.25);
+        
+        mTest->TEST_ASSERT("testNone with 4 samples produced correct output", out3 == x0);
+        
+    }
 
 	
 	void testLinear() {
