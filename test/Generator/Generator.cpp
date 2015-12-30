@@ -120,6 +120,25 @@ public:
         
         mTest->TEST_ASSERT("testRamp generated correct output", badSampleCount == 0);
         
+        badSampleCount = 0;
+        temp = 0.0;
+        tempExpected = 0.0;
+        
+        Jamoma::SampleBundle	test_sample_bundle2(1, 64);
+        
+        test_sample_bundle2.generate<Jamoma::Generator::Sawtooth<Jamoma::Sample>>();
+        
+        for (int i = 0; i < expectedOutputRamp.size(); i++) {
+            temp = test_sample_bundle2[0][i];
+            tempExpected = expectedOutputRamp[i];
+            if (! mTest->compare(temp, tempExpected, true, 8) ) {
+                badSampleCount++;
+                std::cout << "sample " << i << " had a difference of " << std::fabs(temp - tempExpected) << std::endl;
+            }
+        }
+        
+        mTest->TEST_ASSERT("using UnipolarSawtooth generated same output as Ramp", badSampleCount == 0);
+        
     }
     
     void testUnipolarRamp() {
@@ -210,6 +229,25 @@ public:
         }
 
         mTest->TEST_ASSERT("testUnipolarRamp generated correct output", badSampleCount == 0);
+        
+        badSampleCount = 0;
+        temp = 0.0;
+        tempExpected = 0.0;
+        
+        Jamoma::SampleBundle	test_sample_bundle2(1, 64);
+        
+        test_sample_bundle2.generate<Jamoma::Generator::UnipolarSawtooth<Jamoma::Sample>>();
+        
+        for (int i = 0; i < expectedOutputUnipolarRamp.size(); i++) {
+            temp = test_sample_bundle2[0][i];
+            tempExpected = expectedOutputUnipolarRamp[i];
+            if (! mTest->compare(temp, tempExpected, true, 8) ) {
+                badSampleCount++;
+                std::cout << "sample " << i << " had a difference of " << std::fabs(temp - tempExpected) << std::endl;
+            }
+        }
+        
+        mTest->TEST_ASSERT("using UnipolarSawtooth generated same output as UnipolarRamp", badSampleCount == 0);
         
     }
     

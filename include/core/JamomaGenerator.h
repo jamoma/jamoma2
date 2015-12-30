@@ -40,6 +40,13 @@ namespace Jamoma {
             int mCycleSize; // required by constructor
         };
         
+        /** Generates an ideal sawtooth waveform from -1 to 1. Not anti-aliased.
+         @param T       render output as this datatype. algorithm was designed to assume the use of floating point.
+         @param size    size of the target vector
+         */
+        template <typename T>
+        using Sawtooth     = Generator::Ramp<T>;
+        
         /** Generates a line from 0 to 1 with consistent slope
          @param T       render output as this datatype. algorithm was designed to assume the use of floating point.
          @param size    size of the target vector
@@ -62,6 +69,13 @@ namespace Jamoma {
 			int mCurrent = -1;
 			int mCycleSize; // required by constructor
 		};
+        
+        /** Generates an ideal sawtooth waveform from 0 to 1. Not anti-aliased.
+         @param T       render output as this datatype. algorithm was designed to assume the use of floating point.
+         @param size    size of the target vector
+         */
+        template <typename T>
+        using UnipolarSawtooth     = Generator::UnipolarRamp<T>;
 		
         /** Generates a sine wave constrained between -1 to 1
          @param T       render output as this datatype. algorithm was designed to assume the use of floating point.
