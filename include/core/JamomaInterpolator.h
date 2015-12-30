@@ -28,7 +28,7 @@ namespace Jamoma {
 		};
 		
 	
-		/**	No interpolation */
+		/**	No interpolation always returns the first sample passed to it */
 		template<class T>
 		class None : Base {
 		public:
@@ -39,6 +39,25 @@ namespace Jamoma {
 			}
             
             constexpr T operator()(T x0, T x1, double delta) noexcept {
+                return x0;
+            }
+            
+            constexpr T operator()(T x0, T x1, T x2, T x3, double delta) noexcept {
+                return x0;
+            }
+		};
+                
+        /**	Nearest interpolation returns the closest sample by rounding the delta up or down. */
+        template<class T>
+        class Nearest : Base {
+        public:
+            static const int 	delay = 0;
+            
+            constexpr T operator()(T x0) noexcept {
+                return x0;
+            }
+            
+            constexpr T operator()(T x0, T x1, double delta) noexcept {
                 T out = delta < 0.5 ? x0 : x1;
                 return out;
             }
@@ -47,9 +66,8 @@ namespace Jamoma {
                 T out = delta < 0.5 ? x0 : x1;
                 return out;
             }
-		};
+        };
 
-		
 		/** Linear interpolation.
 			@param x0		Sample value at prior integer index
 			@param x1		Sample value at next integer index
