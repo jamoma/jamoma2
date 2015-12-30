@@ -9,6 +9,7 @@
 
 clear
 
+output_ramp = double (1 : 64);
 output_unipolarramp = double (1 : 64);
 output_sine = double (1 : 64);
 output_triangle = double (1 : 64);
@@ -27,11 +28,13 @@ endfunction
 
 for i = 1:64
 	current_delta = (i - 1) / 64;
+	output_ramp(i) = ( current_delta * 2.0 ) - 1.0;
     output_unipolarramp(i) = current_delta;
 	output_sine(i) = sin (current_delta * 2.0 * pi);
 	output_triangle(i) = generate_trangle(current_delta);
 endfor
 
-save expectedOutput.mat output_unipolarramp
+save expectedOutput.mat output_ramp
+save -append expectedOutput.mat output_unipolarramp
 save -append expectedOutput.mat output_sine
 save -append expectedOutput.mat output_triangle

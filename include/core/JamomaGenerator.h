@@ -16,7 +16,30 @@ namespace Jamoma {
     /** Defines several functions for use with <a href="http://en.cppreference.com/w/cpp/algorithm/generate">std::generate</a> to fill vectors with common shapes used in computer sound.
      */
 	namespace Generator {
-	
+        
+        /** Generates a line from -1 to 1 with consistent slope
+         @param T       render output as this datatype. algorithm was designed to assume the use of floating point.
+         @param size    size of the target vector
+         */
+        template <typename T>
+        class Ramp {
+        public:
+            Ramp (int size)
+            : mCycleSize(size)
+            {
+                //TODO: we need way to protect against zero. static_assert did not work.
+            }
+            
+            T operator()() {
+                ++mCurrent;
+                return ( T(mCurrent) * 2.0 / mCycleSize) - 1.0;
+            }
+            
+        private:
+            int mCurrent = -1;
+            int mCycleSize; // required by constructor
+        };
+        
         /** Generates a line from 0 to 1 with consistent slope
          @param T       render output as this datatype. algorithm was designed to assume the use of floating point.
          @param size    size of the target vector
