@@ -160,10 +160,10 @@ namespace Jamoma {
 		
 		
 		/** Spline interpolation based on the Breeuwsma catmull-rom spline
-			@param w	Sample value at integer index prior to x
-			@param x	Sample value at prior integer index
-			@param y	Sample value at next integer index
-			@param z	Sample value at integer index after y
+			@param x0	Sample value at integer index prior to x
+			@param x1	Sample value at prior integer index
+			@param x2	Sample value at next integer index
+			@param x3	Sample value at integer index after y
 			@param delta	Fractional location between x1 (delta=0) and x2 (delta=1)
 			@return		The interpolated value.
 		 */
@@ -172,12 +172,12 @@ namespace Jamoma {
 		public:
 			static const int 	delay = 3;
 
-			constexpr T operator()(T w, T x, T y, T z, double delta) noexcept {
+			constexpr T operator()(T x0, T x1, T x2, T x3, double delta) noexcept {
 				T delta2 = delta*delta;
-				T f0 = -0.5*w + 1.5*x - 1.5*y + 0.5*z;
-				T f1 = w - 2.5*x + 2.0*y - 0.5*z;
-				T f2 = -0.5*w + 0.5*y;
-				return f0*delta*delta2 + f1*delta2 + f2*delta + x;
+				T f0 = -0.5*x0 + 1.5*x1 - 1.5*x2 + 0.5*x3;
+				T f1 = x0 - 2.5*x1 + 2.0*x2 - 0.5*x3;
+				T f2 = -0.5*x0 + 0.5*x2;
+				return f0*delta*delta2 + f1*delta2 + f2*delta + x1;
 			}
 		};
 		
