@@ -37,6 +37,16 @@ namespace Jamoma {
 			constexpr T operator()(T x0) noexcept {
 				return x0;
 			}
+            
+            constexpr T operator()(T x0, T x1, double delta) noexcept {
+                T out = delta < 0.5 ? x0 : x1;
+                return out;
+            }
+            
+            constexpr T operator()(T x0, T x1, T x2, T x3, double delta) noexcept {
+                T out = delta < 0.5 ? x0 : x1;
+                return out;
+            }
 		};
 
 		
