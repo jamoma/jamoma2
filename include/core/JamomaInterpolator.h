@@ -115,7 +115,7 @@ namespace Jamoma {
             @param x1		Sample value at prior integer index
 			@param x2		Sample value at next integer index
             @param x3		Unused sample value
-			@param delta 	Fractional location between x0 (delta=0) and x1 (delta=1)
+			@param delta 	Fractional location between x1 (delta=0) and x2 (delta=1)
 			@return			The interpolated value
 		 */
 		template<class T>
@@ -184,10 +184,10 @@ namespace Jamoma {
 		
 		/** Hermite interpolation
             When bias and tension are both set to 0.0, this algorithm is equivalent to Spline.
-			@param w	Sample value at integer index prior to x
-			@param x	Sample value at prior integer index
-			@param y	Sample value at next integer index
-			@param z	Sample value at integer index after y
+			@param x0	Sample value at integer index prior to x
+			@param x1	Sample value at prior integer index
+			@param x2	Sample value at next integer index
+			@param x3	Sample value at integer index after y
 			@param delta	Fractional location between x1 (delta=0) and x2 (delta=1)
 			@return		The interpolated value.
 		 */
@@ -198,19 +198,19 @@ namespace Jamoma {
 			double				bias = 0.0;		// attribute
 			double				tension = 0.0;	// attribute
 
-			constexpr T operator()(T w, T x, T y, T z, double delta) noexcept {
+			constexpr T operator()(T x0, T x1, T x2, T x3, double delta) noexcept {
 				T delta2 = delta*delta;
 				T delta3 = delta*delta2;
 				T bp = 1+bias;
 				T bm = 1-bias;
 				T mt = (1-tension)*0.5;
-				T m0 = ((x-w)*bp + (y-x)*bm) * mt;
-				T m1 = ((y-x)*bp + (z-y)*bm) * mt;
+				T m0 = ((x1-x0)*bp + (x2-x1)*bm) * mt;
+				T m1 = ((x2-x1)*bp + (x3-x2)*bm) * mt;
 				T a0 = 2*delta3 - 3*delta2 + 1;
 				T a1 = delta3 - 2*delta2 + delta;
 				T a2 = delta3 - delta2;
 				T a3 = -2*delta3 + 3*delta2;
-				return a0*x + a1*m0 + a2*m1 + a3*y;
+				return a0*x1 + a1*m0 + a2*m1 + a3*x2;
 			}
 		};
 		
