@@ -4,8 +4,6 @@
 	
 	@brief 		Generator Algorithms
 	
-	@details 	Generator Algorithms for use with std::generate.
-	
 	@author		Timothy Place, Nathan Wolek
 	@copyright	Copyright (c) 2005-2015 The Jamoma Group, http://jamoma.org.
 	@license	This project is released under the terms of the MIT License.
@@ -15,9 +13,14 @@
 
 
 namespace Jamoma {
+    /** Defines several functions for use with <a href="http://en.cppreference.com/w/cpp/algorithm/generate">std::generate</a> to fill vectors with common shapes used in computer sound.
+     */
 	namespace Generator {
 	
-        
+        /** Generates a line from 0 to 1 with consistent slope
+         @param T       render output as this datatype. algorithm was designed to assume the use of floating point.
+         @param size    size of the target vector
+         */
 		template <typename T>
 		class UnipolarRamp {
 		public:
@@ -37,7 +40,10 @@ namespace Jamoma {
 			int mCycleSize; // required by constructor
 		};
 		
-		
+        /** Generates a sine wave constrained between -1 to 1
+         @param T       render output as this datatype. algorithm was designed to assume the use of floating point.
+         @param size    size of the target vector
+         */
 		template <typename T>
 		class Sine {
 		public:
@@ -58,7 +64,10 @@ namespace Jamoma {
 			int mCycleSize; // required by constructor
 		};
 		
-		
+        /** Generates a triangle wave constrained between -1 to 1
+         @param T       render output as this datatype. algorithm was designed to assume the use of floating point.
+         @param size    size of the target vector
+         */
 		template <typename T>
 		class Triangle {
 		public:
