@@ -106,7 +106,7 @@ namespace Jamoma {
         CircularSampleBufferGroup	mHistory;
         std::size_t                                     mIntegralDelay;
         double                                          mFractionalDelay;
-        Jamoma::Interpolation::Linear<Jamoma::Sample>   mInterpolation;
+        Jamoma::Interpolator::Linear<Jamoma::Sample>   mInterpolation;
         
         // NW: according to TAP this ensures that mHistory is resized when necessary
         Observer				mChannelCountObserver = { std::bind(&DelayWithLinearInterpolation::resizeHistory, this) };

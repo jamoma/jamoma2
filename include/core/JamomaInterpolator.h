@@ -2,12 +2,7 @@
 	
 	@ingroup 	jamoma2
 	
-	@brief 		Interpolation implementations
-
-	@details	Defines several functions for <a href="http://en.wikipedia.org/wiki/Interpolation">interpolating</a> between discrete data points such as those found in an array or matrix.
-				These methods are commonly used in digital audio whenever we alter the rate at which a signal is read.
-				These functions require known discrete values to be passed by reference along with a double between 0 and 1 representing the fractional location desired. 
-				They return the interpolated value.
+	@brief 		Defines multiple interpolation algorithms
  
 	@author 	Timothy Place, Nathan Wolek
 	@copyright	Copyright (c) 2005-2015 The Jamoma Group, http://jamoma.org.
@@ -18,7 +13,12 @@
 
 
 namespace Jamoma {
-	namespace Interpolation {
+    /** Defines several functions for <a href="http://en.wikipedia.org/wiki/Interpolation">interpolating</a> between discrete data points such as those found in an array or matrix.
+     These methods are commonly used in digital audio whenever we alter the rate at which a signal is read.
+     These functions require known discrete values to be passed by reference along with a double between 0 and 1 representing the fractional location desired.
+     They return the interpolated value.
+     */
+	namespace Interpolator {
 		
 		
 		/**	Shared base class for all interpolation types.	*/
@@ -155,5 +155,5 @@ namespace Jamoma {
 			}
 		};
 		
-	}	// namespace Interpolation
+	}	// namespace Interpolator
 }  // namespace Jamoma

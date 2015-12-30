@@ -1,7 +1,7 @@
 /** @file
 	@ingroup 	jamoma2
  
-	@brief 		Unit test for Interpolation classes
+	@brief 		Unit test for Interpolator classes
  
 	@author		Timothy Place, Nathan Wolek
 	@copyright	Copyright (c) 2005-2015 The Jamoma Group, http://jamoma.org.
@@ -12,12 +12,12 @@
 #include "Jamoma.h"
 
 
-class InterpolationTest {
+class InterpolatorTest {
 	
-	Jamoma::UnitTest<InterpolationTest>*	mTest;
+	Jamoma::UnitTest<InterpolatorTest>*	mTest;
 	
 public:
-	InterpolationTest(Jamoma::UnitTest<InterpolationTest>* test)
+	InterpolatorTest(Jamoma::UnitTest<InterpolatorTest>* test)
 	: mTest(test)
 	{
 		testLinear();
@@ -30,13 +30,13 @@ public:
 	
 	void testLinear() {
 		int		badSampleCount = 0;
-        Jamoma::Interpolation::Linear<Jamoma::Sample> my_interp;
+        Jamoma::Interpolator::Linear<Jamoma::Sample> my_interp;
         
 		auto 	x0 = -1.0;
 		auto	x1 =  2.0;
 	
         // The following output was generated using the Octave code
-        // in InterpolationTargetOutput.m by NW
+        // in InterpolatorTargetOutput.m by NW
         Jamoma::SampleVector expectedOutputLinear = {
             -0.953125,
             -0.90625,
@@ -124,7 +124,7 @@ public:
 	
 	void testCosine() {
         int		badSampleCount = 0;
-        Jamoma::Interpolation::Cosine<Jamoma::Sample> my_interp;
+        Jamoma::Interpolator::Cosine<Jamoma::Sample> my_interp;
         
         //auto 	x0 = -1.0;
         auto	x1 =  2.0;
@@ -132,7 +132,7 @@ public:
         //auto    x3 =  4.0;
         
         // The following output was generated using the Octave code
-        // in InterpolationTargetOutput.m by NW
+        // in InterpolatorTargetOutput.m by NW
         Jamoma::SampleVector expectedOutputCosine = {
             1.999397728102586,
             1.997592363336099,
@@ -220,7 +220,7 @@ public:
 
 	void testCubic() {
         int		badSampleCount = 0;
-        Jamoma::Interpolation::Cubic<Jamoma::Sample> my_interp;
+        Jamoma::Interpolator::Cubic<Jamoma::Sample> my_interp;
         
         auto 	x0 = -1.0;
         auto	x1 =  2.0;
@@ -228,7 +228,7 @@ public:
         auto    x3 =  4.0;
         
         // The following output was generated using the Octave code
-        // in InterpolationTargetOutput.m by NW
+        // in InterpolatorTargetOutput.m by NW
         Jamoma::SampleVector expectedOutputCubic = {
             2.029075622558594,
             2.05389404296875,
@@ -315,7 +315,7 @@ public:
     
     void testHermite() {
         int		badSampleCount = 0;
-        Jamoma::Interpolation::Hermite<Jamoma::Sample> my_interp;
+        Jamoma::Interpolator::Hermite<Jamoma::Sample> my_interp;
         my_interp.bias = 0.5;
         my_interp.tension = 0.5;
         
@@ -325,7 +325,7 @@ public:
         auto    x3 =  4.0;
         
         // The following output was generated using the Octave code
-        // in InterpolationTargetOutput.m by NW
+        // in InterpolatorTargetOutput.m by NW
         Jamoma::SampleVector expectedOutputHermite = {
             2.014415740966797,
             2.026458740234375,
@@ -412,7 +412,7 @@ public:
     
     void testSpline() {
         int		badSampleCount = 0;
-        Jamoma::Interpolation::Spline<Jamoma::Sample> my_interp;
+        Jamoma::Interpolator::Spline<Jamoma::Sample> my_interp;
         
         auto 	x0 = -1.0;
         auto	x1 =  2.0;
@@ -420,7 +420,7 @@ public:
         auto    x3 =  4.0;
         
         // The following output was generated using the Octave code
-        // in InterpolationTargetOutput.m by NW
+        // in InterpolatorTargetOutput.m by NW
         Jamoma::SampleVector expectedOutputSpline = {
             2.014175415039062,
             2.0255126953125,
@@ -510,6 +510,6 @@ public:
 
 int main(int argc, const char * argv[])
 {
-	Jamoma::UnitTest<InterpolationTest>	aUnitTestInstance;
+	Jamoma::UnitTest<InterpolatorTest>	aUnitTestInstance;
 	return aUnitTestInstance.failureCount();
 }
