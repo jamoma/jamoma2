@@ -14,6 +14,7 @@ output_unipolarramp = double (1 : 64);
 output_sine = double (1 : 64);
 output_unipolarsine = double (1 : 64);
 output_cosine = double (1 : 64);
+output_unipolarcosine = double (1 : 64);
 output_triangle = double (1 : 64);
 output_unipolartriangle = double (1 : 64);
 
@@ -48,6 +49,7 @@ for i = 1:64
 	output_sine(i) = sin (current_delta * 2.0 * pi);
 	output_unipolarsine(i) = 0.5 + 0.5 * sin (current_delta * 2.0 * pi);
 	output_cosine(i) = cos (current_delta * 2.0 * pi);
+	output_unipolarcosine(i) = 0.5 + 0.5 * cos (current_delta * 2.0 * pi);
 	output_triangle(i) = generate_trangle(current_delta);
 	output_unipolartriangle(i) = generate_unipolartrangle(current_delta);
 endfor
@@ -57,5 +59,6 @@ save -append expectedOutput.mat output_unipolarramp
 save -append expectedOutput.mat output_sine
 save -append expectedOutput.mat output_unipolarsine
 save -append expectedOutput.mat output_cosine
+save -append expectedOutput.mat output_unipolarcosine
 save -append expectedOutput.mat output_triangle
 save -append expectedOutput.mat output_unipolartriangle
