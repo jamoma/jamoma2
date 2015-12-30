@@ -24,6 +24,7 @@ public:
         testUnipolarRamp();
         testSine();
         testTriangle();
+        testUnipolarTriangle();
         testConsistentAcrossMultipleChannels();
 	}
     
@@ -390,6 +391,98 @@ public:
         mTest->TEST_ASSERT("testTriangle generated correct output", badSampleCount == 0);
         
     }
+    
+    void testUnipolarTriangle() {
+        int		badSampleCount = 0;
+        Jamoma::SampleBundle	test_sample_bundle(1, 64);
+        
+        test_sample_bundle.generate<Jamoma::Generator::UnipolarTriangle<Jamoma::Sample>>();
+        
+        // The following output was generated using the Octave code
+        // in GeneratorTargetOutput.m by NW
+        Jamoma::SampleVector expectedOutputUnipolarTriangle = {
+            0.5,
+            0.53125,
+            0.5625,
+            0.59375,
+            0.625,
+            0.65625,
+            0.6875,
+            0.71875,
+            0.75,
+            0.78125,
+            0.8125,
+            0.84375,
+            0.875,
+            0.90625,
+            0.9375,
+            0.96875,
+            1,
+            0.96875,
+            0.9375,
+            0.90625,
+            0.875,
+            0.84375,
+            0.8125,
+            0.78125,
+            0.75,
+            0.71875,
+            0.6875,
+            0.65625,
+            0.625,
+            0.59375,
+            0.5625,
+            0.53125,
+            0.5,
+            0.46875,
+            0.4375,
+            0.40625,
+            0.375,
+            0.34375,
+            0.3125,
+            0.28125,
+            0.25,
+            0.21875,
+            0.1875,
+            0.15625,
+            0.125,
+            0.09375,
+            0.0625,
+            0.03125,
+            0,
+            0.03125,
+            0.0625,
+            0.09375,
+            0.125,
+            0.15625,
+            0.1875,
+            0.21875,
+            0.25,
+            0.28125,
+            0.3125,
+            0.34375,
+            0.375,
+            0.40625,
+            0.4375,
+            0.46875
+        };
+        
+        Jamoma::Sample temp = 0.0;
+        Jamoma::Sample tempExpected = 0.0;
+        
+        for (int i = 0; i < expectedOutputUnipolarTriangle.size(); i++) {
+            temp = test_sample_bundle[0][i];
+            tempExpected = expectedOutputUnipolarTriangle[i];
+            if (! mTest->compare(temp, tempExpected, true, 8) ) {
+                badSampleCount++;
+                std::cout << "sample " << i << " had a difference of " << std::fabs(temp - tempExpected) << std::endl;
+            }
+        }
+        
+        mTest->TEST_ASSERT("testTriangle generated correct output", badSampleCount == 0);
+        
+    }
+
     
     void testConsistentAcrossMultipleChannels() {
         int		badSampleCount = 0;
