@@ -21,6 +21,7 @@ public:
 	: mTest(test)
 	{
         testNone();
+        testNearest();
         testLinear();
 		testCosine();
 		testCubic();
@@ -55,6 +56,44 @@ public:
         auto out4b = my_interp(x0,x1,x2,x3,0.75);
         
         mTest->TEST_ASSERT("testNone with 4 samples, high delta produced correct output", out4b == x1);
+        
+    }
+    
+    void testNearest() {
+        Jamoma::Interpolator::Nearest<Jamoma::Sample> my_interp;
+        
+        auto 	x0 = -1.0;
+        auto	x1 =  2.0;
+        auto    x2 =  1.0;
+        auto    x3 =  4.0;
+        
+        auto out = my_interp(x1);
+        
+        mTest->TEST_ASSERT("testNearest with 1 sample produced correct output", out == x1);
+        
+        auto out2 = my_interp(x1,x2,0.25);
+        
+        mTest->TEST_ASSERT("testNearest with 2 samples, low delta produced correct output", out2 == x1);
+        
+        auto out2b = my_interp(x1,x2,0.75);
+        
+        mTest->TEST_ASSERT("testNearest with 2 samples, high delta produced correct output", out2b == x2);
+        
+        auto out2c = my_interp(x1,x2,0.5);
+        
+        mTest->TEST_ASSERT("testNearest with 2 samples, 0.5 delta produced correct output", out2c == x2);
+        
+        auto out4 = my_interp(x0,x1,x2,x3,0.25);
+        
+        mTest->TEST_ASSERT("testNearest with 4 samples, low delta produced correct output", out4 == x1);
+        
+        auto out4b = my_interp(x0,x1,x2,x3,0.75);
+        
+        mTest->TEST_ASSERT("testNearest with 4 samples, high delta produced correct output", out4b == x2);
+        
+        auto out4c = my_interp(x0,x1,x2,x3,0.5);
+        
+        mTest->TEST_ASSERT("testNearest with 4 samples, 0.5 delta produced correct output", out4c == x2);
         
     }
 
