@@ -216,10 +216,10 @@ public:
         int		badSampleCount = 0;
         Jamoma::Interpolator::Cosine<Jamoma::Sample> my_interp;
         
-        //auto 	x0 = -1.0;
+        auto 	x0 = -1.0;
         auto	x1 =  2.0;
         auto    x2 =  1.0;
-        //auto    x3 =  4.0;
+        auto    x3 =  4.0;
         
         // The following output was generated using the Octave code
         // in InterpolatorTargetOutput.m by NW
@@ -305,6 +305,24 @@ public:
         }
 		
 		mTest->TEST_ASSERT("testCosine produced correct interpolation output", badSampleCount == 0);
+        
+        // reset varaiables
+        badSampleCount = 0;
+        temp = 0.0;
+        tempExpected = 0.0;
+        delta = 0.0;
+        
+        for (int i = 0; i < expectedOutputCosine.size(); i++) {
+            delta = (i + 1.0) / 64.0;
+            temp = my_interp(x0,x1,x2,x3,delta);
+            tempExpected = expectedOutputCosine[i];
+            if (! mTest->compare(temp, tempExpected, true, 8) ) {
+                badSampleCount++;
+                std::cout << "sample " << i << " had a difference of " << std::fabs(temp - tempExpected) << std::endl;
+            }
+        }
+        
+        mTest->TEST_ASSERT("testCosine overloaded operator produced consistent output", badSampleCount == 0);
 	}
 	
 

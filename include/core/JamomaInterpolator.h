@@ -111,8 +111,10 @@ namespace Jamoma {
 		
 
 		/** Cosine interpolation
-			@param x0		Sample value at prior integer index
-			@param x1		Sample value at next integer index
+            @param x0		Unused sample value
+            @param x1		Sample value at prior integer index
+			@param x2		Sample value at next integer index
+            @param x3		Unused sample value
 			@param delta 	Fractional location between x0 (delta=0) and x1 (delta=1)
 			@return			The interpolated value
 		 */
@@ -121,10 +123,16 @@ namespace Jamoma {
 		public:
 			static const int 	delay = 1;
 			
-			constexpr T operator()(T x0, T x1, double delta) noexcept {
+			constexpr T operator()(T x1, T x2, double delta) noexcept {
 				T a = 0.5 * (1.0 - cos(delta * kPi));
-				return x0 + a * (x1-x0);
+				return x1 + a * (x2-x1);
 			}
+            
+            constexpr T operator()(T x0, T x1, T x2, T x3, double delta) noexcept {
+                // NW: ideally we would call the operator above to remain DRY, but I could not get syntax right
+                T a = 0.5 * (1.0 - cos(delta * kPi));
+                return x1 + a * (x2-x1);
+            }
 		};
 
 		
