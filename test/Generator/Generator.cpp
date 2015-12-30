@@ -24,7 +24,8 @@ public:
         testUnipolarRamp();
         testSine();
         testTriangle();
-        //testGenerateFunctions();
+        
+        //test across multi-channel SampleBundles
 	}
     
     void testRamp() {
@@ -33,9 +34,8 @@ public:
         
         test_sample_bundle.generate<Jamoma::Generator::Ramp<Jamoma::Sample>>();
         
-        // The following output will be generated using the Octave code
+        // The following output was generated using the Octave code
         // in GeneratorTargetOutput.m by NW
-        // For now, it is just zeros
         Jamoma::SampleVector expectedOutputRamp = {
             -1,
             -0.96875,
@@ -125,9 +125,8 @@ public:
         
         test_sample_bundle.generate<Jamoma::Generator::UnipolarRamp<Jamoma::Sample>>();
         
-        // The following output will be generated using the Octave code
+        // The following output was generated using the Octave code
         // in GeneratorTargetOutput.m by NW
-        // For now, it is just zeros
         Jamoma::SampleVector expectedOutputUnipolarRamp = {
             0,
             0.015625,
@@ -217,9 +216,8 @@ public:
         
         test_sample_bundle.generate<Jamoma::Generator::Sine<Jamoma::Sample>>();
         
-        // The following output will be generated using the Octave code
+        // The following output was generated using the Octave code
         // in GeneratorTargetOutput.m by NW
-        // For now, it is just zeros
         Jamoma::SampleVector expectedOutputSine = {
             0,
             0.0980171403295606,
@@ -309,9 +307,8 @@ public:
         
         test_sample_bundle.generate<Jamoma::Generator::Triangle<Jamoma::Sample>>();
         
-        // The following output will be generated using the Octave code
+        // The following output was generated using the Octave code
         // in GeneratorTargetOutput.m by NW
-        // For now, it is just zeros
         Jamoma::SampleVector expectedOutputTriangle = {
             0,
             0.0625,
