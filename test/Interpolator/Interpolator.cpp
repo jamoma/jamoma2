@@ -42,11 +42,19 @@ public:
         
         auto out2 = my_interp(x0,x1,0.25);
         
-        mTest->TEST_ASSERT("testNone with 2 samples produced correct output", out2 == x0);
+        mTest->TEST_ASSERT("testNone with 2 samples, low delta produced correct output", out2 == x0);
         
-        auto out3 = my_interp(x0,x1,x2,x3,0.25);
+        auto out2b = my_interp(x0,x1,0.75);
         
-        mTest->TEST_ASSERT("testNone with 4 samples produced correct output", out3 == x0);
+        mTest->TEST_ASSERT("testNone with 2 samples, high delta produced correct output", out2b == x0);
+        
+        auto out4 = my_interp(x0,x1,x2,x3,0.25);
+        
+        mTest->TEST_ASSERT("testNone with 4 samples, low delta produced correct output", out4 == x0);
+        
+        auto out4b = my_interp(x0,x1,x2,x3,0.75);
+        
+        mTest->TEST_ASSERT("testNone with 4 samples, high delta produced correct output", out4b == x0);
         
     }
 
