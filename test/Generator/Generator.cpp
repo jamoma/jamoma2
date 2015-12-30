@@ -23,6 +23,7 @@ public:
         testRamp();
         testUnipolarRamp();
         testSine();
+        testCosine();
         testTriangle();
         testUnipolarTriangle();
         testConsistentAcrossMultipleChannels();
@@ -291,6 +292,97 @@ public:
         for (int i = 0; i < expectedOutputSine.size(); i++) {
             temp = test_sample_bundle[0][i];
             tempExpected = expectedOutputSine[i];
+            if (! mTest->compare(temp, tempExpected, true, 8) ) {
+                badSampleCount++;
+                std::cout << "sample " << i << " had a difference of " << std::fabs(temp - tempExpected) << std::endl;
+            }
+        }
+        
+        mTest->TEST_ASSERT("testSine generated correct output", badSampleCount == 0);
+        
+    }
+    
+    void testCosine() {
+        int		badSampleCount = 0;
+        Jamoma::SampleBundle	test_sample_bundle(1, 64);
+        
+        test_sample_bundle.generate<Jamoma::Generator::Cosine<Jamoma::Sample>>();
+        
+        // The following output was generated using the Octave code
+        // in GeneratorTargetOutput.m by NW
+        Jamoma::SampleVector expectedOutputCosine = {
+            1,
+            0.9951847266721969,
+            0.9807852804032304,
+            0.9569403357322088,
+            0.9238795325112867,
+            0.881921264348355,
+            0.8314696123025452,
+            0.773010453362737,
+            0.7071067811865476,
+            0.6343932841636456,
+            0.5555702330196023,
+            0.4713967368259978,
+            0.3826834323650898,
+            0.2902846772544623,
+            0.1950903220161283,
+            0.09801714032956077,
+            6.123233995736766e-17,
+            -0.09801714032956066,
+            -0.1950903220161282,
+            -0.2902846772544622,
+            -0.3826834323650897,
+            -0.4713967368259977,
+            -0.555570233019602,
+            -0.6343932841636453,
+            -0.7071067811865475,
+            -0.773010453362737,
+            -0.8314696123025453,
+            -0.8819212643483549,
+            -0.9238795325112867,
+            -0.9569403357322088,
+            -0.9807852804032304,
+            -0.9951847266721968,
+            -1,
+            -0.9951847266721969,
+            -0.9807852804032304,
+            -0.9569403357322089,
+            -0.9238795325112867,
+            -0.881921264348355,
+            -0.8314696123025455,
+            -0.7730104533627371,
+            -0.7071067811865477,
+            -0.6343932841636459,
+            -0.5555702330196022,
+            -0.4713967368259979,
+            -0.3826834323650903,
+            -0.2902846772544624,
+            -0.1950903220161287,
+            -0.09801714032956045,
+            -1.83697019872103e-16,
+            0.09801714032956009,
+            0.1950903220161283,
+            0.2902846772544621,
+            0.38268343236509,
+            0.4713967368259976,
+            0.5555702330196018,
+            0.6343932841636456,
+            0.7071067811865475,
+            0.7730104533627367,
+            0.8314696123025452,
+            0.8819212643483549,
+            0.9238795325112865,
+            0.9569403357322088,
+            0.9807852804032303,
+            0.9951847266721969
+        };
+        
+        Jamoma::Sample temp = 0.0;
+        Jamoma::Sample tempExpected = 0.0;
+        
+        for (int i = 0; i < expectedOutputCosine.size(); i++) {
+            temp = test_sample_bundle[0][i];
+            tempExpected = expectedOutputCosine[i];
             if (! mTest->compare(temp, tempExpected, true, 8) ) {
                 badSampleCount++;
                 std::cout << "sample " << i << " had a difference of " << std::fabs(temp - tempExpected) << std::endl;

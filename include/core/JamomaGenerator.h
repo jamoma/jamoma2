@@ -86,6 +86,31 @@ namespace Jamoma {
 			int mCurrent = -1;
 			int mCycleSize; // required by constructor
 		};
+        
+        /** Generates a cosine wave constrained between -1 to 1
+         @param T       render output as this datatype. algorithm was designed to assume the use of floating point.
+         @param size    size of the target vector
+         */
+        template <typename T>
+        class Cosine {
+        public:
+            Cosine (int size)
+            : mCycleSize(size)
+            {
+                //TODO: we need way to protect against zero. static_assert did not work.
+            }
+            
+            T operator()() {
+                ++mCurrent;
+                auto output = std::cos(mCurrent * kTwoPi / mCycleSize);
+                return T(output);
+            }
+            
+        private:
+            int mCurrent = -1;
+            int mCycleSize; // required by constructor
+        };
+
 		
         /** Generates a triangle wave constrained between -1 to 1
          @param T       render output as this datatype. algorithm was designed to assume the use of floating point.
