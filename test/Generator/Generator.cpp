@@ -23,6 +23,7 @@ public:
         testRamp();
         testUnipolarRamp();
         testSine();
+        testUnipolarSine();
         testCosine();
         testTriangle();
         testUnipolarTriangle();
@@ -301,6 +302,98 @@ public:
         mTest->TEST_ASSERT("testSine generated correct output", badSampleCount == 0);
         
     }
+    
+    void testUnipolarSine() {
+        int		badSampleCount = 0;
+        Jamoma::SampleBundle	test_sample_bundle(1, 64);
+        
+        test_sample_bundle.generate<Jamoma::Generator::UnipolarSine<Jamoma::Sample>>();
+        
+        // The following output was generated using the Octave code
+        // in GeneratorTargetOutput.m by NW
+        Jamoma::SampleVector expectedOutputUnipolarSine = {
+            0.5,
+            0.5490085701647803,
+            0.5975451610080641,
+            0.6451423386272311,
+            0.6913417161825449,
+            0.7356983684129988,
+            0.7777851165098011,
+            0.8171966420818227,
+            0.8535533905932737,
+            0.8865052266813684,
+            0.9157348061512726,
+            0.9409606321741775,
+            0.9619397662556434,
+            0.9784701678661045,
+            0.9903926402016152,
+            0.9975923633360984,
+            1,
+            0.9975923633360985,
+            0.9903926402016152,
+            0.9784701678661045,
+            0.9619397662556434,
+            0.9409606321741775,
+            0.9157348061512727,
+            0.8865052266813686,
+            0.8535533905932737,
+            0.8171966420818227,
+            0.7777851165098011,
+            0.735698368412999,
+            0.6913417161825449,
+            0.6451423386272311,
+            0.5975451610080643,
+            0.5490085701647804,
+            0.5000000000000001,
+            0.4509914298352197,
+            0.4024548389919358,
+            0.3548576613727689,
+            0.3086582838174552,
+            0.2643016315870012,
+            0.222214883490199,
+            0.1828033579181774,
+            0.1464466094067263,
+            0.1134947733186317,
+            0.08426519384872738,
+            0.05903936782582253,
+            0.03806023374435674,
+            0.02152983213389559,
+            0.00960735979838484,
+            0.002407636663901536,
+            0,
+            0.002407636663901536,
+            0.009607359798384785,
+            0.02152983213389553,
+            0.03806023374435669,
+            0.05903936782582248,
+            0.08426519384872722,
+            0.1134947733186316,
+            0.1464466094067262,
+            0.182803357918177,
+            0.2222148834901989,
+            0.264301631587001,
+            0.3086582838174548,
+            0.3548576613727688,
+            0.4024548389919356,
+            0.4509914298352197
+        };
+        
+        Jamoma::Sample temp = 0.0;
+        Jamoma::Sample tempExpected = 0.0;
+        
+        for (int i = 0; i < expectedOutputUnipolarSine.size(); i++) {
+            temp = test_sample_bundle[0][i];
+            tempExpected = expectedOutputUnipolarSine[i];
+            if (! mTest->compare(temp, tempExpected, true, 8) ) {
+                badSampleCount++;
+                std::cout << "sample " << i << " had a difference of " << std::fabs(temp - tempExpected) << std::endl;
+            }
+        }
+        
+        mTest->TEST_ASSERT("testSine generated correct output", badSampleCount == 0);
+        
+    }
+
     
     void testCosine() {
         int		badSampleCount = 0;
