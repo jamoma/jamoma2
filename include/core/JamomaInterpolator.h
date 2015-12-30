@@ -29,8 +29,8 @@ namespace Jamoma {
 		
 	
 		/**	No interpolation always returns the first sample passed to it 
-            @param x0		Sample value that will be returned
-            @param x1		Unused sample value
+            @param x0		Unused sample value
+            @param x1		Sample value that will be returned
             @param x2		Unused sample value
             @param x3		Unused sample value
             @param delta	Unused fractional location
@@ -41,27 +41,27 @@ namespace Jamoma {
 		public:
 			static const int 	delay = 0;
 			
-			constexpr T operator()(T x0) noexcept {
-				return x0;
+			constexpr T operator()(T x1) noexcept {
+				return x1;
 			}
             
-            constexpr T operator()(T x0, T x1, double delta) noexcept {
-                return x0;
+            constexpr T operator()(T x1, T x2, double delta) noexcept {
+                return x1;
             }
             
             constexpr T operator()(T x0, T x1, T x2, T x3, double delta) noexcept {
-                return x0;
+                return x1;
             }
 		};
                 
         /**	Nearest interpolation returns the closest sample by rounding the delta up or down. 
-            @param x0		Returned sample value when rounding down
-            @param x1		Returned sample value when rounding up
-            @param x2		Unused sample value
+            @param x0		Unused sample value
+            @param x1		Returned sample value when rounding down
+            @param x2		Returned sample value when rounding up
             @param x3		Unused sample value
-            @param delta	Fractional location between x0 and x1 @n
-                            delta < 0.5 => x0 @n
-                            delta >= 0.5 => x1
+            @param delta	Fractional location between x1 and x2 @n
+                            delta < 0.5 => x1 @n
+                            delta >= 0.5 => x2
             @return         The interpolated value
          */
         template<class T>
@@ -69,17 +69,17 @@ namespace Jamoma {
         public:
             static const int 	delay = 0;
             
-            constexpr T operator()(T x0) noexcept {
-                return x0;
+            constexpr T operator()(T x1) noexcept {
+                return x1;
             }
             
-            constexpr T operator()(T x0, T x1, double delta) noexcept {
-                T out = delta < 0.5 ? x0 : x1;
+            constexpr T operator()(T x1, T x2, double delta) noexcept {
+                T out = delta < 0.5 ? x1 : x2;
                 return out;
             }
             
             constexpr T operator()(T x0, T x1, T x2, T x3, double delta) noexcept {
-                T out = delta < 0.5 ? x0 : x1;
+                T out = delta < 0.5 ? x1 : x2;
                 return out;
             }
         };
