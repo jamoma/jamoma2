@@ -108,6 +108,34 @@ namespace Jamoma {
                 return x1 + delta * (x2-x1);
             }
 		};
+                
+        /** Allpass interpolation
+         @param x0		Unused sample value
+         @param x1		Sample value at prior integer index
+         @param x2		Sample value at next integer index
+         @param x3		Unused sample value
+         @param delta 	Fractional location between x1 (delta=0) and x1 (delta=1)
+         @return			The interpolated value
+         */
+        template<class T>
+        class Allpass : Base {
+        public:
+            static const int 	delay = 1;
+            T last_out = T(0.0);
+            
+            constexpr T operator()(T x1, T x2, double delta) noexcept {
+                T out = x1 + delta * (x2-last_out);
+                last_out = out;
+                return out;
+            }
+            
+            constexpr T operator()(T x0, T x1, T x2, T x3, double delta) noexcept {
+                // NW: ideally we would call the operator above to remain DRY, but I could not get syntax right
+                T out = x1 + delta * (x2-last_out);
+                last_out = out;
+                return out;
+            }
+        };
 		
 
 		/** Cosine interpolation
