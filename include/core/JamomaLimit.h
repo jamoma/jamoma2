@@ -117,7 +117,9 @@ namespace Jamoma {
 			return((long)(value - 0.5));
 	}
 
-	
+	/** Defines several functions for constraining values within specified boundaries and preventing unwanted values. A variety of behaviors are offered, including clipping, wrapping and folding.@n@n
+	 * Exercise caution when using the functions defined here with unsigned values. Negative, signed integers have the potential to become very large numbers when casting to unsigned integers. This can cause errors during a boundary check, such as values clipping to the high boundary instead of the low boundary or numerous iterations of loop to bring a wrapped value back into the acceptable range.
+	*/
 	namespace Limit {
 		
 		template <typename T>
