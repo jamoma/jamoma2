@@ -102,8 +102,10 @@ public:
 		int		badSampleCount = 0;
         Jamoma::Interpolator::Linear<Jamoma::Sample> my_interp;
         
-		auto 	x0 = -1.0;
-		auto	x1 =  2.0;
+        auto    x0 =  1.0;
+        auto 	x1 = -1.0;
+		auto	x2 =  2.0;
+        auto    x3 =  3.0;
 	
         // The following output was generated using the Octave code
         // in InterpolatorTargetOutput.m by NW
@@ -180,7 +182,7 @@ public:
         
         for (int i = 0; i < expectedOutputLinear.size(); i++) {
             delta = (i + 1.0) / 64.0;
-            temp = my_interp(x0,x1,delta);
+            temp = my_interp(x1,x2,delta);
             tempExpected = expectedOutputLinear[i];
             if (! mTest->compare(temp, tempExpected, true, 8) ) {
                 badSampleCount++;
@@ -189,6 +191,24 @@ public:
         }
 
 		mTest->TEST_ASSERT("testLinear produced correct interpolation output", badSampleCount == 0);
+        
+        // reset varaiables
+        badSampleCount = 0;
+        temp = 0.0;
+        tempExpected = 0.0;
+        delta = 0.0;
+        
+        for (int i = 0; i < expectedOutputLinear.size(); i++) {
+            delta = (i + 1.0) / 64.0;
+            temp = my_interp(x0,x1,x2,x3,delta);
+            tempExpected = expectedOutputLinear[i];
+            if (! mTest->compare(temp, tempExpected, true, 8) ) {
+                badSampleCount++;
+                std::cout << "sample " << i << " had a difference of " << std::fabs(temp - tempExpected) << std::endl;
+            }
+        }
+        
+        mTest->TEST_ASSERT("testLinear overloaded operator produced consistent output", badSampleCount == 0);
 	}
 	
 	

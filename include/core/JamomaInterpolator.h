@@ -87,9 +87,11 @@ namespace Jamoma {
         };
 
 		/** Linear interpolation.
-			@param x0		Sample value at prior integer index
-			@param x1		Sample value at next integer index
-			@param delta 	Fractional location between x0 (delta=0) and x1 (delta=1)
+            @param x0		Unused sample value
+            @param x1		Sample value at prior integer index
+			@param x2		Sample value at next integer index
+            @param x3		Unused sample value
+			@param delta 	Fractional location between x1 (delta=0) and x1 (delta=1)
 			@return			The interpolated value
 		 */
 		template<class T>
@@ -97,9 +99,14 @@ namespace Jamoma {
 		public:
 			static const int 	delay = 1;
 			
-			constexpr T operator()(T x0, T x1, double delta) noexcept {
-				return x0 + delta * (x1-x0);
+			constexpr T operator()(T x1, T x2, double delta) noexcept {
+				return x1 + delta * (x2-x1);
 			}
+            
+            constexpr T operator()(T x0, T x1, T x2, T x3, double delta) noexcept {
+                // NW: ideally we would call the operator above to remain DRY, but I could not get syntax right
+                return x1 + delta * (x2-x1);
+            }
 		};
 		
 
