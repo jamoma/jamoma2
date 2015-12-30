@@ -34,7 +34,7 @@ namespace Jamoma {
             @param x2		Unused sample value
             @param x3		Unused sample value
             @param delta	Unused fractional location
-            @return         The interpolated value.
+            @return         The interpolated value
          */
 		template<class T>
 		class None : Base {
@@ -62,7 +62,7 @@ namespace Jamoma {
             @param delta	Fractional location between x0 and x1 @n
                             delta < 0.5 => x0 @n
                             delta >= 0.5 => x1
-            @return         The interpolated value.
+            @return         The interpolated value
          */
         template<class T>
         class Nearest : Base {
@@ -87,8 +87,8 @@ namespace Jamoma {
 		/** Linear interpolation.
 			@param x0		Sample value at prior integer index
 			@param x1		Sample value at next integer index
-			@param delta 	Linear interpolation between x0 (delta=0) and x1 (delta=1)
-			@return			The interpolated value.
+			@param delta 	Fractional location between x0 (delta=0) and x1 (delta=1)
+			@return			The interpolated value
 		 */
 		template<class T>
 		class Linear : Base {
@@ -104,7 +104,7 @@ namespace Jamoma {
 		/** Cosine interpolation
 			@param x0		Sample value at prior integer index
 			@param x1		Sample value at next integer index
-			@param delta 	Fractional location between x(0) and x(1)
+			@param delta 	Fractional location between x0 (delta=0) and x1 (delta=1)
 			@return			The interpolated value
 		 */
 		template<class T>
@@ -124,10 +124,8 @@ namespace Jamoma {
 			@param x1		Sample value at prior integer index
 			@param x2		Sample value at next integer index
 			@param x3		Sample value at integer index after x2
-			@param aDelta	Fractional location where we want to do the interpolation. @n
-							aDelta = 0 => interpolatedeValue = x1 @n
-							aDelta = 1 => interpolatedeValue = x2
-			@return		The interpolated value.
+			@param delta	Fractional location between x1 (delta=0) and x2 (delta=1)
+			@return		The interpolated value
 		 */
 		template<class T>
 		class Cubic : Base {
@@ -149,7 +147,7 @@ namespace Jamoma {
 			@param x	Sample value at prior integer index
 			@param y	Sample value at next integer index
 			@param z	Sample value at integer index after y
-			@param a	Fractional location between x (0) and y (1)
+			@param delta	Fractional location between x1 (delta=0) and x2 (delta=1)
 			@return		The interpolated value.
 		 */
 		template<class T>
@@ -157,12 +155,12 @@ namespace Jamoma {
 		public:
 			static const int 	delay = 3;
 
-			constexpr T operator()(T w, T x, T y, T z, double a) noexcept {
-				T a2 = a*a;
+			constexpr T operator()(T w, T x, T y, T z, double delta) noexcept {
+				T delta2 = delta*delta;
 				T f0 = -0.5*w + 1.5*x - 1.5*y + 0.5*z;
 				T f1 = w - 2.5*x + 2.0*y - 0.5*z;
 				T f2 = -0.5*w + 0.5*y;
-				return f0*a*a2 + f1*a2 + f2*a + x;
+				return f0*delta*delta2 + f1*delta2 + f2*delta + x;
 			}
 		};
 		
@@ -173,7 +171,7 @@ namespace Jamoma {
 			@param x	Sample value at prior integer index
 			@param y	Sample value at next integer index
 			@param z	Sample value at integer index after y
-			@param a	Fractional location between x (0) and y (1)
+			@param delta	Fractional location between x1 (delta=0) and x2 (delta=1)
 			@return		The interpolated value.
 		 */
 		template<class T>
@@ -183,18 +181,18 @@ namespace Jamoma {
 			double				bias = 0.0;		// attribute
 			double				tension = 0.0;	// attribute
 
-			constexpr T operator()(T w, T x, T y, T z, double a) noexcept {
-				T aa = a*a;
-				T aaa = a*aa;
+			constexpr T operator()(T w, T x, T y, T z, double delta) noexcept {
+				T delta2 = delta*delta;
+				T delta3 = delta*delta2;
 				T bp = 1+bias;
 				T bm = 1-bias;
 				T mt = (1-tension)*0.5;
 				T m0 = ((x-w)*bp + (y-x)*bm) * mt;
 				T m1 = ((y-x)*bp + (z-y)*bm) * mt;
-				T a0 = 2*aaa - 3*aa + 1;
-				T a1 = aaa - 2*aa + a;
-				T a2 = aaa - aa;
-				T a3 = -2*aaa + 3*aa;
+				T a0 = 2*delta3 - 3*delta2 + 1;
+				T a1 = delta3 - 2*delta2 + delta;
+				T a2 = delta3 - delta2;
+				T a3 = -2*delta3 + 3*delta2;
 				return a0*x + a1*m0 + a2*m1 + a3*y;
 			}
 		};
