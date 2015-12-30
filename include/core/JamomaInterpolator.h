@@ -41,6 +41,7 @@ namespace Jamoma {
 		public:
 			static const int 	delay = 0;
 			
+            // NW: will this version ever be used?
 			constexpr T operator()(T x1) noexcept {
 				return x1;
 			}
@@ -69,6 +70,7 @@ namespace Jamoma {
         public:
             static const int 	delay = 0;
             
+            // NW: will this version ever be used?
             constexpr T operator()(T x1) noexcept {
                 return x1;
             }
