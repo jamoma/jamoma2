@@ -91,7 +91,7 @@ namespace Jamoma {
             @param x1		Sample value at prior integer index
 			@param x2		Sample value at next integer index
             @param x3		Unused sample value
-			@param delta 	Fractional location between x1 (delta=0) and x1 (delta=1)
+			@param delta 	Fractional location between x1 (delta=0) and x2 (delta=1)
 			@return			The interpolated value
 		 */
 		template<class T>
@@ -110,11 +110,14 @@ namespace Jamoma {
 		};
                 
         /** Allpass interpolation
+         Testing shows this algorithm will become less accurate the more points it computes between two known samples.
+         Also, because it uses an internal history, the reset() function should be used when switching between non-continuous segments of sampled audio data.
          @param x0		Unused sample value
          @param x1		Sample value at prior integer index
          @param x2		Sample value at next integer index
          @param x3		Unused sample value
-         @param delta 	Fractional location between x1 (delta=0) and x1 (delta=1)
+         @param delta 	Fractional location between x1 (delta=0) and x2 (delta=1) @n
+                        Be aware that delta=1.0 may not return the exact value at x2 given the nature of this algorithm.
          @return			The interpolated value
          */
         template<class T>

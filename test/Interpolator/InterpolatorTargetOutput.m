@@ -100,6 +100,11 @@ function retval = interp_allpassgen(v,delta,history)
 	retval = 0.0;
 	delta_int = fix(delta);
 	a = delta - delta_int;
+	% the following if statement corrects for a difference between deltas of 0.0 and 1.0 in this algorithm
+	if (a == 0.0)
+		delta_int = delta_int - 1;
+		a = 1.0;
+	endif
 	x1 = v(delta_int);
 	x2 = v(delta_int+1);
 	out = x1 + a*(x2-history);
