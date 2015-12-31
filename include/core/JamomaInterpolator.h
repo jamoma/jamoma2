@@ -135,6 +135,10 @@ namespace Jamoma {
                 last_out = out;
                 return out;
             }
+            
+            void reset() {
+                last_out = T(0.0);
+            }
         };
 		
 

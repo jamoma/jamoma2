@@ -312,6 +312,7 @@ public:
         temp = 0.0;
         tempExpected = 0.0;
         delta = 0.0;
+        my_interp.reset();
         
         for (int i = 0; i < expectedOutputAllpass.size(); i++) {
             delta = (i + 1.0) / 64.0;
