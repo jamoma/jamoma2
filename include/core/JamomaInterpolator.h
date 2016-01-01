@@ -124,24 +124,26 @@ namespace Jamoma {
         class Allpass : Base {
         public:
             static const int 	delay = 1;
-            T last_out = T(0.0);
             
             constexpr T operator()(T x1, T x2, double delta) noexcept {
-                T out = x1 + delta * (x2-last_out);
-                last_out = out;
+                T out = x1 + delta * (x2-mY1);
+                mY1 = out;
                 return out;
             }
             
             constexpr T operator()(T x0, T x1, T x2, T x3, double delta) noexcept {
                 // NW: ideally we would call the operator above to remain DRY, but I could not get syntax right
-                T out = x1 + delta * (x2-last_out);
-                last_out = out;
+                T out = x1 + delta * (x2-mY1);
+                mY1 = out;
                 return out;
             }
             
             void reset() {
-                last_out = T(0.0);
+                mY1 = T(0.0);
             }
+            
+        private:
+            T mY1 = T(0.0);
         };
 		
 
