@@ -23,6 +23,7 @@ public:
         testNone();
         testNearest();
         testLinear();
+        testAllpass();
 		testCosine();
 		testCubic();
         testHermite();
@@ -211,6 +212,121 @@ public:
         mTest->TEST_ASSERT("testLinear overloaded operator produced consistent output", badSampleCount == 0);
 	}
 	
+    
+    void testAllpass() {
+        int		badSampleCount = 0;
+        Jamoma::Interpolator::Allpass<Jamoma::Sample> my_interp;
+        
+        auto 	x0 = -1.0;
+        auto	x1 =  2.0;
+        auto    x2 =  1.0;
+        auto    x3 =  4.0;
+        
+        // The following output was generated using the Octave code
+        // in InterpolatorTargetOutput.m by NW
+        Jamoma::SampleVector expectedOutputAllpass = {
+            2.015625,
+            1.96826171875,
+            1.954612731933594,
+            1.94033670425415,
+            1.926536194980145,
+            1.913137231720611,
+            1.900125615280558,
+            1.88748429808993,
+            1.875197520581104,
+            1.863250387409203,
+            1.851628839664043,
+            1.840319592562992,
+            1.829310082760642,
+            1.818588419396109,
+            1.808143339204037,
+            1.797964165198991,
+            1.788040768619018,
+            1.778363533825901,
+            1.768923325895436,
+            1.759711460657676,
+            1.7507196769717,
+            1.741940111040978,
+            1.733365272594648,
+            1.724988022777007,
+            1.716801553602732,
+            1.70879936884889,
+            1.700975266266874,
+            1.693323321008243,
+            1.68583787016814,
+            1.678513498358684,
+            1.671345024232512,
+            1.664327487883744,
+            1.657456139059945,
+            1.650726426124404,
+            1.644133985713216,
+            1.637674633036316,
+            1.63134435277588,
+            1.625139290539321,
+            1.619055744827601,
+            1.613090159482749,
+            1.607239116581364,
+            1.60149932974348,
+            1.595867637828599,
+            1.590340998992838,
+            1.584916485083161,
+            1.579591276346478,
+            1.574362656433055,
+            1.569228007675209,
+            1.564184806623668,
+            1.559230619825259,
+            1.554363099826747,
+            1.549579981390768,
+            1.54487907791077,
+            1.540258278012788,
+            1.535715542332761,
+            1.531248900458834,
+            1.526856448028851,
+            1.522536343973854,
+            1.518286807899103,
+            1.51410611759459,
+            1.509992606667656,
+            1.505944662290708,
+            1.501960723057584,
+            1.498039276942416
+        };
+        
+        Jamoma::Sample temp = 0.0;
+        Jamoma::Sample tempExpected = 0.0;
+        double delta = 0.0;
+        
+        for (int i = 0; i < expectedOutputAllpass.size(); i++) {
+            delta = (i + 1.0) / 64.0;
+            temp = my_interp(x1,x2,delta);
+            tempExpected = expectedOutputAllpass[i];
+            if (! mTest->compare(temp, tempExpected, true, 8) ) {
+                badSampleCount++;
+                std::cout << "sample " << i << " had a difference of " << std::fabs(temp - tempExpected) << std::endl;
+            }
+        }
+        
+        mTest->TEST_ASSERT("testAllpass produced correct interpolation output", badSampleCount == 0);
+        
+        // reset varaiables
+        badSampleCount = 0;
+        temp = 0.0;
+        tempExpected = 0.0;
+        delta = 0.0;
+        my_interp.reset();
+        
+        for (int i = 0; i < expectedOutputAllpass.size(); i++) {
+            delta = (i + 1.0) / 64.0;
+            temp = my_interp(x0,x1,x2,x3,delta);
+            tempExpected = expectedOutputAllpass[i];
+            if (! mTest->compare(temp, tempExpected, true, 8) ) {
+                badSampleCount++;
+                std::cout << "sample " << i << " had a difference of " << std::fabs(temp - tempExpected) << std::endl;
+            }
+        }
+        
+        mTest->TEST_ASSERT("testAllpass overloaded operator produced consistent output", badSampleCount == 0);
+    }
+    
 	
 	void testCosine() {
         int		badSampleCount = 0;

@@ -24,6 +24,8 @@ output_spline = double (1 : 64);
 output_splinegen = double (1 : 64);
 output_cubicgen = double (1 : 64);
 output_cosinegen = double (1 : 64);
+output_allpassgen = double (1 : 64);
+lastout_allpass = 0.0;
 
 % the following function is adapted from gen~.interpolation example from Max 7.1
 function retval = interp_hermitegen(v,delta)
@@ -93,6 +95,22 @@ function retval = interp_cosinegen(v,delta)
 	retval = x + a2*(y-x);
 endfunction
 
+% reference: https://ccrma.stanford.edu/~jos/pasp/First_Order_Allpass_Interpolation.html
+function retval = interp_allpassgen(v,delta,history)
+	retval = 0.0;
+	delta_int = fix(delta);
+	a = delta - delta_int;
+	% the following if statement corrects for a difference between deltas of 0.0 and 1.0 in this algorithm
+	if (a == 0.0)
+		delta_int = delta_int - 1;
+		a = 1.0;
+	endif
+	x1 = v(delta_int);
+	x2 = v(delta_int+1);
+	out = x1 + a*(x2-history);
+	retval = out;
+endfunction
+
 for i = 1:64
 	current_delta = 2.0 + i / 64;
 	output_linear(i) = interp1(x,current_delta);
@@ -102,6 +120,8 @@ for i = 1:64
 	output_splinegen(i) = interp_splinegen(x,current_delta);
 	output_cubicgen(i) = interp_cubicgen(x,current_delta);
 	output_cosinegen(i) = interp_cosinegen(x,current_delta);
+	output_allpassgen(i) = interp_allpassgen(x,current_delta,lastout_allpass);
+	lastout_allpass = output_allpassgen(i);
 endfor
 
 save expectedOutput.mat output_linear
@@ -111,3 +131,4 @@ save -append expectedOutput.mat output_spline
 save -append expectedOutput.mat output_splinegen
 save -append expectedOutput.mat output_cubicgen
 save -append expectedOutput.mat output_cosinegen
+save -append expectedOutput.mat output_allpassgen
