@@ -111,6 +111,25 @@ namespace Jamoma {
 		{
 			return const_cast<SampleBundle*>(this)->mChannels[index];
 		}
+        
+        
+        /** Interpolate a value between known Samples.
+         */
+        Sample at(size_t channel, double interpolatedFrameIndex) {
+            Sample output = 0.0;
+            Jamoma::Interpolator::Linear<Sample> my_interp;
+            
+            int frameIndexBefore = (int)interpolatedFrameIndex;
+            double delta = interpolatedFrameIndex - frameIndexBefore;
+            int frameIndexAfter = frameIndexBefore + 1;
+            
+            Sample sampleAtIndexBefore = mChannels[channel][frameIndexBefore];
+            Sample sampleAtIndexAfter = mChannels[channel][frameIndexAfter];
+            
+            output = my_interp(sampleAtIndexBefore,sampleAtIndexAfter,delta);
+            
+            return output;
+        }
 		
 		
 		/**	Change the channel count of the bundle.
