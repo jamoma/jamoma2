@@ -114,10 +114,12 @@ namespace Jamoma {
         
         
         /** Interpolate a value between known Samples.
+         @warning This function is experimental while work on issue #70 continues
          */
+        template <class InterpolatorType = Jamoma::Interpolator::Linear<Sample>>
         Sample at(size_t channel, double interpolatedFrameIndex) {
             Sample output = 0.0;
-            Jamoma::Interpolator::Linear<Sample> my_interp;
+            InterpolatorType interp;
             
             int frameIndexBefore = (int)interpolatedFrameIndex;
             double delta = interpolatedFrameIndex - frameIndexBefore;
@@ -126,7 +128,7 @@ namespace Jamoma {
             Sample sampleAtIndexBefore = mChannels[channel][frameIndexBefore];
             Sample sampleAtIndexAfter = mChannels[channel][frameIndexAfter];
             
-            output = my_interp(sampleAtIndexBefore,sampleAtIndexAfter,delta);
+            output = interp(sampleAtIndexBefore,sampleAtIndexAfter,delta);
             
             return output;
         }

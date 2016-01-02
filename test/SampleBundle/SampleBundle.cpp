@@ -113,14 +113,25 @@ namespace Jamoma {
             for (int i = 0; i < 85; i ++)
             {
                 double d = 3.0 * i / 4.0;
-                temp = test_bundle.at(0,d);
+                
+                temp = test_bundle.at<Jamoma::Interpolator::None<Sample>>(0,d);
+                std::cout << "none    ( " << d << " ) = " << temp << std::endl;
+                
+                temp = test_bundle.at<Jamoma::Interpolator::Nearest<Sample>>(0,d);
+                std::cout << "nearest ( " << d << " ) = " << temp << std::endl;
+                
+                temp = test_bundle.at<Jamoma::Interpolator::Cosine<Sample>>(0,d);
+                std::cout << "cosine  ( " << d << " ) = " << temp << std::endl;
+                
+                temp = test_bundle.at<Jamoma::Interpolator::Linear<Sample>>(0,d);
+                std::cout << "linear  ( " << d << " ) = " << temp << std::endl;
                 
                 if (i % 4 == 0) { // every 4th item should be a whole number we can compare with regular access
                     tempExpected = test_bundle[0][int(d)];
                     if (temp != tempExpected) badSampleCount++;
                 }
                 
-                //std::cout << "sample " << d << " had a value of " << temp << std::endl;
+                std::cout << "***" << std::endl;
                 
             }
             
