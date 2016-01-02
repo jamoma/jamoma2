@@ -105,11 +105,11 @@ namespace Jamoma {
         void testInterpolation() {
             SampleBundle test_bundle(2,64);
             
-            test_bundle.generate();
+            test_bundle.generate<Generator::UnipolarRamp<Sample>>();
             
-            for (int i = 0; i < 64; i ++)
+            for (int i = 0; i < 85; i ++)
             {
-                double d = 2.0 * i / 3.0;
+                double d = 3.0 * i / 4.0;
                 std::cout << "sample " << d << " had a value of " << test_bundle.at(0,d) << std::endl;
             }
             
