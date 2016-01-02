@@ -103,16 +103,28 @@ namespace Jamoma {
         }
         
         void testInterpolation() {
+            int		badSampleCount = 0;
             SampleBundle test_bundle(2,64);
             
             test_bundle.generate<Generator::UnipolarRamp<Sample>>();
             
+            Jamoma::Sample temp;
+            Jamoma::Sample tempExpected;
             for (int i = 0; i < 85; i ++)
             {
                 double d = 3.0 * i / 4.0;
-                std::cout << "sample " << d << " had a value of " << test_bundle.at(0,d) << std::endl;
+                temp = test_bundle.at(0,d);
+                
+                if (i % 4 == 0) { // every 4th item should be a whole number we can compare with regular access
+                    tempExpected = test_bundle[0][int(d)];
+                    if (temp != tempExpected) badSampleCount++;
+                }
+                
+                //std::cout << "sample " << d << " had a value of " << temp << std::endl;
+                
             }
             
+            mTest->TEST_ASSERT("linear interpolation produces same values as [] operator", badSampleCount == 0);
             
         }
 		
