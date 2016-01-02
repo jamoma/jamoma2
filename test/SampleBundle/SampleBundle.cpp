@@ -23,6 +23,7 @@ namespace Jamoma {
 		{
 			testBasic();
             testAutoCreatedSampleBundleGroup();
+            testInterpolation();
 		}
 
 		
@@ -98,6 +99,20 @@ namespace Jamoma {
             mTest->TEST_ASSERT("stashed value 2 = 3", mTest->compare(stash_value2, stash_value3, false));
             mTest->TEST_ASSERT("stashed value 2 = 4", mTest->compare(stash_value2, stash_value4, false));
             mTest->TEST_ASSERT("stashed value 3 = 4", mTest->compare(stash_value3, stash_value4, false));
+            
+        }
+        
+        void testInterpolation() {
+            SampleBundle test_bundle(2,64);
+            
+            test_bundle.generate();
+            
+            for (int i = 0; i < 64; i ++)
+            {
+                double d = 2.0 * i / 3.0;
+                std::cout << "sample " << d << " had a value of " << test_bundle.at(0,d) << std::endl;
+            }
+            
             
         }
 		
