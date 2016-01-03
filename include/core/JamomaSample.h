@@ -117,7 +117,7 @@ namespace Jamoma {
          @warning This function is experimental while work on issue #70 continues
          */
         template <class InterpolatorType = Jamoma::Interpolator::Linear<Sample>>
-        Sample at(size_t channel, double interpolatedFrameIndex) {
+        Sample at(double interpolatedFrameIndex, size_t channel = 0) {
             Sample output = 0.0;
             Sample sampleAtIndex0 = 0.0;
             Sample sampleAtIndex1 = 0.0;
