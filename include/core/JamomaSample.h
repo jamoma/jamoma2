@@ -131,28 +131,22 @@ namespace Jamoma {
             int frameIndex2 = frameIndex1 + 1;
             int frameIndex3 = frameIndex1 + 2;
             
-            try {
-                sampleAtIndex0 = mChannels[channel].at(frameIndex0);
-            } catch (const std::out_of_range& oor) {
-                // stay zero
-            }
-            
-            try {
+            if (frameIndex1 >= 0 && frameIndex1 < frameCount()) {
+                
                 sampleAtIndex1 = mChannels[channel].at(frameIndex1);
-            } catch (const std::out_of_range& oor) {
-                // stay zero
-            }
             
-            try {
-                sampleAtIndex2 = mChannels[channel].at(frameIndex2);
-            } catch (const std::out_of_range& oor) {
-                // stay zero
-            }
+                if (frameIndex0 != -1)
+                    sampleAtIndex0 = mChannels[channel][frameIndex0];
+                    // if not stay zero
+                
+                if (frameIndex2 < frameCount())
+                    sampleAtIndex2 = mChannels[channel][frameIndex2];
+                    // if not stay zero
+                
+                if (frameIndex3 < frameCount())
+                    sampleAtIndex3 = mChannels[channel][frameIndex3];
+                    // if not stay zero
             
-            try {
-                sampleAtIndex3 = mChannels[channel].at(frameIndex3);
-            } catch (const std::out_of_range& oor) {
-                // stay zero
             }
             
             output = interp(sampleAtIndex0, sampleAtIndex1, sampleAtIndex2, sampleAtIndex3, delta);
