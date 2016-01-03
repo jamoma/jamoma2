@@ -23,7 +23,7 @@ namespace Jamoma {
 		{
 			testBasic();
             testAutoCreatedSampleBundleGroup();
-            printInterpolationDifferences();
+            //printInterpolationDifferences();
             testInterpolationAtWholeNumbers();
 		}
 
@@ -127,6 +127,9 @@ namespace Jamoma {
                 
                 temp = test_bundle.at<Jamoma::Interpolator::Cubic<Sample>>(d);
                 std::cout << "cubic   ( " << d << " ) = " << temp << std::endl;
+                
+                temp = test_bundle.at<Jamoma::Interpolator::Spline<Sample>>(d);
+                std::cout << "spline   ( " << d << " ) = " << temp << std::endl;
                 
                 std::cout << "***" << std::endl;
                 
