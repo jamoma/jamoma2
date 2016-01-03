@@ -126,6 +126,9 @@ namespace Jamoma {
                 temp = test_bundle.at<Jamoma::Interpolator::Linear<Sample>>(0,d);
                 std::cout << "linear  ( " << d << " ) = " << temp << std::endl;
                 
+                temp = test_bundle.at<Jamoma::Interpolator::Cubic<Sample>>(0,d);
+                std::cout << "cubic   ( " << d << " ) = " << temp << std::endl;
+                
                 if (i % 4 == 0) { // every 4th item should be a whole number we can compare with regular access
                     tempExpected = test_bundle[0][int(d)];
                     if (temp != tempExpected) badSampleCount++;

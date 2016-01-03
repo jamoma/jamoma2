@@ -119,16 +119,43 @@ namespace Jamoma {
         template <class InterpolatorType = Jamoma::Interpolator::Linear<Sample>>
         Sample at(size_t channel, double interpolatedFrameIndex) {
             Sample output = 0.0;
+            Sample sampleAtIndex0 = 0.0;
+            Sample sampleAtIndex1 = 0.0;
+            Sample sampleAtIndex2 = 0.0;
+            Sample sampleAtIndex3 = 0.0;
             InterpolatorType interp;
             
-            int frameIndexBefore = (int)interpolatedFrameIndex;
-            double delta = interpolatedFrameIndex - frameIndexBefore;
-            int frameIndexAfter = frameIndexBefore + 1;
+            int frameIndex1 = (int)interpolatedFrameIndex;
+            double delta = interpolatedFrameIndex - frameIndex1;
+            int frameIndex0 = frameIndex1 - 1;
+            int frameIndex2 = frameIndex1 + 1;
+            int frameIndex3 = frameIndex1 + 2;
             
-            Sample sampleAtIndexBefore = mChannels[channel][frameIndexBefore];
-            Sample sampleAtIndexAfter = mChannels[channel][frameIndexAfter];
+            try {
+                sampleAtIndex0 = mChannels[channel].at(frameIndex0);
+            } catch (const std::out_of_range& oor) {
+                // stay zero
+            }
             
-            output = interp(sampleAtIndexBefore,sampleAtIndexAfter,delta);
+            try {
+                sampleAtIndex1 = mChannels[channel].at(frameIndex1);
+            } catch (const std::out_of_range& oor) {
+                // stay zero
+            }
+            
+            try {
+                sampleAtIndex2 = mChannels[channel].at(frameIndex2);
+            } catch (const std::out_of_range& oor) {
+                // stay zero
+            }
+            
+            try {
+                sampleAtIndex3 = mChannels[channel].at(frameIndex3);
+            } catch (const std::out_of_range& oor) {
+                // stay zero
+            }
+            
+            output = interp(sampleAtIndex0, sampleAtIndex1, sampleAtIndex2, sampleAtIndex3, delta);
             
             return output;
         }
