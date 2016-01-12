@@ -23,6 +23,8 @@ namespace Jamoma {
 		{
 			testBasic();
             testAutoCreatedSampleBundleGroup();
+            //printInterpolationDifferences();
+            testInterpolationAtWholeNumbers();
 		}
 
 		
@@ -100,6 +102,81 @@ namespace Jamoma {
             mTest->TEST_ASSERT("stashed value 3 = 4", mTest->compare(stash_value3, stash_value4, false));
             
         }
+        
+        void printInterpolationDifferences() {
+            SampleBundle test_bundle(2,64);
+            
+            test_bundle.generate<Generator::UnipolarRamp<Sample>>();
+            
+            Jamoma::Sample temp;
+            for (int i = 0; i < 85; i ++)
+            {
+                double d = 3.0 * i / 4.0;
+                
+                temp = test_bundle.at<Jamoma::Interpolator::None<Sample>>(d);
+                std::cout << "none    ( " << d << " ) = " << temp << std::endl;
+                
+                temp = test_bundle.at<Jamoma::Interpolator::Nearest<Sample>>(d);
+                std::cout << "nearest ( " << d << " ) = " << temp << std::endl;
+                
+                temp = test_bundle.at<Jamoma::Interpolator::Cosine<Sample>>(d);
+                std::cout << "cosine  ( " << d << " ) = " << temp << std::endl;
+                
+                temp = test_bundle.at<Jamoma::Interpolator::Linear<Sample>>(d);
+                std::cout << "linear  ( " << d << " ) = " << temp << std::endl;
+                
+                temp = test_bundle.at<Jamoma::Interpolator::Cubic<Sample>>(d);
+                std::cout << "cubic   ( " << d << " ) = " << temp << std::endl;
+                
+                temp = test_bundle.at<Jamoma::Interpolator::Spline<Sample>>(d);
+                std::cout << "spline   ( " << d << " ) = " << temp << std::endl;
+                
+                std::cout << "***" << std::endl;
+                
+            }
+            
+        }
+        
+        void testInterpolationAtWholeNumbers() {
+            int		badSampleCountCosine = 0;
+            int		badSampleCountLinear = 0;
+            int		badSampleCountCubic = 0;
+            int		badSampleCountSpline = 0;
+            SampleBundle test_bundle(2,64);
+            
+            test_bundle.generate<Generator::UnipolarRamp<Sample>>();
+            
+            Jamoma::Sample tempCosine;
+            Jamoma::Sample tempLinear;
+            Jamoma::Sample tempCubic;
+            Jamoma::Sample tempSpline;
+            Jamoma::Sample tempExpected;
+            for (int i = 0; i < 85; i ++)
+            {
+                double d = 3.0 * i / 4.0;
+                
+                tempCosine = test_bundle.at<Jamoma::Interpolator::Cosine<Sample>>(d);
+                tempLinear = test_bundle.at<Jamoma::Interpolator::Linear<Sample>>(d);
+                tempCubic = test_bundle.at<Jamoma::Interpolator::Cubic<Sample>>(d);
+                tempSpline = test_bundle.at<Jamoma::Interpolator::Spline<Sample>>(d);
+                
+                if (i % 4 == 0) { // every 4th item should be a whole number we can compare with regular access
+                    tempExpected = test_bundle[0][int(d)];
+                    if (tempCosine != tempExpected) badSampleCountCosine++;
+                    if (tempLinear != tempExpected) badSampleCountLinear++;
+                    if (tempCubic != tempExpected) badSampleCountCubic++;
+                    if (tempSpline != tempExpected) badSampleCountSpline++;
+                }
+                
+            }
+            
+            mTest->TEST_ASSERT("cosine interpolation produces same values as [] operator", badSampleCountCosine == 0);
+            mTest->TEST_ASSERT("linear interpolation produces same values as [] operator", badSampleCountLinear == 0);
+            mTest->TEST_ASSERT("cubic interpolation produces same values as [] operator", badSampleCountCubic == 0);
+            mTest->TEST_ASSERT("spline interpolation produces same values as [] operator", badSampleCountSpline == 0);
+            
+        }
+
 		
 	};
 

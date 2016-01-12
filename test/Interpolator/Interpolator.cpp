@@ -28,6 +28,7 @@ public:
 		testCubic();
         testHermite();
         testSpline();
+        testZeros();
     }
     
     void testNone() {
@@ -727,6 +728,72 @@ public:
         }
         
         mTest->TEST_ASSERT("testSpline produced correct interpolation output", badSampleCount == 0);
+    }
+    
+    void testZeros() {
+        
+        // NW: Needed because of our handling of index out of bounds in Jamoma::SampleBundle at().
+        // We assume there that passing zeros to an interpolator will return zero.
+        // This test should insure that this assumption remains true.
+        
+        MTRand	mTwister;	///< Class implementing Mersenne Twister algorithm
+        
+        auto x0 = 0.0;
+        auto x1 = 0.0;
+        auto x2 = 0.0;
+        auto x3 = 0.0;
+        auto randomIndex = 0.0; // randomized to prove it *really* works
+        auto output = 0.0;
+        
+        Jamoma::Interpolator::None<Jamoma::Sample> my_none;
+        Jamoma::Interpolator::Nearest<Jamoma::Sample> my_nearest;
+        Jamoma::Interpolator::Linear<Jamoma::Sample> my_linear;
+        Jamoma::Interpolator::Allpass<Jamoma::Sample> my_allpass;
+        Jamoma::Interpolator::Cosine<Jamoma::Sample> my_cosine;
+        Jamoma::Interpolator::Cubic<Jamoma::Sample> my_cubic;
+        Jamoma::Interpolator::Spline<Jamoma::Sample> my_spline;
+        Jamoma::Interpolator::Hermite<Jamoma::Sample> my_hermite;
+        
+        randomIndex = mTwister.rand(1.0);
+        output = my_none(x0,x1,x2,x3,randomIndex);
+        
+        mTest->TEST_ASSERT("None returned zero", output == 0.0);
+        
+        randomIndex = mTwister.rand(1.0);
+        output = my_nearest(x0,x1,x2,x3,randomIndex);
+        
+        mTest->TEST_ASSERT("Nearest returned zero", output == 0.0);
+        
+        randomIndex = mTwister.rand(1.0);
+        output = my_linear(x0,x1,x2,x3,randomIndex);
+        
+        mTest->TEST_ASSERT("Linear returned zero", output == 0.0);
+        
+        randomIndex = mTwister.rand(1.0);
+        output = my_allpass(x0,x1,x2,x3,randomIndex);
+        
+        mTest->TEST_ASSERT("Allpass returned zero", output == 0.0);
+        
+        randomIndex = mTwister.rand(1.0);
+        output = my_cosine(x0,x1,x2,x3,randomIndex);
+        
+        mTest->TEST_ASSERT("Cosine returned zero", output == 0.0);
+        
+        randomIndex = mTwister.rand(1.0);
+        output = my_cubic(x0,x1,x2,x3,randomIndex);
+        
+        mTest->TEST_ASSERT("Cubic returned zero", output == 0.0);
+        
+        randomIndex = mTwister.rand(1.0);
+        output = my_spline(x0,x1,x2,x3,randomIndex);
+        
+        mTest->TEST_ASSERT("Spline returned zero", output == 0.0);
+        
+        randomIndex = mTwister.rand(1.0);
+        output = my_hermite(x0,x1,x2,x3,randomIndex);
+        
+        mTest->TEST_ASSERT("Hermite returned zero", output == 0.0);
+        
     }
 
 };
