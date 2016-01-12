@@ -93,23 +93,23 @@ namespace Jamoma {
 		
 		
 		/**	Access the vector at the specified channel in the bundle.
-			@param	channel		The channel whose vector you wish to access.
-			@return				A reference to the channel's vector.
+			@param	channelIndex	The channel whose vector you wish to access.
+			@return                 A reference to the channel's vector.
 		 */
-		SampleVector& operator[](size_t channel)
+		SampleVector& operator[](size_t channelIndex)
 		{
-			SampleVector& temp = mChannels[channel];
+			SampleVector& temp = mChannels[channelIndex];
 			return temp;
 		}
 		
 		
 		/**	Access the vector at the specified channel in the bundle.
-			@param	channel		The channel whose vector you wish to access.
-			@return				A reference to the channel's vector.
+			@param	channelIndex	The channel whose vector you wish to access.
+			@return                 A reference to the channel's vector.
 		 */
-		const SampleVector& operator[](size_t index) const
+		const SampleVector& operator[](size_t channelIndex) const
 		{
-			return const_cast<SampleBundle*>(this)->mChannels[index];
+			return const_cast<SampleBundle*>(this)->mChannels[channelIndex];
 		}
         
         
