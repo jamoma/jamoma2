@@ -114,10 +114,13 @@ namespace Jamoma {
         
         
         /** Interpolate a value between known Samples.
-         @warning This function is experimental while work on issue #70 continues
+            @param  InterpolatorType            A class defined in JamomaInterpolator.h.
+            @param  interpolatedFrameIndex      The floating-point index between frames that you wish to interpolate.
+            @param  channelIndex                The channel whose vector you wish to access.
+            @return                             An interpolated Sample value.
          */
         template <class InterpolatorType = Jamoma::Interpolator::Linear<Sample>>
-        Sample at(double interpolatedFrameIndex, size_t channel = 0) {
+        Sample at(double interpolatedFrameIndex, size_t channelIndex = 0) {
             Sample output = 0.0;
             Sample sampleAtIndex0 = 0.0;
             Sample sampleAtIndex1 = 0.0;
@@ -131,20 +134,22 @@ namespace Jamoma {
             int frameIndex2 = frameIndex1 + 1;
             int frameIndex3 = frameIndex1 + 2;
             
+            // check that we are within bounds
             if (frameIndex1 >= 0 && frameIndex1 < frameCount()) {
+                // if not, all values stay zero
                 
-                sampleAtIndex1 = mChannels[channel].at(frameIndex1);
+                sampleAtIndex1 = mChannels[channelIndex].at(frameIndex1);
             
                 if (frameIndex0 != -1)
-                    sampleAtIndex0 = mChannels[channel][frameIndex0];
+                    sampleAtIndex0 = mChannels[channelIndex][frameIndex0];
                     // if not stay zero
                 
                 if (frameIndex2 < frameCount())
-                    sampleAtIndex2 = mChannels[channel][frameIndex2];
+                    sampleAtIndex2 = mChannels[channelIndex][frameIndex2];
                     // if not stay zero
                 
                 if (frameIndex3 < frameCount())
-                    sampleAtIndex3 = mChannels[channel][frameIndex3];
+                    sampleAtIndex3 = mChannels[channelIndex][frameIndex3];
                     // if not stay zero
             
             }
@@ -198,7 +203,7 @@ namespace Jamoma {
 		
 		
 		/** Fill the values with a specific shape (ramp, sine, triangle, etc)
-         @warning This function is experimental. Work will likely migrate elsewhere as issue #68 progresses.
+            @param  GeneratorType       A class defined in JamomaGenerator.h.
          */
 		template <class GeneratorType = Generator::Sine<Sample>>
         void generate() {
