@@ -61,7 +61,7 @@ namespace Jamoma {
          */
         Sample operator()(Sample x = 0.0)
         {
-            Sample oneSample = mSync();
+			Sample oneSample = 0.0;//mSync();
             return mLookupTable[0].at(oneSample);
         }
         
