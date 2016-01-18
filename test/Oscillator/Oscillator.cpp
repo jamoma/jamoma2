@@ -27,9 +27,23 @@ public:
 	void testParameters()
 	{
 		Jamoma::Oscillator my_sine;
-		
-		my_sine.channelCount = 1;
-		my_sine.frameCount = 64;
+        // default sampleRate is 96000, therefore frequency parameter range is -46000 to 46000
+        
+        my_sine.frequency = 440;
+        mTest->TEST_ASSERT("setting frequency parameter within range", my_sine.frequency == 440 );
+        
+        my_sine.frequency = -40;
+        mTest->TEST_ASSERT("setting frequency parameter within range 2", my_sine.frequency == -40 );
+        
+        my_sine.frequency = -50000;
+        // 2000 below range, so it will wrap back to -46000
+        mTest->TEST_ASSERT("setting frequency parameter below range", my_sine.frequency == -46000 );
+        
+        my_sine.frequency = 60000;
+        // 12000 above range, so it will wrap back to 36000
+        mTest->TEST_ASSERT("setting frequency parameter above range", my_sine.frequency == 36000 );
+        
+        //std::cout << "frequency = " << my_sine.frequency << std::endl;
 		
 	}
 	
