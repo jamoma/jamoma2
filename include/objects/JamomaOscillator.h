@@ -30,6 +30,7 @@ namespace Jamoma {
         Oscillator(std::size_t tableSize = 8192)
         : mLookupTable(1, tableSize)
         {
+            mLookupTable.generate(); // fill with sine as default
             // NW: Do we need observers here?
         }
         
@@ -53,6 +54,16 @@ namespace Jamoma {
             } ),
             Synopsis("Rate at which the waveform should cycle")
         };
+        
+        /** Process one sample.
+         @param x   Sample to be processed. Unused.
+         @return    Processed sample.
+         */
+        Sample operator()(Sample x = 0.0)
+        {
+            Sample oneSample = mSync();
+            return mLookupTable[0].at(oneSample);
+        }
         
     private:
         Jamoma::Sync                mSync;
