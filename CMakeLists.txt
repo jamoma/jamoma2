@@ -14,6 +14,7 @@ execute_process(
 ####### EXAMPLES
 
 add_subdirectory(src/filtered-noise-example)
+add_subdirectory(src/sine-tone-example)
 
 
 ####### UNIT TESTS
