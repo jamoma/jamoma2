@@ -20,12 +20,12 @@ public:
 	OscillatorTest(Jamoma::UnitTest<OscillatorTest>* test)
 	: mTest(test)
 	{
-		testParameters();
+		testParameterSetting();
         testChangingPhase();
 	}
 
 	
-	void testParameters()
+	void testParameterSetting()
 	{
 		Jamoma::Oscillator my_sine;
         // default sampleRate is 96000, therefore frequency parameter range is -46000 to 46000
