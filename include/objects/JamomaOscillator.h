@@ -35,12 +35,12 @@ namespace Jamoma {
             // NW: Do we need observers here?
         }
         
-        Parameter<double, Limit::Wrap<double>, NativeUnit::None<double>>	phase		= { this,
-            "phase",
+        Parameter<double, Limit::Wrap<double>, NativeUnit::None<double>>	initialphase		= { this,
+            "initialphase",
             0.0,
             Range<double>(0.0, 1.0),
             Setter([this]{
-                mSync.phase = phase;
+                mSync.phase = initialphase;
             }),
             Synopsis("Initial phase of the periodic waveform")
         };
