@@ -22,6 +22,7 @@ public:
 	{
 		testParameterSetting();
         testChangingPhase();
+        testOutput();
 	}
 
 	
@@ -91,6 +92,15 @@ public:
     }
     
     void testOutput() {
+        Jamoma::Oscillator my_sine;
+        
+        my_sine.channelCount = 1;
+        my_sine.frameCount = 64;
+        
+        my_sine.frequency = 440;
+        my_sine.initialphase = 0.0;
+        
+        auto out_samples = my_sine();
         
         // The following output was generated using the Octave code
         // in OscillatorTargetOutput.m by NW
@@ -160,6 +170,28 @@ public:
             0.977045574435264,
             0.9705064734685428
         };
+        
+        int badSampleCount = 0;
+        Jamoma::Sample temp = 0.0;
+        Jamoma::Sample tempExpected = 0.0;
+        double difference = 0.0;
+        
+        for (int i = 0; i < expectedOutputSine440.size(); i++) {
+            temp = out_samples[0][0][i];
+            tempExpected = expectedOutputSine440[i];
+            difference = std::fabs(temp - tempExpected);
+            
+            // NW: using a slightly different comparison here
+            // since the target values were generated using sine function directly, not via wavetable
+            // TODO: develop more exact expectedOutputSine440 array
+            if ( difference > 0.0000001 ) {
+                badSampleCount++;
+                std::cout << "sample " << i << " had a difference of " << difference << std::endl;
+            }
+        }
+        
+        std::cout << "output from my_sine has " << badSampleCount << " bad samples" << std::endl;
+        mTest->TEST_ASSERT("sine 440 produces expected output samples", badSampleCount == 0);
     }
 	
 };
