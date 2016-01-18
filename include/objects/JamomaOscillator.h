@@ -59,10 +59,23 @@ namespace Jamoma {
          @param x   Sample to be processed. Unused.
          @return    Processed sample.
          */
-        Sample operator()(Sample x = 0.0)
+        Sample operator()(Sample x)
         {
-			Sample oneSample = 0.0;//mSync();
+			Sample oneSample = mSync(0.0);
             return mLookupTable[0].at(oneSample);
+        }
+        
+        /** Process a SharedSampleBundleGroup.
+         @param	x	SharedSampleBundleGroup to be processed.
+         @return		Processed SharedSampleBundleGroup.
+         */
+        SharedSampleBundleGroup operator()(const SampleBundle& x = kSampleBundleNone)
+        {
+            auto out = mOutput;
+            
+            // Do something here
+            
+            return out;
         }
         
     private:

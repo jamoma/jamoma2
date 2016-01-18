@@ -26,12 +26,11 @@ public:
 	
 	void testParameters()
 	{
-		/*
 		Jamoma::Oscillator my_sine;
 		
 		my_sine.channelCount = 1;
 		my_sine.frameCount = 64;
-		*/
+		
 	}
 	
 };
