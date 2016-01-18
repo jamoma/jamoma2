@@ -33,6 +33,27 @@ namespace Jamoma {
             // NW: Do we need observers here?
         }
         
+        Parameter<double, Limit::Wrap<double>, NativeUnit::None<double>>	phase		= { this,
+            "phase",
+            0.0,
+            Range<double>(0.0, 1.0),
+            Setter([this]{
+                mSync.phase = phase;
+            }),
+            Synopsis("Initial phase of the periodic waveform")
+        };
+        
+        // NW: These range and limit constraints are being applied here AND within the mSync. Should we remove this one?
+        Parameter<double, Limit::Fold<double>, NativeUnit::None<double>>	frequency	= {	this,
+            "frequency",
+            1.0,
+            Range<double>(sampleRate * -0.5, sampleRate * 0.5),
+            Setter( [this]{
+                mSync.frequency = frequency;
+            } ),
+            Synopsis("Rate at which the waveform should cycle")
+        };
+        
     private:
         Jamoma::Sync                mSync;
         Jamoma::SampleBundle        mLookupTable;
