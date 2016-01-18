@@ -25,6 +25,14 @@ namespace Jamoma {
         static constexpr Classname classname = { "oscillator" };
         static constexpr auto tags = { "dspGeneratorLib", "audio", "generator", "oscillator", "wavetable" };
         
+        /** Table size is fixed at instantiation
+         */
+        Oscillator(std::size_t tableSize = 8192)
+        : mLookupTable(1, tableSize)
+        {
+            // NW: Do we need observers here?
+        }
+        
     private:
         Jamoma::Sync                mSync;
         Jamoma::SampleBundle        mLookupTable;
