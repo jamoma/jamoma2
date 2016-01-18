@@ -30,6 +30,7 @@ namespace Jamoma {
         Oscillator(std::size_t tableSize = 8192)
         : mLookupTable(1, tableSize)
         {
+            mSync.gain = tableSize; // ramp from 0 to tableSize
             mLookupTable.generate(); // fill with sine as default
             // NW: Do we need observers here?
         }
@@ -61,8 +62,8 @@ namespace Jamoma {
          */
         Sample operator()(Sample x)
         {
-			Sample oneSample = mSync(0.0);
-            return mLookupTable[0].at(oneSample);
+			double oneSample = mSync(0.0);
+            return mLookupTable.at(oneSample);
         }
         
         /** Process a SharedSampleBundleGroup.

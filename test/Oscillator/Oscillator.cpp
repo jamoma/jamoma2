@@ -44,6 +44,24 @@ public:
         mTest->TEST_ASSERT("setting frequency parameter above range", my_sine.frequency == 36000 );
         
         //std::cout << "frequency = " << my_sine.frequency << std::endl;
+        
+        mTest->TEST_ASSERT("default phase is 0.0", my_sine.phase == 0.0 );
+        
+        my_sine.frequency = 440;
+        my_sine.phase = 0.25;
+        mTest->TEST_ASSERT("setting phase parameter within range", my_sine.phase == 0.25 );
+        
+        // NW: processing a few samples should result in a changing phase
+        Jamoma::Sample out = 0.0;
+        for (int i = 0; i < 16; i++)
+        {
+            out = my_sine(0.0);
+            std::cout << "out = " << out << std::endl;
+        }
+        
+        // NW: test shows that phase does not change, meaning mSync phase is not consistent with Oscillator's phase parameter
+        mTest->TEST_ASSERT("phase parameter after processing samples", my_sine.phase == 0.25 );
+        
 		
 	}
 	
