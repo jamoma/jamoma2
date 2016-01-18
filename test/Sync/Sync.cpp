@@ -46,18 +46,18 @@ namespace Jamoma {
 			s.gain = make_pair(110.0, Unit::midiGain);
 			mTest->TEST_ASSERT("setting gain param with midi", mTest->compare( (double)s.gain, 1.5826306885735968) );
 			
-			// Phase parameter (range wrapping)
-			s.phase = 0.25;
-			mTest->TEST_ASSERT("setting phase param within range", mTest->compare( (double)s.phase, 0.25) );
+			// initialphase parameter (range wrapping)
+			s.initialphase = 0.25;
+			mTest->TEST_ASSERT("setting initialphase param within range", mTest->compare( (double)s.initialphase, 0.25) );
 		
-			s.phase = 1.3;
-			mTest->TEST_ASSERT("setting phase param over range", mTest->compare( (double)s.phase, 0.3) );
+			s.initialphase = 1.3;
+			mTest->TEST_ASSERT("setting initialphase param over range", mTest->compare( (double)s.initialphase, 0.3) );
 			
-			s.phase = 2.45;
-			mTest->TEST_ASSERT("setting phase param way over range", mTest->compare( (double)s.phase, 0.45) );
+			s.initialphase = 2.45;
+			mTest->TEST_ASSERT("setting initialphase param way over range", mTest->compare( (double)s.initialphase, 0.45) );
 			
-			s.phase = -1.3;
-			mTest->TEST_ASSERT("setting phase param under range", mTest->compare( (double)s.phase, 0.7) );
+			s.initialphase = -1.3;
+			mTest->TEST_ASSERT("setting initialphase param under range", mTest->compare( (double)s.initialphase, 0.7) );
 			
 			// Frequency parameter (range folding)
 			
@@ -87,7 +87,7 @@ namespace Jamoma {
             
             // settings group 1
             my_sync.sampleRate = 44100;
-            my_sync.phase = 0.0;
+            my_sync.initialphase = 0.0;
             my_sync.frequency = 100.0;
             
             auto out_samples = my_sync();
@@ -182,7 +182,7 @@ namespace Jamoma {
             
             // settings group 2
             my_sync.sampleRate = 96000;
-            my_sync.phase = 0.25;
+            my_sync.initialphase = 0.25;
             my_sync.frequency = 1.0;
             
             out_samples = my_sync();
@@ -289,7 +289,7 @@ namespace Jamoma {
             // NEGATIVE STEPS WRAPPING THOUGH 0.0
 
             my_sync.sampleRate = 48000;
-            my_sync.phase = 0.1;
+            my_sync.initialphase = 0.1;
             my_sync.frequency = -2000.0;
             
             auto out_samples = my_sync();
@@ -385,7 +385,7 @@ namespace Jamoma {
             // POSITIVE STEPS WRAPPING THOUGH 1.0
 
             my_sync.sampleRate = 22050;
-            my_sync.phase = 0.4;
+            my_sync.initialphase = 0.4;
             my_sync.frequency = 3000.0;
             
             out_samples = my_sync();
@@ -489,7 +489,7 @@ namespace Jamoma {
             my_sync16.frameCount = 16;
             
             my_sync16.sampleRate = 48000;
-            my_sync16.phase = 0.0;
+            my_sync16.initialphase = 0.0;
             my_sync16.frequency = 1.0;
             
             // store four vectors for testing
@@ -506,7 +506,7 @@ namespace Jamoma {
             my_sync64.frameCount = 64;
             
             my_sync64.sampleRate = 48000;
-            my_sync64.phase = 0.0;
+            my_sync64.initialphase = 0.0;
             my_sync64.frequency = 1.0;
             
             // store four vectors for testing

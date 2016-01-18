@@ -40,7 +40,7 @@ namespace Jamoma {
             0.0,
             Range<double>(0.0, 1.0),
             Setter([this]{
-                mSync.phase = initialphase;
+                mSync.initialphase = initialphase;
             }),
             Synopsis("Initial phase of the periodic waveform")
         };
@@ -55,6 +55,8 @@ namespace Jamoma {
             } ),
             Synopsis("Rate at which the waveform should cycle")
         };
+        
+        // NW: should we provide a way to get the current phase?
         
         /** Process one sample.
          @param x   Sample to be processed. Unused.

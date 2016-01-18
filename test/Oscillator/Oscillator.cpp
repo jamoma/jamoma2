@@ -75,7 +75,7 @@ public:
     void testChangingPhase() {
         Jamoma::Oscillator my_sine;
         
-        my_sine.frequency = 440;
+        my_sine.frequency = 4400;
         my_sine.initialphase = 0.25;
         
         // NW: processing a few samples should result in a changing phase for internal mSync object
@@ -83,10 +83,10 @@ public:
         for (int i = 0; i < 16; i++)
         {
             out = my_sine(0.0);
-            std::cout << "out = " << out << std::endl;
+            //std::cout << "out = " << out << std::endl;
         }
         
-        // NW: test shows mSync.phase changes, but Oscillator.initialphase does not
+        // NW: although mSync.mPhase changes, the Oscillator.initialphase does not
         mTest->TEST_ASSERT("phase parameter after processing samples", my_sine.initialphase == 0.25 );
     }
 	
