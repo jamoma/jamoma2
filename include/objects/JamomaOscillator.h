@@ -33,6 +33,7 @@ namespace Jamoma {
             mSync.gain = tableSize; // ramp from 0 to tableSize
             mLookupTable.generate(); // fill with sine as default
             // NW: Do we need observers here?
+            sampleRate.addObserver(mSampleRateObserver);
         }
         
         Parameter<double, Limit::Wrap<double>, NativeUnit::None<double>>	initialphase		= { this,
@@ -86,6 +87,12 @@ namespace Jamoma {
     private:
         Jamoma::Sync                mSync;
         Jamoma::SampleBundle        mLookupTable;
+        
+        Observer                    mSampleRateObserver = { std::bind(&Oscillator::updateSampleRate, this) };
+        
+        void updateSampleRate() {
+            mSync.sampleRate = sampleRate;
+        }
     };
 
 } // namespace Jamoma
