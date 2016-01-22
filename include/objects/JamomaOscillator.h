@@ -20,7 +20,7 @@ namespace Jamoma {
     /**	This AudioObject generates a <a href="https://en.wikipedia.org/wiki/Waveform">periodic waveform</a> by filling an internal SampleBundle with the shape to be repeated at a given frequency.
      This method of sound generation is typically referred to as <a href="https://en.wikipedia.org/wiki/Table-lookup_synthesis">table-lookup</a> or <a href="https://en.wikipedia.org/wiki/Wavetable_synthesis">wavetable</a> synthesis.
      */
-    class Oscillator : public AudioObject {
+    class Oscillator : public Sync {
     public:
         static constexpr Classname classname = { "oscillator" };
         static constexpr auto tags = { "dspGeneratorLib", "audio", "generator", "oscillator", "wavetable" };
@@ -30,32 +30,9 @@ namespace Jamoma {
         Oscillator(std::size_t tableSize = 8192)
         : mLookupTable(1, tableSize)
         {
-            mSync.gain = tableSize; // ramp from 0 to tableSize
+            gain = tableSize; // ramp from 0 to tableSize
             mLookupTable.generate(); // fill with sine as default
-            // NW: Do we need observers here?
-            sampleRate.addObserver(mSampleRateObserver);
         }
-        
-        Parameter<double, Limit::Wrap<double>, NativeUnit::None<double>>	initialphase		= { this,
-            "initialphase",
-            0.0,
-            Range<double>(0.0, 1.0),
-            Setter([this]{
-                mSync.initialphase = initialphase;
-            }),
-            Synopsis("Initial phase of the periodic waveform")
-        };
-        
-        // NW: These range and limit constraints are being applied here AND within the mSync. Should we remove this one?
-        Parameter<double, Limit::Fold<double>, NativeUnit::None<double>>	frequency	= {	this,
-            "frequency",
-            1.0,
-            Range<double>(sampleRate * -0.5, sampleRate * 0.5),
-            Setter( [this]{
-                mSync.frequency = frequency;
-            } ),
-            Synopsis("Rate at which the waveform should cycle")
-        };
         
         // NW: should we provide a way to get the current phase?
         
@@ -65,7 +42,9 @@ namespace Jamoma {
          */
         Sample operator()(Sample x)
         {
-			double oneSample = mSync(0.0);
+            // call operator() from parent Sync class
+            double oneSample = Sync::operator()(0.0);
+            // perform additional lookup
             return mLookupTable.at(oneSample);
         }
         
@@ -85,14 +64,9 @@ namespace Jamoma {
         }
         
     private:
-        Jamoma::Sync                mSync;
         Jamoma::SampleBundle        mLookupTable;
         
-        Observer                    mSampleRateObserver = { std::bind(&Oscillator::updateSampleRate, this) };
         
-        void updateSampleRate() {
-            mSync.sampleRate = sampleRate;
-        }
     };
 
 } // namespace Jamoma
