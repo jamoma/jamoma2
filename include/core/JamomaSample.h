@@ -244,6 +244,15 @@ namespace Jamoma {
 			for (int i=0; i<frameCount; ++i)
 				values[i] = vector[i];
 		}
+        
+        void padEnd()
+        {
+            for (auto& channel : mChannels) {
+                Sample firstSample = channel[0];
+                channel.push_back(firstSample);
+            }
+            mFrameCount += 1;
+        }
 		
 
 		// TODO: add an "apply" method to which is passed a std::function which then performs a transformation on the bundle contents.
