@@ -33,7 +33,7 @@ namespace Jamoma {
             gain = tableSize; // ramp from 0 to tableSize
             //mLookupTable.generate();
             mLookupTable.generate<Generator::Cosine<Sample>>(); // fill with sine as default
-            mLookupTable.padEnd();
+            mLookupTable.applySamplePadding(2);
         }
         
         // NW: should we provide a way to get the current phase?

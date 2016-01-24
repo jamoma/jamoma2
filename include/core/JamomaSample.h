@@ -46,6 +46,7 @@ namespace Jamoma {
 		
 		SampleBundleData	mChannels;		// each item in this vector represents a channel, which itself is a vector of samples
 		size_t				mFrameCount;	// if we change the number of channels we could loose the framecount in the vectors contained by mChannels, so we cache it here.
+        unsigned            mPaddingAmount = 0;     // if padding has been added, this value is used to track the number of extra Frames at the beginning and end
 
 	public:
 		/** Create a SampleBundle of a specific size.
@@ -245,13 +246,32 @@ namespace Jamoma {
 				values[i] = vector[i];
 		}
         
-        void padEnd()
+        /** Duplicate values at the beginning and end to provide padding for interpolation.
+         @warning this is an experimental function
+         */
+        void applySamplePadding(int paddingAmount)
         {
+            
+            assert(paddingAmount > 0 && paddingAmount < 100);
+            
             for (auto& channel : mChannels) {
-                Sample firstSample = channel[0];
-                channel.push_back(firstSample);
+                
+                SampleVector firstSamples(paddingAmount,0.0);
+                SampleVector lastSamples(paddingAmount,0.0);
+                
+                for (int i=0; i<paddingAmount; i++) {
+                    firstSamples[i] = channel[i];
+                    lastSamples[i] = channel[ (frameCount()-paddingAmount) + i ];
+                }
+                
+                for (int i=0; i<paddingAmount; i++) {
+                    channel.push_back(firstSamples[i]);
+                    channel.insert(channel.begin(),lastSamples[ paddingAmount - (1+i) ]);
+                }
+                
             }
-            mFrameCount += 1;
+            mFrameCount += ( 2 * paddingAmount );
+            mPaddingAmount += paddingAmount;
         }
 		
 
