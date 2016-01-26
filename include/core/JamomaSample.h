@@ -275,6 +275,29 @@ namespace Jamoma {
             mPaddingAmount += paddingAmount;
         }
         
+        
+        /** Add zero values at the beginning and end to provide padding.
+         @warning this is an experimental function
+         */
+        void applyZeroPadding(int paddingAmount)
+        {
+            
+            assert(paddingAmount > 0 && paddingAmount < 100);
+            
+            for (auto& channel : mChannels) {
+                
+                Sample zeroValue = 0.0;
+                
+                for (int i=0; i<paddingAmount; i++) {
+                    channel.push_back(zeroValue);
+                    channel.insert(channel.begin(),zeroValue);
+                }
+                
+            }
+            mFrameCount += ( 2 * paddingAmount );
+            mPaddingAmount += paddingAmount;
+        }
+        
 
 		// TODO: add an "apply" method to which is passed a std::function which then performs a transformation on the bundle contents.
 		// perhaps there would be a couple of variations:
