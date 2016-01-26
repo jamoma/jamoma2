@@ -46,7 +46,7 @@ namespace Jamoma {
 		
 		SampleBundleData	mChannels;		//!< each item in this vector represents a channel, which itself is a vector of samples
 		size_t				mFrameCount;	//!< if we change the number of channels we could loose the framecount in the vectors contained by mChannels, so we cache it here.
-        unsigned            mPaddingAmount = 0;     //!< if padding has been added, this value is used to track the number of extra Frames at the beginning and end
+        size_t              mPaddingAmount = 0;     //!< if padding has been added, this value is used to track the number of extra Frames at the beginning and end
 
 	public:
 		/** Create a SampleBundle of a specific size.
@@ -91,6 +91,15 @@ namespace Jamoma {
 		{
 			return mFrameCount;
 		}
+        
+        
+        /**	Return the number of frames dedicated to padding.
+         @return	The number of frames.
+         */
+        size_t paddingAmount() const
+        {
+            return mPaddingAmount;
+        }
 		
 		
 		/**	Access the vector at the specified channel in the bundle.

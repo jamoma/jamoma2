@@ -193,6 +193,10 @@ namespace Jamoma {
             
             mTest->TEST_ASSERT("bundle reports proper frameCount after padding", tempFrameCount == 68);
             
+            size_t tempPaddingAmount = paddedBundle.paddingAmount();
+            
+            mTest->TEST_ASSERT("bundle reports proper paddingAmount after padding", tempPaddingAmount == 2);
+            
             int badSampleCount = 0;
             
             if (paddedBundle[0][0] != 0.0) badSampleCount++;
@@ -217,6 +221,10 @@ namespace Jamoma {
             size_t tempFrameCount = paddedBundle.frameCount();
             
             mTest->TEST_ASSERT("bundle reports proper frameCount after padding", tempFrameCount == 70);
+            
+            size_t tempPaddingAmount = paddedBundle.paddingAmount();
+            
+            mTest->TEST_ASSERT("bundle reports proper paddingAmount after padding", tempPaddingAmount == 3);
             
             int badSampleCount = 0;
             
