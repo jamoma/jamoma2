@@ -44,9 +44,9 @@ namespace Jamoma {
 	class SampleBundle {
 		using SampleBundleData = std::vector<SampleVector>;
 		
-		SampleBundleData	mChannels;		// each item in this vector represents a channel, which itself is a vector of samples
-		size_t				mFrameCount;	// if we change the number of channels we could loose the framecount in the vectors contained by mChannels, so we cache it here.
-        unsigned            mPaddingAmount = 0;     // if padding has been added, this value is used to track the number of extra Frames at the beginning and end
+		SampleBundleData	mChannels;		//!< each item in this vector represents a channel, which itself is a vector of samples
+		size_t				mFrameCount;	//!< if we change the number of channels we could loose the framecount in the vectors contained by mChannels, so we cache it here.
+        unsigned            mPaddingAmount = 0;     //!< if padding has been added, this value is used to track the number of extra Frames at the beginning and end
 
 	public:
 		/** Create a SampleBundle of a specific size.
@@ -248,7 +248,8 @@ namespace Jamoma {
         
         
         /** Duplicate values at the beginning and end to provide padding for interpolation.
-         @warning this is an experimental function
+            @param  paddingAmount   Number of frames to add to both beginning & end of SampleBundle. Total number of frames added to SampleBundle will be twice this amount.
+            @warning this is an experimental function -- see issue #82
          */
         void applySamplePadding(int paddingAmount)
         {
@@ -277,7 +278,8 @@ namespace Jamoma {
         
         
         /** Add zero values at the beginning and end to provide padding.
-         @warning this is an experimental function
+            @param  paddingAmount   Number of frames to add to both beginning & end of SampleBundle. Total number of frames added to SampleBundle will be twice this amount.
+            @warning this is an experimental function -- see issue #82
          */
         void applyZeroPadding(int paddingAmount)
         {
