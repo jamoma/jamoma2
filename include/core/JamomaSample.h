@@ -258,7 +258,6 @@ namespace Jamoma {
         
         /** Duplicate values at the beginning and end to provide padding for interpolation.
             @param  paddingAmount   Number of frames to add to both beginning & end of SampleBundle. Total number of frames added to SampleBundle will be twice this amount.
-            @warning this is an experimental function -- see issue #82
          */
         void applySamplePadding(int paddingAmount)
         {
@@ -305,7 +304,6 @@ namespace Jamoma {
         
         /** Add zero values at the beginning and end to provide padding.
             @param  paddingAmount   Number of frames to add to both beginning & end of SampleBundle. Total number of frames added to SampleBundle will be twice this amount.
-            @warning this is an experimental function -- see issue #82
          */
         void applyZeroPadding(int paddingAmount)
         {
