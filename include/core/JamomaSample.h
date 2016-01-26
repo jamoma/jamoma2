@@ -290,17 +290,30 @@ namespace Jamoma {
             // ensure that we are adding at least one sample
             assert(paddingAmount > 0);
             
-            for (auto& channel : mChannels) {
-                
-                Sample zeroValue = 0.0;
-                
-                for (int i=0; i<paddingAmount; i++) {
-                    channel.push_back(zeroValue);
-                    channel.insert(channel.begin(),zeroValue);
-                }
+            // make a copy
+            SampleBundleData newPaddedChannels = mChannels;
+            
+            // set up the zero values
+            SampleVector zeroValues(paddingAmount,0.0);
+            
+            for (auto& channel : newPaddedChannels) {
+            
+                // add them to the beginning
+                channel.insert(channel.begin(),
+                               zeroValues.begin(),
+                               zeroValues.end());
+            
+                // add them to the end
+                channel.insert(channel.end(),
+                               zeroValues.begin(),
+                               zeroValues.end());
                 
             }
             
+            // save back to SampleBundleData
+            mChannels = newPaddedChannels;
+            
+            // update meta data about the SampleBundle
             // adding allows padding to be repeated for a cumulative effect
             mFrameCount += ( 2 * paddingAmount );
             mPaddingAmount += paddingAmount;

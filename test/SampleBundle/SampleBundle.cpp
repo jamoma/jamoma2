@@ -186,11 +186,24 @@ namespace Jamoma {
             mTest->TEST_ASSERT("cosine starts with non-zero before padding", paddedBundle[0][0] != 0.0);
             mTest->TEST_ASSERT("cosine ends with non-zero before padding", paddedBundle[0][63] != 0.0);
             
-            //paddedBundle.applyZeroPadding(2);
+            paddedBundle.applyZeroPadding(2);
             
-            //int tempFrameCount = paddedBundle.frameCount();
+            size_t tempFrameCount = paddedBundle.frameCount();
             
-            //mTest->TEST_ASSERT("bundle reports proper frameCount after padding", tempFrameCount == 68);
+            mTest->TEST_ASSERT("bundle reports proper frameCount after padding", tempFrameCount == 68);
+            
+            int badSampleCount = 0;
+            
+            if (paddedBundle[0][0] != 0.0) badSampleCount++;
+            if (paddedBundle[0][1] != 0.0) badSampleCount++;
+            if (paddedBundle[0][2] == 0.0) badSampleCount++;
+            if (paddedBundle[0][3] == 0.0) badSampleCount++;
+            if (paddedBundle[0][64] == 0.0) badSampleCount++;
+            if (paddedBundle[0][65] == 0.0) badSampleCount++;
+            if (paddedBundle[0][66] != 0.0) badSampleCount++;
+            if (paddedBundle[0][67] != 0.0) badSampleCount++;
+            
+            mTest->TEST_ASSERT("bundle applied zero padding successfully", badSampleCount == 0);
             
         }
 
