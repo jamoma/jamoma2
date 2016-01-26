@@ -254,7 +254,8 @@ namespace Jamoma {
         void applySamplePadding(int paddingAmount)
         {
             
-            assert(paddingAmount > 0 && paddingAmount < 100);
+            // ensure that we are adding at least one sample, AND not more than half SampleBundle frames
+            assert(paddingAmount > 0 && paddingAmount < mFrameCount/2);
             
             for (auto& channel : mChannels) {
                 
@@ -272,6 +273,8 @@ namespace Jamoma {
                 }
                 
             }
+            
+            // adding allows padding to be repeated for a cumulative effect
             mFrameCount += ( 2 * paddingAmount );
             mPaddingAmount += paddingAmount;
         }
@@ -284,7 +287,8 @@ namespace Jamoma {
         void applyZeroPadding(int paddingAmount)
         {
             
-            assert(paddingAmount > 0 && paddingAmount < 100);
+            // ensure that we are adding at least one sample
+            assert(paddingAmount > 0);
             
             for (auto& channel : mChannels) {
                 
@@ -296,6 +300,8 @@ namespace Jamoma {
                 }
                 
             }
+            
+            // adding allows padding to be repeated for a cumulative effect
             mFrameCount += ( 2 * paddingAmount );
             mPaddingAmount += paddingAmount;
         }
