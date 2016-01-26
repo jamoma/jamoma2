@@ -210,12 +210,7 @@ namespace Jamoma {
         
         void testSamplePadding() {
             SampleBundle paddedBundle(2,64);
-            paddedBundle.generate<Generator::Cosine<Sample>>();
-            
-            mTest->TEST_ASSERT("cosine channel 0 starts with non-zero before padding", paddedBundle[0][0] != 0.0);
-            mTest->TEST_ASSERT("cosine channel 1 starts with non-zero before padding", paddedBundle[1][0] != 0.0);
-            mTest->TEST_ASSERT("cosine channel 0 ends with non-zero before padding", paddedBundle[0][63] != 0.0);
-            mTest->TEST_ASSERT("cosine channel 1 ends with non-zero before padding", paddedBundle[1][63] != 0.0);
+            paddedBundle.generate<Generator::UnipolarRamp<Sample>>();
             
             paddedBundle.applySamplePadding(3);
             
@@ -225,12 +220,21 @@ namespace Jamoma {
             
             int badSampleCount = 0;
             
+            // channel 0
             if (paddedBundle[0][0] != paddedBundle[0][64]) badSampleCount++;
             if (paddedBundle[0][1] != paddedBundle[0][65]) badSampleCount++;
             if (paddedBundle[0][2] != paddedBundle[0][66]) badSampleCount++;
             if (paddedBundle[0][3] != paddedBundle[0][67]) badSampleCount++;
             if (paddedBundle[0][4] != paddedBundle[0][68]) badSampleCount++;
             if (paddedBundle[0][5] != paddedBundle[0][69]) badSampleCount++;
+            
+            // channel 1
+            if (paddedBundle[1][0] != paddedBundle[1][64]) badSampleCount++;
+            if (paddedBundle[1][1] != paddedBundle[1][65]) badSampleCount++;
+            if (paddedBundle[1][2] != paddedBundle[1][66]) badSampleCount++;
+            if (paddedBundle[1][3] != paddedBundle[1][67]) badSampleCount++;
+            if (paddedBundle[1][4] != paddedBundle[1][68]) badSampleCount++;
+            if (paddedBundle[1][5] != paddedBundle[1][69]) badSampleCount++;
             
             
             mTest->TEST_ASSERT("bundle applied sample padding successfully", badSampleCount == 0);

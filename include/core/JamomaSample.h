@@ -268,8 +268,8 @@ namespace Jamoma {
                 
                 // copy samples from the beginning and end of SampleBundle
                 for (int i=0; i<paddingAmount; i++) {
-                    firstSamples[i] = channel[i];
-                    lastSamples[i] = channel[ (frameCount()-paddingAmount) + i ];
+                    lastSamples[i] = channel[i];
+                    firstSamples[i] = channel[ (frameCount()-paddingAmount) + i ];
                 }
                 
                 // add them to the beginning
