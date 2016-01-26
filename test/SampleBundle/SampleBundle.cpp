@@ -25,6 +25,7 @@ namespace Jamoma {
             testAutoCreatedSampleBundleGroup();
             //printInterpolationDifferences();
             testInterpolationAtWholeNumbers();
+            testZeroPadding();
 		}
 
 		
@@ -174,6 +175,22 @@ namespace Jamoma {
             mTest->TEST_ASSERT("linear interpolation produces same values as [] operator", badSampleCountLinear == 0);
             mTest->TEST_ASSERT("cubic interpolation produces same values as [] operator", badSampleCountCubic == 0);
             mTest->TEST_ASSERT("spline interpolation produces same values as [] operator", badSampleCountSpline == 0);
+            
+        }
+        
+        
+        void testZeroPadding() {
+            SampleBundle paddedBundle(1,64);
+            paddedBundle.generate<Generator::Cosine<Sample>>();
+            
+            mTest->TEST_ASSERT("cosine starts with non-zero before padding", paddedBundle[0][0] != 0.0);
+            mTest->TEST_ASSERT("cosine ends with non-zero before padding", paddedBundle[0][63] != 0.0);
+            
+            //paddedBundle.applyZeroPadding(2);
+            
+            //int tempFrameCount = paddedBundle.frameCount();
+            
+            //mTest->TEST_ASSERT("bundle reports proper frameCount after padding", tempFrameCount == 68);
             
         }
 
