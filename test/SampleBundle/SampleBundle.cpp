@@ -26,6 +26,7 @@ namespace Jamoma {
             //printInterpolationDifferences();
             testInterpolationAtWholeNumbers();
             testZeroPadding();
+            testSamplePadding();
 		}
 
 		
@@ -204,6 +205,36 @@ namespace Jamoma {
             if (paddedBundle[0][67] != 0.0) badSampleCount++;
             
             mTest->TEST_ASSERT("bundle applied zero padding successfully", badSampleCount == 0);
+            
+        }
+        
+        void testSamplePadding() {
+            SampleBundle paddedBundle(2,64);
+            paddedBundle.generate<Generator::Cosine<Sample>>();
+            
+            mTest->TEST_ASSERT("cosine channel 0 starts with non-zero before padding", paddedBundle[0][0] != 0.0);
+            mTest->TEST_ASSERT("cosine channel 1 starts with non-zero before padding", paddedBundle[1][0] != 0.0);
+            mTest->TEST_ASSERT("cosine channel 0 ends with non-zero before padding", paddedBundle[0][63] != 0.0);
+            mTest->TEST_ASSERT("cosine channel 1 ends with non-zero before padding", paddedBundle[1][63] != 0.0);
+            
+            paddedBundle.applySamplePadding(3);
+            
+            size_t tempFrameCount = paddedBundle.frameCount();
+            
+            mTest->TEST_ASSERT("bundle reports proper frameCount after padding", tempFrameCount == 70);
+            
+            int badSampleCount = 0;
+            
+            if (paddedBundle[0][0] != paddedBundle[0][64]) badSampleCount++;
+            if (paddedBundle[0][1] != paddedBundle[0][65]) badSampleCount++;
+            if (paddedBundle[0][2] != paddedBundle[0][66]) badSampleCount++;
+            if (paddedBundle[0][3] != paddedBundle[0][67]) badSampleCount++;
+            if (paddedBundle[0][4] != paddedBundle[0][68]) badSampleCount++;
+            if (paddedBundle[0][5] != paddedBundle[0][69]) badSampleCount++;
+            
+            
+            mTest->TEST_ASSERT("bundle applied sample padding successfully", badSampleCount == 0);
+            
             
         }
 
