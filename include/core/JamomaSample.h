@@ -44,9 +44,9 @@ namespace Jamoma {
 	class SampleBundle {
 		using SampleBundleData = std::vector<SampleVector>;
 		
-		SampleBundleData	mChannels;		// each item in this vector represents a channel, which itself is a vector of samples
-		size_t				mFrameCount;	// if we change the number of channels we could loose the framecount in the vectors contained by mChannels, so we cache it here.
-        unsigned            mPaddingAmount = 0;     // if padding has been added, this value is used to track the number of extra Frames at the beginning and end
+		SampleBundleData	mChannels;		//!< each item in this vector represents a channel, which itself is a vector of samples
+		size_t				mFrameCount;	//!< if we change the number of channels we could loose the framecount in the vectors contained by mChannels, so we cache it here.
+        size_t              mPaddingAmount = 0;     //!< if padding has been added, this value is used to track the number of extra Frames at the beginning and end
 
 	public:
 		/** Create a SampleBundle of a specific size.
@@ -91,6 +91,15 @@ namespace Jamoma {
 		{
 			return mFrameCount;
 		}
+        
+        
+        /**	Return the number of frames dedicated to padding.
+         @return	The number of frames.
+         */
+        size_t paddingAmount() const
+        {
+            return mPaddingAmount;
+        }
 		
 		
 		/**	Access the vector at the specified channel in the bundle.
@@ -246,34 +255,91 @@ namespace Jamoma {
 				values[i] = vector[i];
 		}
         
+        
         /** Duplicate values at the beginning and end to provide padding for interpolation.
-         @warning this is an experimental function
+            @param  paddingAmount   Number of frames to add to both beginning & end of SampleBundle. Total number of frames added to SampleBundle will be twice this amount.
          */
         void applySamplePadding(int paddingAmount)
         {
             
-            assert(paddingAmount > 0 && paddingAmount < 100);
+            // ensure that we are adding at least one sample, AND not more than half SampleBundle frames
+            assert(paddingAmount > 0 && paddingAmount < mFrameCount/2);
             
-            for (auto& channel : mChannels) {
+            // make a copy
+            SampleBundleData newPaddedChannels = mChannels;
+            
+            for (auto& channel : newPaddedChannels) {
                 
+                // set up temporary vectors for padding samples
                 SampleVector firstSamples(paddingAmount,0.0);
                 SampleVector lastSamples(paddingAmount,0.0);
                 
+                // copy samples from the beginning and end of SampleBundle
                 for (int i=0; i<paddingAmount; i++) {
-                    firstSamples[i] = channel[i];
-                    lastSamples[i] = channel[ (frameCount()-paddingAmount) + i ];
+                    lastSamples[i] = channel[i];
+                    firstSamples[i] = channel[ (frameCount()-paddingAmount) + i ];
                 }
                 
-                for (int i=0; i<paddingAmount; i++) {
-                    channel.push_back(firstSamples[i]);
-                    channel.insert(channel.begin(),lastSamples[ paddingAmount - (1+i) ]);
-                }
+                // add them to the beginning
+                channel.insert(channel.begin(),
+                               firstSamples.begin(),
+                               firstSamples.end());
+                
+                // add them to the end
+                channel.insert(channel.end(),
+                               lastSamples.begin(),
+                               lastSamples.end());
                 
             }
+            
+            // save back to SampleBundleData
+            mChannels = newPaddedChannels;
+            
+            // update meta data about the SampleBundle
+            // adding allows padding to be repeated for a cumulative effect
             mFrameCount += ( 2 * paddingAmount );
             mPaddingAmount += paddingAmount;
         }
-		
+        
+        
+        /** Add zero values at the beginning and end to provide padding.
+            @param  paddingAmount   Number of frames to add to both beginning & end of SampleBundle. Total number of frames added to SampleBundle will be twice this amount.
+         */
+        void applyZeroPadding(int paddingAmount)
+        {
+            
+            // ensure that we are adding at least one sample
+            assert(paddingAmount > 0);
+            
+            // make a copy
+            SampleBundleData newPaddedChannels = mChannels;
+            
+            // set up the zero values
+            SampleVector zeroValues(paddingAmount,0.0);
+            
+            for (auto& channel : newPaddedChannels) {
+            
+                // add them to the beginning
+                channel.insert(channel.begin(),
+                               zeroValues.begin(),
+                               zeroValues.end());
+            
+                // add them to the end
+                channel.insert(channel.end(),
+                               zeroValues.begin(),
+                               zeroValues.end());
+                
+            }
+            
+            // save back to SampleBundleData
+            mChannels = newPaddedChannels;
+            
+            // update meta data about the SampleBundle
+            // adding allows padding to be repeated for a cumulative effect
+            mFrameCount += ( 2 * paddingAmount );
+            mPaddingAmount += paddingAmount;
+        }
+        
 
 		// TODO: add an "apply" method to which is passed a std::function which then performs a transformation on the bundle contents.
 		// perhaps there would be a couple of variations:

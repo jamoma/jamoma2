@@ -24,7 +24,7 @@ namespace Jamoma {
         
     public:
         static constexpr Classname classname = { "unitimpulse" };
-        static constexpr auto tags = { "dspGeneratorLib, audio, generator, impulse" };
+        static constexpr auto tags = { "dspGeneratorLib", "audio", "generator", "impulse" };
 		
         /** Process one sample.
          @param	x	Sample to be processed.
