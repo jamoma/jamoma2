@@ -31,8 +31,7 @@ namespace Jamoma {
         : mLookupTable(1, tableSize)
         {
             gain = tableSize; // ramp from 0 to tableSize
-            //mLookupTable.generate();
-            mLookupTable.generate<Generator::Cosine<Sample>>(); // fill with sine as default
+            mLookupTable.generate();
             mLookupTable.applySamplePadding(2);
         }
         
@@ -46,6 +45,8 @@ namespace Jamoma {
         {
             // call operator() from parent Sync class
             double oneSample = Sync::operator()(0.0);
+            // add in padding
+            oneSample += mLookupTable.paddingAmount();
             // perform additional lookup
             return mLookupTable.at(oneSample);
         }
