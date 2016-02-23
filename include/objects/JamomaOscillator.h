@@ -30,7 +30,7 @@ namespace Jamoma {
         Oscillator(std::size_t tableSize = 8192)
         : mLookupTable(1, tableSize)
         {
-            gain = tableSize; // ramp from 0 to tableSize
+            syncFinalValue = tableSize; // ramp from 0 to tableSize
             mLookupTable.generate();
             mLookupTable.applySamplePadding(2);
         }

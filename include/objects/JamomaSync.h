@@ -21,12 +21,13 @@ namespace Jamoma {
 	class Sync : public AudioObject {
 		double	mPhase = 0.0;
 		double	mStep = 0.0;
+        Range<double>  mSyncRange = std::make_pair(0.0,1.0);
 		
 		void setStep()
 		{
             mStep = frequency / sampleRate;
 			ZeroDenormal(mStep);
-		}
+        }
 
 		
 	public:
@@ -55,16 +56,24 @@ namespace Jamoma {
 		};
 
 		
-		Parameter<double, Limit::None<double>, NativeUnit::LinearGain>		gain = { this, "gain", 1.0 };		///< scaling applied to the output
+		/*
+         NW: Transitioned from TAP's original gain/offset to these syncInitialValue & syncFinalValue parameters.
+         These names were chosen over minimum/maximum because the syncInitialValue is not required to be less than syncFinalValue.
+         The 'sync' prefix may feel redundant, but helps avoid confusion when Sync is the parent class of other objects such as Oscillator.
+        */
+        
+        Parameter<double>		syncInitialValue =  { this, "syncInitialValue", 0.0,
+                                                    Setter( [this] {
+                                                        mSyncRange = std::make_pair(syncInitialValue,mSyncRange.second);
+                                                    })
+        };     ///< defines first value output by the Sync
 
 		
-		Parameter<double>													offset = { this, "offset", 0.0 };	///< shift applied to the output
-
-		
-
-		
-		// TODO: add offset Parameter from Jamoma1
-		// TODO: add gain Parameter from Jamoma1
+        Parameter<double>		syncFinalValue =    { this, "syncFinalValue", 1.0,
+                                                    Setter( [this] {
+                                                        mSyncRange = std::make_pair(mSyncRange.first,syncFinalValue);
+                                                    })
+        };     ///< defines last value output by the Sync
 		
 		
 		/** Process one sample.
@@ -78,7 +87,7 @@ namespace Jamoma {
 			else if (mPhase < 0.0)
 				mPhase += 1.0;
 			
-			Sample y = mPhase * gain + offset;
+			Sample y = mPhase * ( mSyncRange.second - mSyncRange.first ) + mSyncRange.first;
 			
 			mPhase += mStep;
 			return y;

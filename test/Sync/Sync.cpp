@@ -36,15 +36,17 @@ namespace Jamoma {
 			using namespace std;
 
 			// Gain parameter (gain dataspace)
+            // NW: gain is no longer a parameter of Sync, so tests need to move.
+            // maybe up to the oscillator object?
 			
-			s.gain = make_pair(0.25, Unit::linearGain);
-			mTest->TEST_ASSERT("setting gain param linearly", mTest->compare( (double)s.gain, 0.25) );
+			//s.gain = make_pair(0.25, Unit::linearGain);
+			//mTest->TEST_ASSERT("setting gain param linearly", mTest->compare( (double)s.gain, 0.25) );
 
-			s.gain = make_pair(-6.0, Unit::db);
-			mTest->TEST_ASSERT("setting gain param in db", mTest->compare( (double)s.gain, 0.50118723362727224) );
+			//s.gain = make_pair(-6.0, Unit::db);
+			//mTest->TEST_ASSERT("setting gain param in db", mTest->compare( (double)s.gain, 0.50118723362727224) );
 
-			s.gain = make_pair(110.0, Unit::midiGain);
-			mTest->TEST_ASSERT("setting gain param with midi", mTest->compare( (double)s.gain, 1.5826306885735968) );
+			//s.gain = make_pair(110.0, Unit::midiGain);
+			//mTest->TEST_ASSERT("setting gain param with midi", mTest->compare( (double)s.gain, 1.5826306885735968) );
 			
 			// initialphase parameter (range wrapping)
 			s.initialphase = 0.25;
