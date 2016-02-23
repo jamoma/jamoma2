@@ -75,16 +75,16 @@ public:
         // NW: gain is no longer a parameter of Sync, so tests need to move.
         // maybe up to the oscillator object?
         
-        using namespace Dataspace;
+        using namespace Jamoma::Dataspace;
         using namespace std;
         
-        my_sine.gain = make_pair(0.25, Unit::linearGain);
+        my_sine.gain = make_pair(0.25, Jamoma::Unit::linearGain);
         mTest->TEST_ASSERT("setting gain param linearly", mTest->compare( (double)my_sine.gain, 0.25) );
         
-        my_sine.gain = make_pair(-6.0, Unit::db);
+        my_sine.gain = make_pair(-6.0, Jamoma::Unit::db);
         mTest->TEST_ASSERT("setting gain param in db", mTest->compare( (double)my_sine.gain, 0.50118723362727224) );
         
-        my_sine.gain = make_pair(110.0, Unit::midiGain);
+        my_sine.gain = make_pair(110.0, Jamoma::Unit::midiGain);
         mTest->TEST_ASSERT("setting gain param with midi", mTest->compare( (double)my_sine.gain, 1.5826306885735968) );
 		
 	}
