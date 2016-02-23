@@ -46,7 +46,7 @@ namespace Jamoma {
 		
 		SampleBundleData	mChannels;		//!< each item in this vector represents a channel, which itself is a vector of samples
 		size_t				mFrameCount;	//!< if we change the number of channels we could loose the framecount in the vectors contained by mChannels, so we cache it here.
-        size_t              mPaddingAmount = 0;     //!< if padding has been added, this value is used to track the number of extra Frames at the beginning and end
+        size_t              mPaddingSize = 0;     //!< if padding has been added, this value is used to track the number of extra Frames at the beginning and end
 
 	public:
 		/** Create a SampleBundle of a specific size.
@@ -96,9 +96,9 @@ namespace Jamoma {
         /**	Return the number of frames dedicated to padding.
          @return	The number of frames.
          */
-        size_t paddingAmount() const
+        size_t paddingSize() const
         {
-            return mPaddingAmount;
+            return mPaddingSize;
         }
 		
 		
@@ -257,13 +257,13 @@ namespace Jamoma {
         
         
         /** Duplicate values at the beginning and end to provide padding for interpolation.
-            @param  paddingAmount   Number of frames to add to both beginning & end of SampleBundle. Total number of frames added to SampleBundle will be twice this amount.
+            @param  paddingSize   Number of frames to add to both beginning & end of SampleBundle. Total number of frames added to SampleBundle will be twice this amount.
          */
-        void applySamplePadding(int paddingAmount)
+        void applySamplePadding(int paddingSize)
         {
             
             // ensure that we are adding at least one sample, AND not more than half SampleBundle frames
-            assert(paddingAmount > 0 && paddingAmount < mFrameCount/2);
+            assert(paddingSize > 0 && paddingSize < mFrameCount/2);
             
             // make a copy
             SampleBundleData newPaddedChannels = mChannels;
@@ -271,13 +271,13 @@ namespace Jamoma {
             for (auto& channel : newPaddedChannels) {
                 
                 // set up temporary vectors for padding samples
-                SampleVector firstSamples(paddingAmount,0.0);
-                SampleVector lastSamples(paddingAmount,0.0);
+                SampleVector firstSamples(paddingSize,0.0);
+                SampleVector lastSamples(paddingSize,0.0);
                 
                 // copy samples from the beginning and end of SampleBundle
-                for (int i=0; i<paddingAmount; i++) {
+                for (int i=0; i<paddingSize; i++) {
                     lastSamples[i] = channel[i];
-                    firstSamples[i] = channel[ (frameCount()-paddingAmount) + i ];
+                    firstSamples[i] = channel[ (frameCount()-paddingSize) + i ];
                 }
                 
                 // add them to the beginning
@@ -297,25 +297,25 @@ namespace Jamoma {
             
             // update meta data about the SampleBundle
             // adding allows padding to be repeated for a cumulative effect
-            mFrameCount += ( 2 * paddingAmount );
-            mPaddingAmount += paddingAmount;
+            mFrameCount += ( 2 * paddingSize );
+            mPaddingSize += paddingSize;
         }
         
         
         /** Add zero values at the beginning and end to provide padding.
-            @param  paddingAmount   Number of frames to add to both beginning & end of SampleBundle. Total number of frames added to SampleBundle will be twice this amount.
+            @param  paddingSize   Number of frames to add to both beginning & end of SampleBundle. Total number of frames added to SampleBundle will be twice this amount.
          */
-        void applyZeroPadding(int paddingAmount)
+        void applyZeroPadding(int paddingSize)
         {
             
             // ensure that we are adding at least one sample
-            assert(paddingAmount > 0);
+            assert(paddingSize > 0);
             
             // make a copy
             SampleBundleData newPaddedChannels = mChannels;
             
             // set up the zero values
-            SampleVector zeroValues(paddingAmount,0.0);
+            SampleVector zeroValues(paddingSize,0.0);
             
             for (auto& channel : newPaddedChannels) {
             
@@ -336,8 +336,8 @@ namespace Jamoma {
             
             // update meta data about the SampleBundle
             // adding allows padding to be repeated for a cumulative effect
-            mFrameCount += ( 2 * paddingAmount );
-            mPaddingAmount += paddingAmount;
+            mFrameCount += ( 2 * paddingSize );
+            mPaddingSize += paddingSize;
         }
         
 
