@@ -35,6 +35,8 @@ namespace Jamoma {
             mLookupTable.applySamplePadding(2);
         }
         
+        Parameter<double, Limit::None<double>, NativeUnit::LinearGain>		gain = { this, "gain", 1.0 };		///< scaling applied to the output
+        
         // NW: should we provide a way to get the current phase?
         
         /** Process one sample.
@@ -48,7 +50,7 @@ namespace Jamoma {
             // add in padding
             oneSample += mLookupTable.paddingSize();
             // perform additional lookup
-            return mLookupTable.at(oneSample);
+            return gain * mLookupTable.at(oneSample);
         }
         
         /** Process a SharedSampleBundleGroup.

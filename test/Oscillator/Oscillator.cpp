@@ -70,6 +70,22 @@ public:
         mTest->TEST_ASSERT("setting initialphase parameter within range 2", my_sine.initialphase == 0.75 );
         
         //std::cout << "initialphase = " << my_sine.initialphase << std::endl;
+        
+        // Gain parameter (gain dataspace)
+        // NW: gain is no longer a parameter of Sync, so tests need to move.
+        // maybe up to the oscillator object?
+        
+        using namespace Dataspace;
+        using namespace std;
+        
+        my_sine.gain = make_pair(0.25, Unit::linearGain);
+        mTest->TEST_ASSERT("setting gain param linearly", mTest->compare( (double)my_sine.gain, 0.25) );
+        
+        my_sine.gain = make_pair(-6.0, Unit::db);
+        mTest->TEST_ASSERT("setting gain param in db", mTest->compare( (double)my_sine.gain, 0.50118723362727224) );
+        
+        my_sine.gain = make_pair(110.0, Unit::midiGain);
+        mTest->TEST_ASSERT("setting gain param with midi", mTest->compare( (double)my_sine.gain, 1.5826306885735968) );
 		
 	}
     
