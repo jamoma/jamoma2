@@ -46,7 +46,7 @@ namespace Jamoma {
             // call operator() from parent Sync class
             double oneSample = Sync::operator()(0.0);
             // add in padding
-            oneSample += mLookupTable.paddingAmount();
+            oneSample += mLookupTable.paddingSize();
             // perform additional lookup
             return mLookupTable.at(oneSample);
         }
