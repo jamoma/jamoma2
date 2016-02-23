@@ -25,6 +25,8 @@ namespace Jamoma {
             testAutoCreatedSampleBundleGroup();
             //printInterpolationDifferences();
             testInterpolationAtWholeNumbers();
+            testZeroPadding();
+            testSamplePadding();
 		}
 
 		
@@ -174,6 +176,77 @@ namespace Jamoma {
             mTest->TEST_ASSERT("linear interpolation produces same values as [] operator", badSampleCountLinear == 0);
             mTest->TEST_ASSERT("cubic interpolation produces same values as [] operator", badSampleCountCubic == 0);
             mTest->TEST_ASSERT("spline interpolation produces same values as [] operator", badSampleCountSpline == 0);
+            
+        }
+        
+        
+        void testZeroPadding() {
+            SampleBundle paddedBundle(1,64);
+            paddedBundle.generate<Generator::Cosine<Sample>>();
+            
+            mTest->TEST_ASSERT("cosine starts with non-zero before padding", paddedBundle[0][0] != 0.0);
+            mTest->TEST_ASSERT("cosine ends with non-zero before padding", paddedBundle[0][63] != 0.0);
+            
+            paddedBundle.applyZeroPadding(2);
+            
+            size_t tempFrameCount = paddedBundle.frameCount();
+            
+            mTest->TEST_ASSERT("bundle reports proper frameCount after padding", tempFrameCount == 68);
+            
+            size_t tempPaddingSize = paddedBundle.paddingSize();
+            
+            mTest->TEST_ASSERT("bundle reports proper paddingSize after padding", tempPaddingSize == 2);
+            
+            int badSampleCount = 0;
+            
+            if (paddedBundle[0][0] != 0.0) badSampleCount++;
+            if (paddedBundle[0][1] != 0.0) badSampleCount++;
+            if (paddedBundle[0][2] == 0.0) badSampleCount++;
+            if (paddedBundle[0][3] == 0.0) badSampleCount++;
+            if (paddedBundle[0][64] == 0.0) badSampleCount++;
+            if (paddedBundle[0][65] == 0.0) badSampleCount++;
+            if (paddedBundle[0][66] != 0.0) badSampleCount++;
+            if (paddedBundle[0][67] != 0.0) badSampleCount++;
+            
+            mTest->TEST_ASSERT("bundle applied zero padding successfully", badSampleCount == 0);
+            
+        }
+        
+        void testSamplePadding() {
+            SampleBundle paddedBundle(2,64);
+            paddedBundle.generate<Generator::UnipolarRamp<Sample>>();
+            
+            paddedBundle.applySamplePadding(3);
+            
+            size_t tempFrameCount = paddedBundle.frameCount();
+            
+            mTest->TEST_ASSERT("bundle reports proper frameCount after padding", tempFrameCount == 70);
+            
+            size_t tempPaddingSize = paddedBundle.paddingSize();
+            
+            mTest->TEST_ASSERT("bundle reports proper paddingSize after padding", tempPaddingSize == 3);
+            
+            int badSampleCount = 0;
+            
+            // channel 0
+            if (paddedBundle[0][0] != paddedBundle[0][64]) badSampleCount++;
+            if (paddedBundle[0][1] != paddedBundle[0][65]) badSampleCount++;
+            if (paddedBundle[0][2] != paddedBundle[0][66]) badSampleCount++;
+            if (paddedBundle[0][3] != paddedBundle[0][67]) badSampleCount++;
+            if (paddedBundle[0][4] != paddedBundle[0][68]) badSampleCount++;
+            if (paddedBundle[0][5] != paddedBundle[0][69]) badSampleCount++;
+            
+            // channel 1
+            if (paddedBundle[1][0] != paddedBundle[1][64]) badSampleCount++;
+            if (paddedBundle[1][1] != paddedBundle[1][65]) badSampleCount++;
+            if (paddedBundle[1][2] != paddedBundle[1][66]) badSampleCount++;
+            if (paddedBundle[1][3] != paddedBundle[1][67]) badSampleCount++;
+            if (paddedBundle[1][4] != paddedBundle[1][68]) badSampleCount++;
+            if (paddedBundle[1][5] != paddedBundle[1][69]) badSampleCount++;
+            
+            
+            mTest->TEST_ASSERT("bundle applied sample padding successfully", badSampleCount == 0);
+            
             
         }
 
