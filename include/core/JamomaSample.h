@@ -93,7 +93,7 @@ namespace Jamoma {
 		}
         
         
-        /**	Return the number of frames dedicated to padding.
+        /**	Return the number of frames dedicated to padding at the beginning or end. Total number is twice this value.
          @return	The number of frames.
          */
         size_t paddingSize() const
