@@ -31,8 +31,8 @@ namespace Jamoma {
         : mLookupTable(1, tableSize)
         {
             syncFinalValue = tableSize; // ramp from 0 to tableSize
-            mLookupTable.generate();
-            mLookupTable.applySamplePadding(2);
+            //mLookupTable.generate();
+            //mLookupTable.applySamplePadding(2);
         }
         
         Parameter<double, Limit::None<double>, NativeUnit::LinearGain>		gain = { this, "gain", 1.0 };		///< scaling applied to the output
@@ -68,10 +68,19 @@ namespace Jamoma {
             return out;
         }
         
-    private:
+    protected:
         Jamoma::SampleBundle        mLookupTable;
         
         
     };
+    
+    namespace Waveshape {
+    
+        using Sine      =   Jamoma::Generator::Sine<Jamoma::Sample>;
+        using Sawtooth  =   Jamoma::Generator::Sawtooth<Jamoma::Sample>;
+        
+    }
+    
+    
 
 } // namespace Jamoma
