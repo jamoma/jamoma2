@@ -18,8 +18,8 @@
 class MyGraph {
 public:
     
-	Jamoma::Oscillator				sine;
-	Jamoma::SharedSampleBundleGroup	output;
+    Jamoma::Oscillator::Triangle				sine;
+	Jamoma::SharedSampleBundleGroup         output;
 
 	
 	MyGraph()

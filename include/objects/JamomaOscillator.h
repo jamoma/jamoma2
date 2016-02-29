@@ -20,18 +20,19 @@ namespace Jamoma {
     /**	This AudioObject generates a <a href="https://en.wikipedia.org/wiki/Waveform">periodic waveform</a> by filling an internal SampleBundle with the shape to be repeated at a given frequency.
      This method of sound generation is typically referred to as <a href="https://en.wikipedia.org/wiki/Table-lookup_synthesis">table-lookup</a> or <a href="https://en.wikipedia.org/wiki/Wavetable_synthesis">wavetable</a> synthesis.
      */
-    class Oscillator : public Sync {
+    class OscillatorBase : public Sync {
     public:
         static constexpr Classname classname = { "oscillator" };
         static constexpr auto tags = { "dspGeneratorLib", "audio", "generator", "oscillator", "wavetable" };
         
         /** Table size is fixed at instantiation
          */
-        Oscillator(std::size_t tableSize = 8192)
+        OscillatorBase(std::size_t tableSize = 8192)
         : mLookupTable(1, tableSize)
         // TODO: enforce powers of two for the tableSize?
         {
             syncFinalValue = tableSize; // ramp from 0 to tableSize
+            //mInterpolator = InterpolatorType;
             //mLookupTable.generate();
             //mLookupTable.applySamplePadding(2);
         }
@@ -70,15 +71,46 @@ namespace Jamoma {
         }
         
     protected:
-        Jamoma::SampleBundle        mLookupTable;
+        Jamoma::SampleBundle            mLookupTable;
         
         
     };
     
-    namespace Waveshape {
+    namespace Oscillator {
     
-        using Sine      =   Jamoma::Generator::Sine<Jamoma::Sample>;
-        using Sawtooth  =   Jamoma::Generator::Sawtooth<Jamoma::Sample>;
+        class Sine : public OscillatorBase {
+        public:
+            Sine(std::size_t tableSize = 8192)
+            : OscillatorBase(tableSize)
+            {
+                mLookupTable.generate<Jamoma::Generator::Sine<Jamoma::Sample>>();
+                mLookupTable.applySamplePadding(4);
+            }
+            
+        };
+        
+        class Sawtooth : public OscillatorBase {
+        public:
+            Sawtooth(std::size_t tableSize = 8192)
+            : OscillatorBase(tableSize)
+            {
+                mLookupTable.generate<Jamoma::Generator::Sawtooth<Jamoma::Sample>>();
+                mLookupTable.applySamplePadding(4);
+            }
+            
+        };
+        
+        class Triangle : public OscillatorBase {
+        public:
+            Triangle(std::size_t tableSize = 8192)
+            : OscillatorBase(tableSize)
+            {
+                mLookupTable.generate<Jamoma::Generator::Triangle<Jamoma::Sample>>();
+                mLookupTable.applySamplePadding(4);
+            }
+            
+        };
+        
         
     }
     

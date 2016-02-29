@@ -28,7 +28,7 @@ public:
 	
 	void testParameterSetting()
 	{
-		Jamoma::Oscillator my_sine;
+        Jamoma::Oscillator::Sine my_sine;
         // default sampleRate is 96000, therefore frequency parameter range is -46000 to 46000
         
         // NW: Values for frequency that are out of bounds get FOLDED
@@ -90,7 +90,7 @@ public:
 	}
     
     void testChangingPhase() {
-        Jamoma::Oscillator my_sine;
+        Jamoma::Oscillator::Sine my_sine;
         
         my_sine.frequency = 4400;
         my_sine.initialphase = 0.25;
@@ -108,7 +108,7 @@ public:
     }
     
     void testOutput() {
-        Jamoma::Oscillator my_sine;
+        Jamoma::Oscillator::Sine my_sine;
         
         my_sine.channelCount = 1;
         my_sine.frameCount = 64;
