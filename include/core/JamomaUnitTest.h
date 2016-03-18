@@ -13,7 +13,7 @@
 #pragma once
 
 #include "JamomaObject.h"
-#include "gtest-internal.h"
+#include "third-party/gtest/gtest-internal.h"
 
 namespace Jamoma {
 
