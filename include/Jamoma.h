@@ -102,8 +102,7 @@ namespace Jamoma {
 //#include "readerwriterqueue.h"
 
 
-
-#include "Murmur3.h" // used for constexpr hash function
+#include "third-party/murmur/Murmur3.h" // used for constexpr hash function
 
 /** A hash function using the Murmur3 algorithm ( https://en.wikipedia.org/wiki/MurmurHash ).
  This hash function is capable of being executed at compile time,

@@ -12,10 +12,6 @@ include_directories(
 	"${PROJECT_SOURCE_DIR}/../../include/core"
 	"${PROJECT_SOURCE_DIR}/../../include/objects"
 	
-	"${PROJECT_SOURCE_DIR}/../../include/third-party/gtest"
-	"${PROJECT_SOURCE_DIR}/../../include/third-party/mersenne"
-	"${PROJECT_SOURCE_DIR}/../../include/third-party/murmur"
-
 	"${PORTMIDI_INCLUDES}"
 	"${PORTAUDIO_INCLUDES}"
 )
