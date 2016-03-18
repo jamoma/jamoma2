@@ -12,7 +12,7 @@
 #pragma once
 
 #include "JamomaAudioObject.h"
-#include "MersenneTwister.h"
+#include "third-party/mersenne/MersenneTwister.h"
 
 
 namespace Jamoma {
