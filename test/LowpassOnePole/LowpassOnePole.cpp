@@ -1,7 +1,7 @@
 /** @file
 	@ingroup 	jamoma2
  
-	@brief 		Unit test for the Dcblocker class
+	@brief 		Unit test for the LowpassOnePole class
  
 	@author		Timothy Place, Nathan Wolek
 	@copyright	Copyright (c) 2005-2015 The Jamoma Group, http://jamoma.org.
