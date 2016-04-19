@@ -148,6 +148,7 @@ constexpr inline uint32_t Hash(const char *const str, const uint32_t seed = 0xAE
 #include "JamomaLimiter.h"
 #include "JamomaLowpassOnePole.h"
 #include "JamomaLowpassFourPole.h"
+#include "JamomaSampleBuffer.h"
 #include "JamomaSync.h"
 #include "JamomaWhiteNoise.h"
 #include "JamomaUnitImpulse.h"

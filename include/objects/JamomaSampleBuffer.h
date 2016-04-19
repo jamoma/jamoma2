@@ -23,7 +23,27 @@ namespace Jamoma {
      */
     class SampleBuffer : public SampleBundle {
     public:
+        static constexpr Classname classname = { "samplebuffer" };
+        static constexpr auto tags = { "audio", "sample" };
+        
+        /** Create a SampleBuffer of a specific size.
+         @param	channelCount	The number of channels for which to allocate memory.
+         @param	frameCount		The number of samples per channel for which to allocate memory.
+         */
+        SampleBuffer(int channelCount, int frameCount) : SampleBundle(channelCount,frameCount)
+        {
+        }
+        
+        /** Default constructor creates a bundle containing a single sample. */
+        SampleBuffer()
+        : SampleBuffer(1,1)
+        {}
+        
+        
+        SampleBuffer(const SampleBuffer&) = default;	// inheriting the default copy constructor
+        
     private:
+        
     };
     
     
