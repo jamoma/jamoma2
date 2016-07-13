@@ -30,6 +30,7 @@ namespace Jamoma {
 
 
 #include "JamomaAngleDataspace.h"
+#include "JamomaDistanceDataspace.h"
 #include "JamomaGainDataspace.h"
 #include "JamomaNoneDataspace.h"
 #include "JamomaTimeDataspace.h"
@@ -47,6 +48,12 @@ namespace Jamoma {
 		// Angle
 		using Radian		= Dataspace::Angle <double, Dataspace::AngleUnit::radian>;
 		using Degree		= Dataspace::Angle <double, Dataspace::AngleUnit::degree>;
+		
+		// Distance
+		using Meters		= Dataspace::Distance <double, Dataspace::DistanceUnit::meters>;
+		using Centimeters	= Dataspace::Distance <double, Dataspace::DistanceUnit::centimeters>;
+		using Feet			= Dataspace::Distance <double, Dataspace::DistanceUnit::feet>;
+		using Inches		= Dataspace::Distance <double, Dataspace::DistanceUnit::inches>;
 		
 		// Gain
 		using LinearGain	= Dataspace::Gain <double, Dataspace::GainUnit::linear>;
@@ -77,6 +84,14 @@ namespace Jamoma {
 		rad				= (uint32_t)Dataspace::AngleUnit::rad,
 		degree			= (uint32_t)Dataspace::AngleUnit::degree,
 		deg				= (uint32_t)Dataspace::AngleUnit::deg,
+		
+		meters			= (uint32_t)Dataspace::DistanceUnit::meters,
+		m				= (uint32_t)Dataspace::DistanceUnit::m,
+		cemtimeters		= (uint32_t)Dataspace::DistanceUnit::centimeters,
+		cm				= (uint32_t)Dataspace::DistanceUnit::cm,
+		feet			= (uint32_t)Dataspace::DistanceUnit::feet,
+		feetSign		= (uint32_t)Dataspace::DistanceUnit::feetSign,
+		inchesSign		= (uint32_t)Dataspace::DistanceUnit::inchesSign,
 		
 		linearGain		= (uint32_t)Dataspace::GainUnit::linear,
 		db				= (uint32_t)Dataspace::GainUnit::db,
