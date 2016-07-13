@@ -29,6 +29,7 @@ namespace Jamoma {
 } // namespace Jamoma
 
 
+#include "JamomaAngleDataspace.h"
 #include "JamomaGainDataspace.h"
 #include "JamomaNoneDataspace.h"
 #include "JamomaTimeDataspace.h"
@@ -42,6 +43,10 @@ namespace Jamoma {
 		// None
 		template<typename T>
 		using None			= Dataspace::None <T, Dataspace::NoneUnit::nothing>;
+		
+		// Angle
+		using Radian		= Dataspace::Angle <double, Dataspace::AngleUnit::radian>;
+		using Degree		= Dataspace::Angle <double, Dataspace::AngleUnit::degree>;
 		
 		// Gain
 		using LinearGain	= Dataspace::Gain <double, Dataspace::GainUnit::linear>;
@@ -67,6 +72,11 @@ namespace Jamoma {
 	// TODO: it is not dry to duplicate all these -- but we need a common enum in order to have a shared interface for all Parameters
 	enum class Unit : uint32_t {
 		none			= (uint32_t)Dataspace::NoneUnit::nothing,
+		
+		radian			= (uint32_t)Dataspace::AngleUnit::radian,
+		rad				= (uint32_t)Dataspace::AngleUnit::rad,
+		degree			= (uint32_t)Dataspace::AngleUnit::degree,
+		deg				= (uint32_t)Dataspace::AngleUnit::deg,
 		
 		linearGain		= (uint32_t)Dataspace::GainUnit::linear,
 		db				= (uint32_t)Dataspace::GainUnit::db,

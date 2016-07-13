@@ -21,9 +21,41 @@ namespace Jamoma {
 		DataspaceTest(Jamoma::UnitTest<DataspaceTest>* test)
 		: mTest(test)
 		{
+			testAngle();
 			testGain();
 		}
 
+		void testAngle()
+		{
+			double y = 0;
+			
+			// Angle: conversion to radian
+			Jamoma::Dataspace::Angle<double, Dataspace::AngleUnit::radian>		radianConverter;
+			
+			y = radianConverter(0.5);
+			mTest->TEST_ASSERT("unspecified unit is assumed to be the native unit (radian)", mTest->compare(y, 0.5));
+			
+			y = radianConverter(0.6, Dataspace::AngleUnit::radian);
+			mTest->TEST_ASSERT("angle expressed as radians", mTest->compare(y, 0.6));
+			
+			y = radianConverter(0.7, Dataspace::AngleUnit::rad);
+			mTest->TEST_ASSERT("angle expressed as rad", mTest->compare(y, 0.7));
+			
+			y = radianConverter(180., Dataspace::AngleUnit::degree);
+			mTest->TEST_ASSERT("angle expressed as degree", mTest->compare(y, kPi));
+			
+			y = radianConverter(90., Dataspace::AngleUnit::degree);
+			mTest->TEST_ASSERT("angle expressed as deg", mTest->compare(y, kPi*0.5));
+			
+			// Angle: conversions to degree
+			Jamoma::Dataspace::Angle<double, Dataspace::AngleUnit::degree>		degreeConverter;
+			
+			y = degreeConverter(kPi*0.5, Dataspace::AngleUnit::radian);
+			mTest->TEST_ASSERT("radian-to-degree using enum unit", mTest->compare(y, 90.));
+			
+			y = degreeConverter(kPi*0.5, "rad");
+			mTest->TEST_ASSERT("rad-to-degree using string unit", mTest->compare(y, 90.));
+		}
 		
 		void testGain()
 		{

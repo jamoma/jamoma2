@@ -55,6 +55,8 @@ namespace Jamoma {
 		
 	constexpr double kPi				= 3.141592653589793238462643383279502884197169399375105820974944592307816406286208998628034825342117068;
 	constexpr double kTwoPi				= kPi * 2.0;
+	constexpr double kDegToRad			= kPi / 180.0;
+	constexpr double kRadToDeg			= 180.0 / kPi;
 	const double kTTGainMidiPower		= log(pow(10.0, 10.0/20.0)) / log(127.0/100.0);
 	const double kTTGainMidiPowerInv	= 1.0/kTTGainMidiPower;
 
