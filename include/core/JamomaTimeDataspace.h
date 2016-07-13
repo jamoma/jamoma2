@@ -21,30 +21,21 @@ namespace Jamoma {
 		/** Names of all units for the time dataspace.
 		 */
 		enum class TimeUnit : uint32_t {
-			seconds			= Hash("second"),		///< seconds (the neutral unit for this dataspace)
-			s				= Hash("s"),			///< seconds
-			
-			bark			= Hash("bark"),			///< bark band number ( https://en.wikipedia.org/wiki/Bark_scale )
-
-			bpm				= Hash("bpm"),			///< beats per minute
-
-			cents			= Hash("cents"),		///< cents (pitch)
-
-			mel				= Hash("mel"),			///< mel scale ( https://en.wikipedia.org/wiki/Mel_scale )
-
-			midi			= Hash("midi"),			///< midi pitch number (0-127)
-
-			milliseconds	= Hash("millisecond"),	///< milliseconds
-			ms				= Hash("ms"),			///< milliseconds
-			
-			fps				= Hash("fps"),			///< frames per second
-			
-			hertz			= Hash("hertz"),		///< hertz -- cycles per second
-			hz				= Hash("hz"),			///< hertz
-			
-			samples			= Hash("samples"),		///< samples (dependent upon sample rate)
-
-			speed			= Hash("speed"),		///< speed -- e.g. playback speed relative to 1.0
+			seconds			= Hash("second"),			///< seconds (the neutral unit for this dataspace)
+			s				= Hash("s"),				///< seconds
+			bark			= Hash("bark"),				///< bark band number ( https://en.wikipedia.org/wiki/Bark_scale )
+			bpm				= Hash("bpm"),				///< beats per minute
+			cents			= Hash("cents"),			///< cents (pitch)
+			mel				= Hash("mel"),				///< mel scale ( https://en.wikipedia.org/wiki/Mel_scale )
+			midi			= Hash("midi"),				///< midi pitch number (0-127)
+			milliseconds	= Hash("millisecond"),		///< milliseconds
+			ms				= Hash("ms"),				///< milliseconds
+			fps				= Hash("fps"),				///< frames per second
+			hertz			= Hash("hertz"),			///< hertz -- cycles per second
+			hz				= Hash("hz"),				///< hertz
+			samples			= Hash("samples"),			///< samples (dependent upon sample rate)
+			// We can't use "speed" as it leads to a naming conflict with the Speed Dataspace.
+			playbackspeed	= Hash("playbackspeed"),	///< speed -- e.g. playback speed relative to 1.0
 		};
 
 		
@@ -201,7 +192,7 @@ namespace Jamoma {
 		
 		
 		template <class T>
-		class Speed : public UnitBase<T> {
+		class PlayBackSpeed : public UnitBase<T> {
 		public:
 			T toNeutral(const T& input) const
 			{
@@ -242,20 +233,20 @@ namespace Jamoma {
 				TODO: make this a static so that we don't have to spend resources on it for all instances
 			 */
 			std::unordered_map<TimeUnit, UnitBase<T>*>	sUnits = {
-				{TimeUnit::seconds	   , new Seconds<T>()},
-				{TimeUnit::s		   , new Seconds<T>()},
-				{TimeUnit::bark		   , new Bark<T>()},
-				{TimeUnit::bpm		   , new Bpm<T>()},
-				{TimeUnit::cents	   , new Cents<T>()},
-				{TimeUnit::mel		   , new Mel<T>()},
-				{TimeUnit::midi		   , new MidiPitch<T>()},
-				{TimeUnit::milliseconds, new Milliseconds<T>()},
-				{TimeUnit::ms	       , new Milliseconds<T>()},
-				{TimeUnit::fps	       , new Hz<T>()},
-				{TimeUnit::hertz       , new Hz<T>()},
-				{TimeUnit::hz	       , new Hz<T>()},
-				{TimeUnit::samples     , new Samples<T>()},
-				{TimeUnit::speed       , new Speed<T>()}
+				{TimeUnit::seconds			, new Seconds<T>()},
+				{TimeUnit::s				, new Seconds<T>()},
+				{TimeUnit::bark				, new Bark<T>()},
+				{TimeUnit::bpm				, new Bpm<T>()},
+				{TimeUnit::cents			, new Cents<T>()},
+				{TimeUnit::mel				, new Mel<T>()},
+				{TimeUnit::midi				, new MidiPitch<T>()},
+				{TimeUnit::milliseconds		, new Milliseconds<T>()},
+				{TimeUnit::ms				, new Milliseconds<T>()},
+				{TimeUnit::fps				, new Hz<T>()},
+				{TimeUnit::hertz			, new Hz<T>()},
+				{TimeUnit::hz				, new Hz<T>()},
+				{TimeUnit::samples			, new Samples<T>()},
+				{TimeUnit::playbackspeed    , new PlayBackSpeed<T>()}
 			};
 
 			
