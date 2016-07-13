@@ -33,6 +33,7 @@ namespace Jamoma {
 #include "JamomaDistanceDataspace.h"
 #include "JamomaGainDataspace.h"
 #include "JamomaNoneDataspace.h"
+#include "JamomaTemperatureDataspace.h"
 #include "JamomaTimeDataspace.h"
 
 
@@ -59,6 +60,14 @@ namespace Jamoma {
 		using LinearGain	= Dataspace::Gain <double, Dataspace::GainUnit::linear>;
 		using DbGain		= Dataspace::Gain <double, Dataspace::GainUnit::db>;
 		using MidiGain		= Dataspace::Gain <double, Dataspace::GainUnit::midi>;
+		
+		// Temperature
+		using Celsius		= Dataspace::Temperature <double, Dataspace::TemperatureUnit::celsius>;
+		using C				= Dataspace::Temperature <double, Dataspace::TemperatureUnit::c>;
+		using Fahrenheit	= Dataspace::Temperature <double, Dataspace::TemperatureUnit::fahrenheit>;
+		using F				= Dataspace::Temperature <double, Dataspace::TemperatureUnit::f>;
+		using Kelvin		= Dataspace::Temperature <double, Dataspace::TemperatureUnit::kelvin>;
+		using K				= Dataspace::Temperature <double, Dataspace::TemperatureUnit::k>;
 		
 		// Time
 		using Seconds		= Dataspace::Time <double, Dataspace::TimeUnit::seconds>;
@@ -96,6 +105,13 @@ namespace Jamoma {
 		linearGain		= (uint32_t)Dataspace::GainUnit::linear,
 		db				= (uint32_t)Dataspace::GainUnit::db,
 		midiGain		= (uint32_t)Dataspace::GainUnit::midi,
+		
+		c				= (uint32_t)Dataspace::TemperatureUnit::c,
+		celsius			= (uint32_t)Dataspace::TemperatureUnit::celsius,
+		f				= (uint32_t)Dataspace::TemperatureUnit::f,
+		fahrenheit		= (uint32_t)Dataspace::TemperatureUnit::fahrenheit,
+		k				= (uint32_t)Dataspace::TemperatureUnit::k,
+		kelvin			= (uint32_t)Dataspace::TemperatureUnit::kelvin,
 		
 		seconds			= (uint32_t)Dataspace::TimeUnit::seconds,
 		s				= (uint32_t)Dataspace::TimeUnit::s,
