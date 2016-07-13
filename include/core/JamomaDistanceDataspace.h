@@ -18,7 +18,7 @@ namespace Jamoma {
 	namespace Dataspace {
 			
 	
-		/** Names of all units for the angle dataspace. 
+		/** Names of all units for the distance dataspace. 
 		 */
 		enum class DistanceUnit : uint32_t {
 			meters		= Hash("meters"),			///< meters (the neutral unit for this dataspace)
