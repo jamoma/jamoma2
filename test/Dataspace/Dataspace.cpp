@@ -25,6 +25,7 @@ namespace Jamoma {
 			testDistance();
 			testGain();
 			testNone();
+			testSpeed();
 			testTemperature();
 		}
 
@@ -166,6 +167,61 @@ namespace Jamoma {
 			;
 		}
 		
+		
+		void testSpeed()
+		{
+			double y = 0;
+			
+			// Distance: conversion to meters
+			Jamoma::Dataspace::Speed<double, Dataspace::SpeedUnit::meterPerSecond>	meterPerSecondConverter;
+			
+			y = meterPerSecondConverter(0.5);
+			mTest->TEST_ASSERT("unspecified unit is assumed to be the native unit (m/s)", mTest->compare(y, 0.5));
+			
+			
+			// *** To neutral unit ***
+			y = meterPerSecondConverter(36.0, Dataspace::SpeedUnit::kilometerPerHour);
+			mTest->TEST_ASSERT("km/h to m/s using enum unit", mTest->compare(y, 10.0));
+			
+			y = meterPerSecondConverter(36.0, Dataspace::SpeedUnit::kmph);
+			mTest->TEST_ASSERT("kmph to m/s using enum unit", mTest->compare(y, 10.0));
+			
+			y = meterPerSecondConverter(50.0, Dataspace::SpeedUnit::milesPerHour);
+			mTest->TEST_ASSERT("mi/h to m/s using enum unit", mTest->compare(y, 22.35200));
+			
+			/* TODO : Commented out due to shortcoming with our current unit test comapre method
+			y = meterPerSecondConverter(45.0, Dataspace::SpeedUnit::knot);
+			mTest->TEST_ASSERT("knot to m/s using enum unit", mTest->compare(y, 23.15));
+			 */
+			
+			y = meterPerSecondConverter(20.0, Dataspace::SpeedUnit::footPerSecond);
+			mTest->TEST_ASSERT("ft/s to m/s using enum unit", mTest->compare(y, 6.09600));
+			
+			
+			// *** From neutral unit ***
+			Jamoma::Dataspace::Speed<double, Dataspace::SpeedUnit::kilometerPerHour>	kilometerPerHourConverter;
+			y = kilometerPerHourConverter(10.0, Dataspace::SpeedUnit::meterPerSecond);
+			mTest->TEST_ASSERT("m/s to km/h using enum unit", mTest->compare(y, 36.0));
+			
+			Jamoma::Dataspace::Speed<double, Dataspace::SpeedUnit::kmph>				kmphConverter;
+			y = kmphConverter(10.0, Dataspace::SpeedUnit::meterPerSecond);
+			mTest->TEST_ASSERT("m/s to kmph using enum unit", mTest->compare(y, 36.0));
+			
+			/* TODO : Commented out due to shortcoming with our current unit test comapre method
+			Jamoma::Dataspace::Speed<double, Dataspace::SpeedUnit::milesPerHour>		milesPerHourConverter;
+			y = milesPerHourConverter(22.35200, Dataspace::SpeedUnit::meterPerSecond);
+			mTest->TEST_ASSERT("m/s to mi/h using enum unit", mTest->compare(y, 50.0));
+			
+			Jamoma::Dataspace::Speed<double, Dataspace::SpeedUnit::knot>				knotConverter;
+			y = knotConverter(23.15, Dataspace::SpeedUnit::meterPerSecond);
+			mTest->TEST_ASSERT("m/s to knot using enum unit", mTest->compare(y, 45.0));
+			
+			Jamoma::Dataspace::Speed<double, Dataspace::SpeedUnit::footPerSecond>	footPerSecondConverter;
+			y = footPerSecondConverter(6.09600, Dataspace::SpeedUnit::meterPerSecond);
+			mTest->TEST_ASSERT("m/s to ft/s using enum unit", mTest->compare(y, 20.0));
+			 */
+
+		}
 		
 		void testTemperature()
 		{
