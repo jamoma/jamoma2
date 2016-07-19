@@ -36,10 +36,7 @@ enable_testing()
 SUBDIRLIST(TESTDIRS ${CMAKE_CURRENT_SOURCE_DIR}/test)
 foreach(testdir ${TESTDIRS})
 	MESSAGE("Generating Unit Test: ${testdir}")
-	
-	if (${testdir} STREQUAL "catch")
-	else ()
-		add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/test/${testdir})
-		add_test(NAME ${testdir} COMMAND ${CMAKE_CURRENT_BINARY_DIR}/test/${testdir}/${testdir}.test)
-	endif ()
+	add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/test/${testdir})
+	add_test(NAME ${testdir}
+	         COMMAND ${CMAKE_CURRENT_BINARY_DIR}/test/${testdir}/${testdir}.test)
 endforeach()
