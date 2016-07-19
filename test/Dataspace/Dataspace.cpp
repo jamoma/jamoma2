@@ -9,120 +9,144 @@
 
  */
 
+#define CATCH_CONFIG_MAIN
+#include "catch.hpp"
 #include "Jamoma.h"
 
-namespace Jamoma {
+using namespace Jamoma;
 
-	class DataspaceTest {
-		
-		UnitTest<DataspaceTest>*	mTest;
-		
-	public:
-		DataspaceTest(Jamoma::UnitTest<DataspaceTest>* test)
-		: mTest(test)
-		{
-			testAngle();
-			testDistance();
-			testGain();
-			testNone();
-			testSpeed();
-			testTemperature();
-		}
 
-		void testAngle()
-		{
-			double y = 0;
-			
-			// Angle: conversion to radian
-			Jamoma::Dataspace::Angle<double, Dataspace::AngleUnit::radian>		radianConverter;
-			
-			y = radianConverter(0.5);
-			mTest->TEST_ASSERT("unspecified unit is assumed to be the native unit (radian)", mTest->compare(y, 0.5));
-			
-			y = radianConverter(0.6, Dataspace::AngleUnit::radian);
-			mTest->TEST_ASSERT("angle expressed as radians", mTest->compare(y, 0.6));
-			
-			y = radianConverter(0.7, Dataspace::AngleUnit::rad);
-			mTest->TEST_ASSERT("angle expressed as rad", mTest->compare(y, 0.7));
-			
-			y = radianConverter(180., Dataspace::AngleUnit::degree);
-			mTest->TEST_ASSERT("angle expressed as degree", mTest->compare(y, kPi));
-			
-			y = radianConverter(90., Dataspace::AngleUnit::degree);
-			mTest->TEST_ASSERT("angle expressed as deg", mTest->compare(y, kPi*0.5));
-			
-			// Angle: conversions to degree
-			Jamoma::Dataspace::Angle<double, Dataspace::AngleUnit::degree>		degreeConverter;
-			
-			y = degreeConverter(kPi*0.5, Dataspace::AngleUnit::radian);
-			mTest->TEST_ASSERT("radian-to-degree using enum unit", mTest->compare(y, 90.));
-			
-			y = degreeConverter(kPi*0.5, "rad");
-			mTest->TEST_ASSERT("rad-to-degree using string unit", mTest->compare(y, 90.));
+SCENARIO( "Angle Dataspace is used with type `double`" ) {
+	
+	GIVEN( "Conversion is to unit `radian`" ) {
+		Dataspace::Angle<double, Dataspace::AngleUnit::radian>		radianConverter;
+
+		WHEN( "unspecified unit is assumed to be the native unit (radian)" ) {
+			auto y = radianConverter(0.5);
+			REQUIRE( y == Approx(0.5) );
 		}
+		AND_WHEN( "angle is expressed as radians" ) {
+			auto y = radianConverter(0.6, Dataspace::AngleUnit::radian);
+			REQUIRE( y == Approx(0.6) );
+		}
+		AND_WHEN( "angle is expressed as rad" ) {
+			auto y = radianConverter(0.7, Dataspace::AngleUnit::rad);
+			REQUIRE( y == Approx(0.7) );
+		}
+		AND_WHEN( "angle is expressed as degree" ) {
+			auto y = radianConverter(180., Dataspace::AngleUnit::degree);
+			REQUIRE( y == Approx(kPi) );
+		}
+		AND_WHEN( "angle is expressed as deg" ) {
+			auto y = radianConverter(90., Dataspace::AngleUnit::degree);
+			REQUIRE( y == Approx(kPi*0.5) );
+		}
+	}
+	
+	GIVEN( "Conversion is to unit `radian`" ) {
+		Dataspace::Angle<double, Dataspace::AngleUnit::degree>		degreeConverter;
 		
-		void testDistance()
-		{
-			double y = 0;
-			
-			// Distance: conversion to meters
-			Jamoma::Dataspace::Distance<double, Dataspace::DistanceUnit::meters>	metersConverter;
-			
-			y = metersConverter(0.5);
-			mTest->TEST_ASSERT("unspecified unit is assumed to be the native unit (meters)", mTest->compare(y, 0.5));
-			
-			
-			// *** To neutral unit ***
-			y = metersConverter(123.4, Dataspace::DistanceUnit::centimeters);
-			mTest->TEST_ASSERT("centimeter to meter using enum unit", mTest->compare(y, 1.234));
-			
-			y = metersConverter(123.4, Dataspace::DistanceUnit::cm);
-			mTest->TEST_ASSERT("cm to meter using enum unit", mTest->compare(y, 1.234));
-			
+		WHEN( "radian-to-degree conversion requested using enum unit" ) {
+			auto y = degreeConverter(kPi*0.5, Dataspace::AngleUnit::radian);
+			REQUIRE( y == Approx(90.0) );
+		}
+		AND_WHEN( "rad-to-degree conversion requested using string unit" ) {
+			auto y = degreeConverter(kPi*0.5, "rad");
+			REQUIRE( y == Approx(90.0) );
+		}
+	}
+	
+}
+
+
+
+SCENARIO( "Distance Dataspace is used with type `double`" ) {
+	
+	GIVEN( "Conversion is to unit `meters`" ) {
+		Jamoma::Dataspace::Distance<double, Dataspace::DistanceUnit::meters>	metersConverter;
+		
+		WHEN( "unspecified unit is assumed to be the native unit (meters)" ) {
+			auto y = metersConverter(0.5);
+			REQUIRE( y == Approx(0.5) );
+		}
+		AND_WHEN( "centimeter to meter using enum unit" ) {
+			auto y = metersConverter(123.4, Dataspace::DistanceUnit::centimeters);
+			REQUIRE( y == Approx(1.234));
+		}
+		AND_WHEN( "cm to meter using enum unit" ) {
+			auto y = metersConverter(123.4, Dataspace::DistanceUnit::cm);
+			REQUIRE( y == Approx(1.234));
+		}
+		AND_WHEN( "feet to meter using enum unit" ) {
 			// Expected value according to Google search: "6 feet to meter"
 			// The Google result hasn't much resolution, but is sufficient to indicate that we're OK
-			y =  roundf(metersConverter(6.0, Dataspace::DistanceUnit::feet) * 10000.) / 10000.;
-			mTest->TEST_ASSERT("feet to meter using enum unit", mTest->compare(y, 1.8288));
-			
-			y = roundf(metersConverter(6.0, Dataspace::DistanceUnit::feetSign) * 10000.) / 10000.;
-			mTest->TEST_ASSERT("feetSign (') to meter using enum unit", mTest->compare(y, 1.8288));
-			
-			// Expected value according to Google search: "15 inch to meter"
-			// The Google result hasn't much resolution, but is sufficient to indicate that we're OK
-			y = roundf(metersConverter(15.0, Dataspace::DistanceUnit::inches) * 1000.) / 1000.;
-			mTest->TEST_ASSERT("inches to meter using enum unit", mTest->compare(y, 0.381));
-			
-			y = roundf(metersConverter(15.0, Dataspace::DistanceUnit::inches) * 1000.) / 1000.;
-			mTest->TEST_ASSERT("inchesSign (\") to meter using enum unit", mTest->compare(y, 0.381));
-			
-			
-			// *** From neutral unit ***
-			Jamoma::Dataspace::Distance<double, Dataspace::DistanceUnit::centimeters>	centimetersConverter;
-			y = centimetersConverter(1.234, Dataspace::DistanceUnit::meters);
-			mTest->TEST_ASSERT("meters to centimeters using enum unit", mTest->compare(y, 123.4));
-			
-			Jamoma::Dataspace::Distance<double, Dataspace::DistanceUnit::cm>	cmConverter;
-			y = cmConverter(1.234, Dataspace::DistanceUnit::meters);
-			mTest->TEST_ASSERT("meters to cm using enum unit", mTest->compare(y, 123.4));
-			
-			Jamoma::Dataspace::Distance<double, Dataspace::DistanceUnit::feet>	feetConverter;
-			y = feetConverter(1.8288, Dataspace::DistanceUnit::meters);
-			y = roundf(y);
-			mTest->TEST_ASSERT("meters to feet using enum unit", mTest->compare(y, 6.0));
-			
-			Jamoma::Dataspace::Distance<double, Dataspace::DistanceUnit::feetSign>	feetSignConverter;
-			y = roundf(feetSignConverter(1.8288, Dataspace::DistanceUnit::meters));
-			mTest->TEST_ASSERT("meters to feetSign (') using enum unit", mTest->compare(y, 6.0));
-			
-			Jamoma::Dataspace::Distance<double, Dataspace::DistanceUnit::inches>	inchesConverter;
-			y = roundf(inchesConverter(0.381, Dataspace::DistanceUnit::meters));
-			mTest->TEST_ASSERT("meters to inches using enum unit", mTest->compare(y, 15.0));
-			
-			Jamoma::Dataspace::Distance<double, Dataspace::DistanceUnit::inchesSign>	inchesSignConverter;
-			y = roundf(inchesSignConverter(0.381, Dataspace::DistanceUnit::meters));
-			mTest->TEST_ASSERT("meters to inchesSign (\") using enum unit", mTest->compare(y, 15.0));
+			auto y =  roundf(metersConverter(6.0, Dataspace::DistanceUnit::feet) * 10000.) / 10000.;
+			REQUIRE( y == Approx(1.8288));
+		}
+		AND_WHEN( "feetSign (') to meter using enum unit" ) {
+			auto y = roundf(metersConverter(6.0, Dataspace::DistanceUnit::feetSign) * 10000.) / 10000.;
+			REQUIRE( y == Approx(1.8288));
 		}
 		
+		AND_WHEN("inches to meter using enum unit" ) {
+			// Expected value according to Google search: "15 inch to meter"
+			// The Google result hasn't much resolution, but is sufficient to indicate that we're OK
+			auto y = roundf(metersConverter(15.0, Dataspace::DistanceUnit::inches) * 1000.) / 1000.;
+			REQUIRE( y == Approx(0.381));
+		}
+		AND_WHEN( "inchesSign (\") to meter using enum unit" ) {
+			auto y = roundf(metersConverter(15.0, Dataspace::DistanceUnit::inches) * 1000.) / 1000.;
+			REQUIRE( y == Approx(0.381));
+		}
+
+	}
+	
+	GIVEN( "Conversion is to unit `centimeters`" ) {
+		WHEN( "conversion requested using enum unit" ) {
+			Jamoma::Dataspace::Distance<double, Dataspace::DistanceUnit::centimeters>	centimetersConverter;
+			auto y = centimetersConverter(1.234, Dataspace::DistanceUnit::meters);
+			REQUIRE( y == Approx(123.4) );
+		}
+		AND_WHEN( "conversion requested using abbreviated enum unit" ) {
+			Jamoma::Dataspace::Distance<double, Dataspace::DistanceUnit::cm>	cmConverter;
+			auto y = cmConverter(1.234, Dataspace::DistanceUnit::meters);
+			REQUIRE( y == Approx(123.4) );
+		}
+	}
+	
+	GIVEN( "Conversion is to unit `feet`" ) {
+		WHEN( "conversion requested using enum unit" ) {
+			Jamoma::Dataspace::Distance<double, Dataspace::DistanceUnit::feet>	feetConverter;
+			auto y = feetConverter(1.8288, Dataspace::DistanceUnit::meters);
+			y = roundf(y);
+			REQUIRE( y == Approx(6.0) );
+		}
+		AND_WHEN( "conversion requested using abbreviated enum unit" ) {
+			Jamoma::Dataspace::Distance<double, Dataspace::DistanceUnit::feetSign>	feetSignConverter;
+			auto y = roundf(feetSignConverter(1.8288, Dataspace::DistanceUnit::meters));
+			REQUIRE( y == Approx(6.0) );
+		}
+	}
+
+	GIVEN( "Conversion is to unit `inches`" ) {
+		WHEN( "conversion requested using enum unit" ) {
+			Jamoma::Dataspace::Distance<double, Dataspace::DistanceUnit::inches>	inchesConverter;
+			auto y = roundf(inchesConverter(0.381, Dataspace::DistanceUnit::meters));
+			REQUIRE( y == Approx(15.0) );
+		}
+		AND_WHEN( "conversion requested using abbreviated enum unit" ) {
+			Jamoma::Dataspace::Distance<double, Dataspace::DistanceUnit::inchesSign>	inchesSignConverter;
+			auto y = roundf(inchesSignConverter(0.381, Dataspace::DistanceUnit::meters));
+			REQUIRE( y == Approx(15.0) );
+		}
+	}
+	
+}
+
+
+
+
+#ifdef USE_OLD_UNIT_TESTS
 		
 		void testGain()
 		{
@@ -286,11 +310,5 @@ namespace Jamoma {
 		
 	};
 
-} // namespace Jamoma
+#endif // #ifdef USE_OLD_UNIT_TESTS
 
-
-int main(int argc, const char * argv[])
-{
-	Jamoma::UnitTest<Jamoma::DataspaceTest>	aUnitTestInstance;
-	return aUnitTestInstance.failureCount();
-}
