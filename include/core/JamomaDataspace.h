@@ -33,6 +33,7 @@ namespace Jamoma {
 #include "JamomaDistanceDataspace.h"
 #include "JamomaGainDataspace.h"
 #include "JamomaNoneDataspace.h"
+#include "JamomaPositionDataspace.h"
 #include "JamomaSpeedDataspace.h"
 #include "JamomaTemperatureDataspace.h"
 #include "JamomaTimeDataspace.h"
@@ -61,6 +62,12 @@ namespace Jamoma {
 		using LinearGain		= Dataspace::Gain <double, Dataspace::GainUnit::linear>;
 		using DbGain			= Dataspace::Gain <double, Dataspace::GainUnit::db>;
 		using MidiGain			= Dataspace::Gain <double, Dataspace::GainUnit::midi>;
+		
+		// Position
+		using cart3D			= Dataspace::Position <double, Dataspace::PositionUnit::cart3D>;
+		using xyz				= Dataspace::Position <double, Dataspace::PositionUnit::xyz>;
+		using cart2D			= Dataspace::Position <double, Dataspace::PositionUnit::cart2D>;
+		using xy				= Dataspace::Position <double, Dataspace::PositionUnit::xy>;
 		
 		// Speed
 		using MeterPerSecond	= Dataspace::Speed <double, Dataspace::SpeedUnit::meterPerSecond>;
@@ -97,13 +104,16 @@ namespace Jamoma {
 	// Units for setting/getting parameters
 	// TODO: it is not dry to duplicate all these -- but we need a common enum in order to have a shared interface for all Parameters
 	enum class Unit : uint32_t {
+		// None
 		none				= (uint32_t)Dataspace::NoneUnit::nothing,
 		
+		// Angle
 		radian				= (uint32_t)Dataspace::AngleUnit::radian,
 		rad					= (uint32_t)Dataspace::AngleUnit::rad,
 		degree				= (uint32_t)Dataspace::AngleUnit::degree,
 		deg					= (uint32_t)Dataspace::AngleUnit::deg,
 		
+		// Distance
 		meters				= (uint32_t)Dataspace::DistanceUnit::meters,
 		m					= (uint32_t)Dataspace::DistanceUnit::m,
 		cemtimeters			= (uint32_t)Dataspace::DistanceUnit::centimeters,
@@ -112,10 +122,18 @@ namespace Jamoma {
 		feetSign			= (uint32_t)Dataspace::DistanceUnit::feetSign,
 		inchesSign			= (uint32_t)Dataspace::DistanceUnit::inchesSign,
 		
+		// Gain
 		linearGain			= (uint32_t)Dataspace::GainUnit::linear,
 		db					= (uint32_t)Dataspace::GainUnit::db,
 		midiGain			= (uint32_t)Dataspace::GainUnit::midi,
 		
+		// Position
+		cart3D 				= (uint32_t)Dataspace::PositionUnit::cart3D,
+		xyz 				= (uint32_t)Dataspace::PositionUnit::xyz,
+		cart2D 				= (uint32_t)Dataspace::PositionUnit::cart2D,
+		xy 					= (uint32_t)Dataspace::PositionUnit::xy,
+		
+		// Speed
 		meterPerSecond		= (uint32_t)Dataspace::SpeedUnit::meterPerSecond,
 		kilometerPerHour	= (uint32_t)Dataspace::SpeedUnit::kilometerPerHour,
 		kmph				= (uint32_t)Dataspace::SpeedUnit::kmph,
@@ -124,13 +142,15 @@ namespace Jamoma {
 		footPerSecond		= (uint32_t)Dataspace::SpeedUnit::footPerSecond,
 		knot				= (uint32_t)Dataspace::SpeedUnit::knot,
 		
+		// Temperature
 		c					= (uint32_t)Dataspace::TemperatureUnit::c,
 		celsius				= (uint32_t)Dataspace::TemperatureUnit::celsius,
 		f					= (uint32_t)Dataspace::TemperatureUnit::f,
 		fahrenheit			= (uint32_t)Dataspace::TemperatureUnit::fahrenheit,
 		k					= (uint32_t)Dataspace::TemperatureUnit::k,
 		kelvin				= (uint32_t)Dataspace::TemperatureUnit::kelvin,
-			
+		
+		// Time
 		seconds				= (uint32_t)Dataspace::TimeUnit::seconds,
 		s					= (uint32_t)Dataspace::TimeUnit::s,
 		bark				= (uint32_t)Dataspace::TimeUnit::bark,
