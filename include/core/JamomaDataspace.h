@@ -61,7 +61,7 @@ namespace Jamoma {
 		// Gain
 		using LinearGain		= Dataspace::Gain <double, Dataspace::GainUnit::linear>;
 		using DbGain			= Dataspace::Gain <double, Dataspace::GainUnit::db>;
-		using MidiGain			= Dataspace::Gain <double, Dataspace::GainUnit::midi>;
+		using MidiGain			= Dataspace::Gain <double, Dataspace::GainUnit::midigain>;
 		
 		// Position
 		using cart3D			= Dataspace::Position <double, Dataspace::PositionUnit::cart3D>;
@@ -125,7 +125,7 @@ namespace Jamoma {
 		// Gain
 		linearGain			= (uint32_t)Dataspace::GainUnit::linear,
 		db					= (uint32_t)Dataspace::GainUnit::db,
-		midiGain			= (uint32_t)Dataspace::GainUnit::midi,
+		midiGain			= (uint32_t)Dataspace::GainUnit::midigain,
 		
 		// Position
 		cart3D 				= (uint32_t)Dataspace::PositionUnit::cart3D,

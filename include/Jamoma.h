@@ -53,15 +53,20 @@ namespace Jamoma {
 	
 		
 		
-	constexpr double kPi				= 3.141592653589793238462643383279502884197169399375105820974944592307816406286208998628034825342117068;
-	constexpr double kTwoPi				= kPi * 2.0;
-	constexpr double kDegToRad			= kPi / 180.0;
-	constexpr double kRadToDeg			= 180.0 / kPi;
-	const double kTTGainMidiPower		= log(pow(10.0, 10.0/20.0)) / log(127.0/100.0);
-	const double kTTGainMidiPowerInv	= 1.0/kTTGainMidiPower;
-
-
+	constexpr double kPi				= 3.141592653589793238462643383279502884197169399375105820974944592307816406286208998628034825342117068; ///z The mathematical constant PI = 3.14...
+	constexpr double kTwoPi				= kPi * 2.0;			///< Two times the constant PI (2 * kPi)
+	constexpr double kDegToRad			= kPi / 180.0;			///< Coefficient for converting degrees to radians
+	constexpr double kRadToDeg			= 180.0 / kPi;			///< Coefficient for converting radians to degrees
 	
+	/** A constant used when converting between midi and linear gain.
+	 @details:	This conversion is set up such that:
+				  0 midigain equals -96 dB, and both gets mapped to linear 0
+				100 midigain equals   0 dB
+				127 midigain equals +12 dB
+	 */
+	const double kGainMidiPower		= log((log(12./96. + 1.))/(log(127./100.)))/log(2.);
+	const double kGainMidiPowerInv	= 1.0/kGainMidiPower;		///< The inverse of #kGainMidiPower
+	const double kGainMidiPowPow2	= pow(2, kGainMidiPower);	///< Two to the power of #kGainMidiPower
 	
 	
 	/** Filter out denormaled values, which can make processing extremely slow when present.

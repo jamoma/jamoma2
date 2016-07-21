@@ -1,3 +1,6 @@
 [submodule "include/third-party/concurrentqueue"]
 	path = include/third-party/concurrentqueue
 	url = https://github.com/cameron314/concurrentqueue.git
+[submodule "include/third-party/catch"]
+	path = include/third-party/catch
+	url = https://github.com/philsquared/Catch.git
