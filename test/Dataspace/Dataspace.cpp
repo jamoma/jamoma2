@@ -250,16 +250,78 @@ SCENARIO( "Gain Dataspace is used with type `double`" ) {
 
 
 
+SCENARIO( "Temperature Dataspace is used with type `double`" ) {
+	
+	GIVEN( "Conversion is to unit `kelvin`" ) {
+		
+		Jamoma::Dataspace::Temperature<double, Dataspace::TemperatureUnit::kelvin> kelvinConverter;
+		
+		WHEN( "unspecified unit is assumed to be the native unit (kelvin)" ) {
+			auto y = kelvinConverter(273.15);
+			REQUIRE( y == Approx(273.15) );
+		}
+		AND_WHEN( "0 degress Celsius to Kelvin using enum unit" ) {
+			auto y = kelvinConverter(0.0, Dataspace::TemperatureUnit::celsius);
+			REQUIRE( y == Approx(273.15));
+		}
+		AND_WHEN( "32 degress Fahrenheit to Kelvin using enum unit" ) {
+			auto y = kelvinConverter(32.0, Dataspace::TemperatureUnit::fahrenheit);
+			REQUIRE( y == Approx(273.15));
+		}
+	}
+	
+	GIVEN( "Conversion is to unit `celsius`" ) {
+		
+		Jamoma::Dataspace::Temperature<double, Dataspace::TemperatureUnit::celsius> celsiusConverter;
+		
+		WHEN( "273.15 degress Kelvin to Celsius using enum unit" ) {
+			auto y = celsiusConverter(0.0, Dataspace::TemperatureUnit::celsius);
+			REQUIRE( y == Approx(0.0));
+		}
+		AND_WHEN( "32 degress Fahrenheit to Celsius using enum unit" ) {
+			auto y = celsiusConverter(32.0, Dataspace::TemperatureUnit::fahrenheit);
+			REQUIRE( y == Approx(0.0));
+		}
+	}
+	
+	GIVEN( "Conversion is to unit `fahrenheit`" ) {
+		
+		Jamoma::Dataspace::Temperature<double, Dataspace::TemperatureUnit::fahrenheit> fahrenheitConverter;
+		
+		WHEN( "273.15 degress Kelvin to Fahrenheit using enum unit" ) {
+			auto y = fahrenheitConverter(273.15, Dataspace::TemperatureUnit::kelvin);
+			REQUIRE( y == Approx(32.0));
+		}
+		AND_WHEN( "0 degress Celsius to Fahrenheit using enum unit" ) {
+			auto y = fahrenheitConverter(0.0, Dataspace::TemperatureUnit::celsius);
+			REQUIRE( y == Approx(32.0));
+		}
+	}
+
+}
+
+
+
+
+
+/* TODO: The following two tests fails in spite ofe the numbers being very close.
+ This is a problem with the unit test mechanism rather than the dataspace conversions,
+ and for the time being the two tests are commented out.
+ 
+ The question is whether compare() is able to do the job that it's meant to?
+ SEE: https://github.com/jamoma/jamoma2/issues/99
+ */
+
 
 #ifdef USE_OLD_UNIT_TESTS
-		
-		
+
+
 		void testNone()
 		{
 			;
 		}
-		
-		
+
+
 		void testSpeed()
 		{
 			double y = 0;
@@ -314,67 +376,7 @@ SCENARIO( "Gain Dataspace is used with type `double`" ) {
 			 */
 
 		}
-		
-		void testTemperature()
-		{
-			double y = 0;
-			
-			// Distance: conversion to meters
-			Jamoma::Dataspace::Temperature<double, Dataspace::TemperatureUnit::kelvin>	kelvinConverter;
-			
-			y = kelvinConverter(0.5);
-			mTest->TEST_ASSERT("unspecified unit is assumed to be the native unit (Kelvin)", mTest->compare(y, 0.5));
-			
-			
-			// *** To neutral unit ***
-			y = kelvinConverter(123.4, Dataspace::TemperatureUnit::k);
-			mTest->TEST_ASSERT("K to Kelvin using enum unit", mTest->compare(y, 123.4));
-			
-			y = kelvinConverter(0.0, Dataspace::TemperatureUnit::celsius);
-			mTest->TEST_ASSERT("Celsius to Kelvin using enum unit", mTest->compare(y, 273.15));
-			
-			y = kelvinConverter(0.0, Dataspace::TemperatureUnit::c);
-			mTest->TEST_ASSERT("C to Kelvin using enum unit", mTest->compare(y, 273.15));
-			
-			y = kelvinConverter(32.0, Dataspace::TemperatureUnit::fahrenheit);
-			mTest->TEST_ASSERT("Fahrenheit to Kelvin using enum unit", mTest->compare(y, 273.15));
-			
-			y = kelvinConverter(32.0, Dataspace::TemperatureUnit::f);
-			mTest->TEST_ASSERT("F to Kelvin using enum unit", mTest->compare(y, 273.15));
-			
-			
-			// *** From neutral unit ***
-			Jamoma::Dataspace::Temperature<double, Dataspace::TemperatureUnit::k>	kConverter;
-			y = kConverter(123.4, Dataspace::TemperatureUnit::kelvin);
-			mTest->TEST_ASSERT("Kelvin to K using enum unit", mTest->compare(y, 123.4));
-			
-			Jamoma::Dataspace::Temperature<double, Dataspace::TemperatureUnit::celsius>	celsiusConverter;
-			y = celsiusConverter(273.15, Dataspace::TemperatureUnit::kelvin);
-			mTest->TEST_ASSERT("Kelvin to Celsius using enum unit", mTest->compare(y, 0.0));
-			
-			Jamoma::Dataspace::Temperature<double, Dataspace::TemperatureUnit::celsius>	cConverter;
-			y = cConverter(273.15, Dataspace::TemperatureUnit::kelvin);
-			mTest->TEST_ASSERT("Kelvin to C using enum unit", mTest->compare(y, 0.0));
-			
-			/* TODO: The following two tests fails in spite ofe the numbers being very close.
-			 This is a problem with the unit test mechanism rather than the dataspace conversions,
-			 and for the time being the two tests are commented out.
-			 
-			 The question is whether compare() is able to do the job that it's meant to?
-			 SEE: https://github.com/jamoma/jamoma2/issues/99
-			 */
-			
-			/*
-			Jamoma::Dataspace::Temperature<double, Dataspace::TemperatureUnit::fahrenheit>	fahrenheitConverter;
-			y = fahrenheitConverter(273.15, Dataspace::TemperatureUnit::kelvin);
-			mTest->TEST_ASSERT("Kelvin to Fahrenheit using enum unit", mTest->compare(y, 32.0, 1000));
-			
-			Jamoma::Dataspace::Temperature<double, Dataspace::TemperatureUnit::fahrenheit>	fConverter;
-			y = fConverter(273.15, Dataspace::TemperatureUnit::kelvin);
-			mTest->TEST_ASSERT("Kelvin to F using enum unit", mTest->compare(y, 32.0, 2));
-			 */
-		}
-		
+
 		
 	};
 
