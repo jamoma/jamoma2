@@ -19,7 +19,8 @@ using namespace Jamoma;
 SCENARIO( "Angle Dataspace is used with type `double`" ) {
 	
 	GIVEN( "Conversion is to unit `radian`" ) {
-		Dataspace::Angle<double, Dataspace::AngleUnit::radian>		radianConverter;
+		
+		Dataspace::Angle<double, Dataspace::AngleUnit::radian> radianConverter;
 
 		WHEN( "unspecified unit is assumed to be the native unit (radian)" ) {
 			auto y = radianConverter(0.5);
@@ -44,7 +45,7 @@ SCENARIO( "Angle Dataspace is used with type `double`" ) {
 	}
 	
 	GIVEN( "Conversion is to unit `radian`" ) {
-		Dataspace::Angle<double, Dataspace::AngleUnit::degree>		degreeConverter;
+		Dataspace::Angle<double, Dataspace::AngleUnit::degree> degreeConverter;
 		
 		WHEN( "radian-to-degree conversion requested using enum unit" ) {
 			auto y = degreeConverter(kPi*0.5, Dataspace::AngleUnit::radian);
@@ -63,7 +64,8 @@ SCENARIO( "Angle Dataspace is used with type `double`" ) {
 SCENARIO( "Distance Dataspace is used with type `double`" ) {
 	
 	GIVEN( "Conversion is to unit `meters`" ) {
-		Jamoma::Dataspace::Distance<double, Dataspace::DistanceUnit::meters>	metersConverter;
+		
+		Jamoma::Dataspace::Distance<double, Dataspace::DistanceUnit::meters> metersConverter;
 		
 		WHEN( "unspecified unit is assumed to be the native unit (meters)" ) {
 			auto y = metersConverter(0.5);
@@ -145,45 +147,111 @@ SCENARIO( "Distance Dataspace is used with type `double`" ) {
 
 
 
+SCENARIO( "Gain Dataspace is used with type `double`" ) {
+	
+	GIVEN( "Conversion is to unit `linear`" ) {
+		
+		Jamoma::Dataspace::Gain<double, Dataspace::GainUnit::linear> linearConverter;
+		
+		WHEN( "unspecified unit is assumed to be the native unit (linear)" ) {
+			auto y = linearConverter(0.5);
+			REQUIRE( y == Approx(0.5) );
+		}
+		AND_WHEN( "-12.0 decibel to meter using enum unit" ) {
+			auto y = linearConverter(-12.0, Dataspace::GainUnit::db);
+			REQUIRE( y == Approx(0.25118864315095796));
+		}
+		AND_WHEN( "-6.0 decibel to linear using enum unit" ) {
+			auto y = linearConverter(-6.0, Dataspace::GainUnit::db);
+			REQUIRE( y == Approx(0.50118723362727224));
+		}
+		AND_WHEN( "0.0 decibel to linear using enum unit" ) {
+			auto y = linearConverter(0.0, Dataspace::GainUnit::db);
+			REQUIRE( y == Approx(1.0));
+		}
+		AND_WHEN( "-10.0 midigain (out of range) to linear using enum unit" ) {
+			auto y =  linearConverter(-10.0, Dataspace::GainUnit::midigain);
+			REQUIRE( y == Approx(0.0));
+		}
+		AND_WHEN( "0 midigain to linear using enum unit" ) {
+			auto y =  linearConverter(0.0, Dataspace::GainUnit::midigain);
+			REQUIRE( y == Approx(0.0));
+		}
+		AND_WHEN( "100 midigain to linear using enum unit" ) {
+			auto y =  linearConverter(100.0, Dataspace::GainUnit::midigain);
+			REQUIRE( y == Approx(1.0));
+		}
+	}
+
+	GIVEN( "Conversion is to unit `dB`" ) {
+		
+		Jamoma::Dataspace::Gain<double, Dataspace::GainUnit::db> dbConverter;
+		
+		WHEN( "0 linear to dB using enum unit" ) {
+			auto y = dbConverter(0.0, Dataspace::GainUnit::linear);
+			REQUIRE( y == Approx(-96.0) );
+		}
+		AND_WHEN( "1.0 linear to dB using enum unit" ) {
+			auto y = dbConverter(1.0, Dataspace::GainUnit::linear);
+			REQUIRE( y == Approx(0.0) );
+		}
+		AND_WHEN( "2.0 linear to dB using enum unit" ) {
+			auto y = dbConverter(2.0, Dataspace::GainUnit::linear);
+			REQUIRE( y == Approx(6.0205999132796242) );
+		}
+		AND_WHEN( "0 midigain to dB using abbreviated enum unit" ) {
+			auto y = dbConverter(0.0, Dataspace::GainUnit::midigain);
+			REQUIRE( y == Approx(-96.0) );
+		}
+		AND_WHEN( "100 midigain to dB using abbreviated enum unit" ) {
+			auto y = dbConverter(100.0, Dataspace::GainUnit::midigain);
+			REQUIRE( y == Approx(0.0) );
+		}
+		AND_WHEN( "127 midigain to dB using abbreviated enum unit" ) {
+			auto y = dbConverter(127.0, Dataspace::GainUnit::midigain);
+			REQUIRE( y == Approx(12.0) );
+		}
+		AND_WHEN( "-97 dB(out of range) to dB using abbreviated enum unit" ) {
+			auto y = dbConverter(-97.0, Dataspace::GainUnit::db);
+			REQUIRE( y == Approx(-96.0) );
+		}
+	}
+	
+	GIVEN( "Conversion is to unit `midigain`" ) {
+		
+		Jamoma::Dataspace::Gain<double, Dataspace::GainUnit::midigain> midigainConverter;
+		
+		WHEN( "0.0 linear til midigain using enum unit" ) {
+			auto y = midigainConverter(0.0, Dataspace::GainUnit::linear);
+			REQUIRE( y == Approx(0.0) );
+		}
+		AND_WHEN( "1.0 linear til midigain using enum unit" ) {
+			auto y = midigainConverter(1.0, Dataspace::GainUnit::linear);
+			REQUIRE( y == Approx(100.0) );
+		}
+		AND_WHEN( "-200 dB (below low dB threshold) til midigain using enum unit" ) {
+			auto y = midigainConverter(-200.0, Dataspace::GainUnit::db);
+			REQUIRE( y == Approx(0.0) );
+		}
+		AND_WHEN( "-96 dB til midigain using enum unit" ) {
+			auto y = midigainConverter(-96.0, Dataspace::GainUnit::db);
+			REQUIRE( y == Approx(0.0) );
+		}
+		AND_WHEN( "0.0 dB til midigain using enum unit" ) {
+			auto y = midigainConverter(0.0, Dataspace::GainUnit::db);
+			REQUIRE( y == Approx(100.0) );
+		}
+		AND_WHEN( "12.0 dB til midigain using enum unit" ) {
+			auto y = midigainConverter(12.0, Dataspace::GainUnit::db);
+			REQUIRE( y == Approx(127.0) );
+		}
+	}
+}
+
+
+
 
 #ifdef USE_OLD_UNIT_TESTS
-		
-		void testGain()
-		{
-			// Dataspace Test
-			double y = 0;
-			
-			
-			// Gain: conversions to linear
-			Jamoma::Dataspace::Gain<double, Dataspace::GainUnit::linear>		linearGainConverter;
-			
-			y = linearGainConverter(0.5);
-			mTest->TEST_ASSERT("unspecified unit is assumed to be the native unit (linear)", mTest->compare(y, 0.5));
-			
-			y = linearGainConverter(-6, Dataspace::GainUnit::db);
-			mTest->TEST_ASSERT("db unit specified as enum", mTest->compare(y, 0.50118723362727224));
-			
-			y = linearGainConverter(-12, "db");
-			// TODO: test
-			mTest->TEST_ASSERT("db unit specified as string", mTest->compare(y, 0.25118864315095796));
-			
-			
-			// Gain: conversions to db
-			Jamoma::Dataspace::Gain<double, Dataspace::GainUnit::db>		dbGainConverter;
-			
-			y = dbGainConverter(0.5);
-			mTest->TEST_ASSERT("unspecified unit is assumed to be the native unit (db)", mTest->compare(y, 0.5));
-			
-			y = dbGainConverter(2.0, Dataspace::GainUnit::linear);
-			mTest->TEST_ASSERT("linear-to-db", mTest->compare(y, 6.0205999132796242));
-			
-			y = dbGainConverter(100.0, Dataspace::GainUnit::midi);
-			mTest->TEST_ASSERT("midi-to-db using enum unit", mTest->compare(y, 0.0));
-			
-			y = dbGainConverter(50, "midi");
-			mTest->TEST_ASSERT("midi-to-db using string unit", mTest->compare(y, -28.999923402717513));
-			
-		}
 		
 		
 		void testNone()

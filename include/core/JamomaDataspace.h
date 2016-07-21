@@ -60,7 +60,7 @@ namespace Jamoma {
 		// Gain
 		using LinearGain		= Dataspace::Gain <double, Dataspace::GainUnit::linear>;
 		using DbGain			= Dataspace::Gain <double, Dataspace::GainUnit::db>;
-		using MidiGain			= Dataspace::Gain <double, Dataspace::GainUnit::midi>;
+		using MidiGain			= Dataspace::Gain <double, Dataspace::GainUnit::midigain>;
 		
 		// Speed
 		using MeterPerSecond	= Dataspace::Speed <double, Dataspace::SpeedUnit::meterPerSecond>;
@@ -114,7 +114,7 @@ namespace Jamoma {
 		
 		linearGain			= (uint32_t)Dataspace::GainUnit::linear,
 		db					= (uint32_t)Dataspace::GainUnit::db,
-		midiGain			= (uint32_t)Dataspace::GainUnit::midi,
+		midiGain			= (uint32_t)Dataspace::GainUnit::midigain,
 		
 		meterPerSecond		= (uint32_t)Dataspace::SpeedUnit::meterPerSecond,
 		kilometerPerHour	= (uint32_t)Dataspace::SpeedUnit::kilometerPerHour,

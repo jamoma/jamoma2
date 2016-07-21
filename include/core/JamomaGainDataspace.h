@@ -23,21 +23,21 @@ namespace Jamoma {
 			so that it can be used to specialize the templates for the Gain dataspace class.
 		 */
 		enum class GainUnit : uint32_t {
-			linear = Hash("linear"),	///< linear gain (the neutral unit for this dataspace)
-			midi = Hash("midi"),		///< midi gain where 100 is unity
-			db = Hash("db")				///< decibels
+			linear = Hash("linear"),		///< linear gain (the neutral unit for this dataspace)
+			midigain = Hash("midigain"),	///< midi gain where 100 is unity
+			db = Hash("db")					///< decibels
 		};
 
 		
 		
 		
-		// Linear is the neutral unit, so it is a pass-through
+		// Linear is the neutral unit, so it is a pass-through, although it is required to be >= 0.
 		template <class T>
 		class LinearGain : public UnitBase<T> {
 		public:
 			T toNeutral(const T& input) const
 			{
-				return input;
+				return std::max(input, 0.0);
 			}
 			
 			T fromNeutral(const T& input) const
@@ -52,12 +52,26 @@ namespace Jamoma {
 		public:
 			T toNeutral(const T& input) const
 			{
-				return pow(input*0.01, kTTGainMidiPower);
+				// Range-check incling MIDI value
+				if (input > 0.) {
+					// Convert MIDI to dB
+					T temp = 96* ( pow( (input/100.), (pow(2, kGainMidiPower))) - 1);
+					// Convert dB to linear, we know that range is safe
+					return(pow(10., (temp * 0.05)));
+				}
+				else
+					return 0.0;
 			}
 			
 			T fromNeutral(const T& input) const
 			{
-				return 100.0 * pow(input, kTTGainMidiPowerInv);
+				// Convert linear to dB
+				T temp = 20.0 * (log10(input));
+				// Range-check dB and convert to MIDI
+				if (temp <= -96.)
+					return 0.;
+				else
+					return 100 * exp((log(temp/96. + 1.))/kGainMidiPowPow2);
 			}
 		};
 		
@@ -67,17 +81,15 @@ namespace Jamoma {
 		public:
 			T toNeutral(const T& input) const
 			{
-				return pow(10.0, input * 0.05);
+				if (input > -96.)
+					return pow(10.0, input * 0.05);
+				else
+					return 0.0;
 			}
 			
 			T fromNeutral(const T& input) const
 			{
-				T temp = log10(input) * 20.0;
-				
-				// Output decibel range is limited to 24 bit range, avoids problems with singularities (-inf) when using dataspace in ramps
-				if (temp < -144.49)
-					temp = -144.49;
-				return temp;
+				return std::max(log10(input) * 20.0, -96.);
 			}
 		};
 		
@@ -108,9 +120,9 @@ namespace Jamoma {
 				TODO: make this a static so that we don't have to spend resources on it for all instances
 			 */
 			std::unordered_map<GainUnit, UnitBase<T>*>	sUnits = {
-				{GainUnit::linear, new LinearGain<T>()},
-				{GainUnit::midi, new MidiGain<T>()},
-				{GainUnit::db, new DbGain<T>()}
+				{GainUnit::linear,		new LinearGain<T>()},
+				{GainUnit::midigain,	new MidiGain<T>()},
+				{GainUnit::db,			new DbGain<T>()}
 			};
 
 			
