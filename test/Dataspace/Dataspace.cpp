@@ -250,6 +250,83 @@ SCENARIO( "Gain Dataspace is used with type `double`" ) {
 
 
 
+SCENARIO( "Speed Dataspace is used with type `double`" ) {
+	
+	GIVEN( "Conversion is to unit `m/s`" ) {
+		
+		Jamoma::Dataspace::Speed<double, Dataspace::SpeedUnit::meterPerSecond> meterPerSecondConverter;
+		
+		WHEN( "unspecified unit is assumed to be the native unit (kelvin)" ) {
+			auto y = meterPerSecondConverter(20.0);
+			REQUIRE( y == Approx(20.0) );
+		}
+		AND_WHEN( "mi/h to m/s using enum unit" ) {
+			auto y = meterPerSecondConverter(50.0, Dataspace::SpeedUnit::milesPerHour);
+			REQUIRE( y == Approx(22.35200));
+		}
+		AND_WHEN( "knot to m/s using enum unit" ) {
+			auto y = meterPerSecondConverter(45.0, Dataspace::SpeedUnit::knot);
+			REQUIRE( y == Approx(23.15));
+		}
+		AND_WHEN( "foot to m/s using enum unit" ) {
+			auto y = meterPerSecondConverter(20.0, Dataspace::SpeedUnit::footPerSecond);
+			REQUIRE( y == Approx(6.09600));
+		}
+	}
+	
+	GIVEN( "Conversion is to unit `km/h`" ) {
+		
+		Jamoma::Dataspace::Speed<double, Dataspace::SpeedUnit::kilometerPerHour> kilometerPerHourConverter;
+
+		WHEN( "m/s to km/h using enum unit" ) {
+			auto y = kilometerPerHourConverter(10.0, Dataspace::SpeedUnit::meterPerSecond);
+			REQUIRE( y == Approx(36.0));
+		}
+	}
+	
+	GIVEN( "Conversion is to unit `kmph`" ) {
+		
+		Jamoma::Dataspace::Speed<double, Dataspace::SpeedUnit::kmph> kmphConverter;
+		
+		WHEN( "m/s to km/h using enum unit" ) {
+			auto y = kmphConverter(10.0, Dataspace::SpeedUnit::meterPerSecond);
+			REQUIRE( y == Approx(36.0));
+		}
+	}
+	
+	GIVEN( "Conversion is to unit `mi/h`" ) {
+		
+		Jamoma::Dataspace::Speed<double, Dataspace::SpeedUnit::milesPerHour> milesPerHourConverter;
+		
+		WHEN( "m/s to km/h using enum unit" ) {
+			auto y = milesPerHourConverter(22.35200, Dataspace::SpeedUnit::meterPerSecond);
+			REQUIRE( y == Approx(50.0));
+		}
+	}
+	
+	GIVEN( "Conversion is to unit `mi/h`" ) {
+		
+		Jamoma::Dataspace::Speed<double, Dataspace::SpeedUnit::knot> knotConverter;
+		
+		WHEN( "m/s to km/h using enum unit" ) {
+			auto y = knotConverter(23.15, Dataspace::SpeedUnit::meterPerSecond);
+			REQUIRE( y == Approx(45.0));
+		}
+	}
+	
+	GIVEN( "Conversion is to unit `footPerSecond`" ) {
+		
+		Jamoma::Dataspace::Speed<double, Dataspace::SpeedUnit::footPerSecond> footPerSecondConverter;
+		
+		WHEN( "m/s to km/h using enum unit" ) {
+			auto y = footPerSecondConverter(6.09600, Dataspace::SpeedUnit::meterPerSecond);
+			REQUIRE( y == Approx(20.0));
+		}
+	}
+}
+
+
+
 SCENARIO( "Temperature Dataspace is used with type `double`" ) {
 	
 	GIVEN( "Conversion is to unit `kelvin`" ) {
@@ -303,16 +380,6 @@ SCENARIO( "Temperature Dataspace is used with type `double`" ) {
 
 
 
-
-/* TODO: The following two tests fails in spite ofe the numbers being very close.
- This is a problem with the unit test mechanism rather than the dataspace conversions,
- and for the time being the two tests are commented out.
- 
- The question is whether compare() is able to do the job that it's meant to?
- SEE: https://github.com/jamoma/jamoma2/issues/99
- */
-
-
 #ifdef USE_OLD_UNIT_TESTS
 
 
@@ -320,63 +387,6 @@ SCENARIO( "Temperature Dataspace is used with type `double`" ) {
 		{
 			;
 		}
-
-
-		void testSpeed()
-		{
-			double y = 0;
-			
-			// Distance: conversion to meters
-			Jamoma::Dataspace::Speed<double, Dataspace::SpeedUnit::meterPerSecond>	meterPerSecondConverter;
-			
-			y = meterPerSecondConverter(0.5);
-			mTest->TEST_ASSERT("unspecified unit is assumed to be the native unit (m/s)", mTest->compare(y, 0.5));
-			
-			
-			// *** To neutral unit ***
-			y = meterPerSecondConverter(36.0, Dataspace::SpeedUnit::kilometerPerHour);
-			mTest->TEST_ASSERT("km/h to m/s using enum unit", mTest->compare(y, 10.0));
-			
-			y = meterPerSecondConverter(36.0, Dataspace::SpeedUnit::kmph);
-			mTest->TEST_ASSERT("kmph to m/s using enum unit", mTest->compare(y, 10.0));
-			
-			y = meterPerSecondConverter(50.0, Dataspace::SpeedUnit::milesPerHour);
-			mTest->TEST_ASSERT("mi/h to m/s using enum unit", mTest->compare(y, 22.35200));
-			
-			/* TODO : Commented out due to shortcoming with our current unit test comapre method
-			y = meterPerSecondConverter(45.0, Dataspace::SpeedUnit::knot);
-			mTest->TEST_ASSERT("knot to m/s using enum unit", mTest->compare(y, 23.15));
-			 */
-			
-			y = meterPerSecondConverter(20.0, Dataspace::SpeedUnit::footPerSecond);
-			mTest->TEST_ASSERT("ft/s to m/s using enum unit", mTest->compare(y, 6.09600));
-			
-			
-			// *** From neutral unit ***
-			Jamoma::Dataspace::Speed<double, Dataspace::SpeedUnit::kilometerPerHour>	kilometerPerHourConverter;
-			y = kilometerPerHourConverter(10.0, Dataspace::SpeedUnit::meterPerSecond);
-			mTest->TEST_ASSERT("m/s to km/h using enum unit", mTest->compare(y, 36.0));
-			
-			Jamoma::Dataspace::Speed<double, Dataspace::SpeedUnit::kmph>				kmphConverter;
-			y = kmphConverter(10.0, Dataspace::SpeedUnit::meterPerSecond);
-			mTest->TEST_ASSERT("m/s to kmph using enum unit", mTest->compare(y, 36.0));
-			
-			/* TODO : Commented out due to shortcoming with our current unit test comapre method
-			Jamoma::Dataspace::Speed<double, Dataspace::SpeedUnit::milesPerHour>		milesPerHourConverter;
-			y = milesPerHourConverter(22.35200, Dataspace::SpeedUnit::meterPerSecond);
-			mTest->TEST_ASSERT("m/s to mi/h using enum unit", mTest->compare(y, 50.0));
-			
-			Jamoma::Dataspace::Speed<double, Dataspace::SpeedUnit::knot>				knotConverter;
-			y = knotConverter(23.15, Dataspace::SpeedUnit::meterPerSecond);
-			mTest->TEST_ASSERT("m/s to knot using enum unit", mTest->compare(y, 45.0));
-			
-			Jamoma::Dataspace::Speed<double, Dataspace::SpeedUnit::footPerSecond>	footPerSecondConverter;
-			y = footPerSecondConverter(6.09600, Dataspace::SpeedUnit::meterPerSecond);
-			mTest->TEST_ASSERT("m/s to ft/s using enum unit", mTest->compare(y, 20.0));
-			 */
-
-		}
-
 		
 	};
 
