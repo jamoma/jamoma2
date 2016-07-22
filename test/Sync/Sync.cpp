@@ -43,8 +43,8 @@ namespace Jamoma {
 			s.gain = make_pair(-6.0, Unit::db);
 			mTest->TEST_ASSERT("setting gain param in db", mTest->compare( (double)s.gain, 0.50118723362727224) );
 
-			s.gain = make_pair(110.0, Unit::midiGain);
-			mTest->TEST_ASSERT("setting gain param with midi", mTest->compare( (double)s.gain, 1.5826306885735968) );
+			s.gain = make_pair(100.0, Unit::midiGain);
+			mTest->TEST_ASSERT("setting gain param with midi", mTest->compare( (double)s.gain, 1.0) );
 			
 			// Phase parameter (range wrapping)
 			s.phase = 0.25;
