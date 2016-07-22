@@ -92,7 +92,7 @@ namespace Jamoma {
 		using Bpm				= Dataspace::Time <double, Dataspace::TimeUnit::bpm>;
 		using Cents				= Dataspace::Time <double, Dataspace::TimeUnit::cents>;
 		using Mel				= Dataspace::Time <double, Dataspace::TimeUnit::mel>;
-		using MidiPitch			= Dataspace::Time <double, Dataspace::TimeUnit::midi>;
+		using Midinote			= Dataspace::Time <double, Dataspace::TimeUnit::midinote>;
 		using Milliseconds		= Dataspace::Time <double, Dataspace::TimeUnit::milliseconds>;
 		using Fps				= Dataspace::Time <double, Dataspace::TimeUnit::fps>;
 		using Hz				= Dataspace::Time <double, Dataspace::TimeUnit::hz>;
@@ -157,7 +157,7 @@ namespace Jamoma {
 		bpm					= (uint32_t)Dataspace::TimeUnit::bpm,
 		cents				= (uint32_t)Dataspace::TimeUnit::cents,
 		mel					= (uint32_t)Dataspace::TimeUnit::mel,
-		midiPitch			= (uint32_t)Dataspace::TimeUnit::midi,
+		midinote			= (uint32_t)Dataspace::TimeUnit::midinote,
 		milliseconds		= (uint32_t)Dataspace::TimeUnit::milliseconds,
 		ms					= (uint32_t)Dataspace::TimeUnit::ms,
 		fps					= (uint32_t)Dataspace::TimeUnit::fps,

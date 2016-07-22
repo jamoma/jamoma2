@@ -27,7 +27,7 @@ namespace Jamoma {
 			bpm				= Hash("bpm"),				///< beats per minute
 			cents			= Hash("cents"),			///< cents (pitch)
 			mel				= Hash("mel"),				///< mel scale ( https://en.wikipedia.org/wiki/Mel_scale )
-			midi			= Hash("midi"),				///< midi pitch number (0-127)
+			midinote		= Hash("midinote"),			///< midi pitch number (0-127)
 			milliseconds	= Hash("millisecond"),		///< milliseconds
 			ms				= Hash("ms"),				///< milliseconds
 			fps				= Hash("fps"),				///< frames per second
@@ -141,7 +141,7 @@ namespace Jamoma {
 		
 		
 		template <class T>
-		class MidiPitch : public UnitBase<T> {
+		class MidiNote : public UnitBase<T> {
 		public:
 			T toNeutral(const T& input) const
 			{
@@ -239,7 +239,7 @@ namespace Jamoma {
 				{TimeUnit::bpm				, new Bpm<T>()},
 				{TimeUnit::cents			, new Cents<T>()},
 				{TimeUnit::mel				, new Mel<T>()},
-				{TimeUnit::midi				, new MidiPitch<T>()},
+				{TimeUnit::midinote			, new MidiNote<T>()},
 				{TimeUnit::milliseconds		, new Milliseconds<T>()},
 				{TimeUnit::ms				, new Milliseconds<T>()},
 				{TimeUnit::fps				, new Hz<T>()},
