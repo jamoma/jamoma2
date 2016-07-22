@@ -376,19 +376,3 @@ SCENARIO( "Temperature Dataspace is used with type `double`" ) {
 	}
 
 }
-
-
-
-
-#ifdef USE_OLD_UNIT_TESTS
-
-
-		void testNone()
-		{
-			;
-		}
-		
-	};
-
-#endif // #ifdef USE_OLD_UNIT_TESTS
-
