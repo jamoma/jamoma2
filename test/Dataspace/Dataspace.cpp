@@ -376,3 +376,156 @@ SCENARIO( "Temperature Dataspace is used with type `double`" ) {
 	}
 
 }
+
+
+
+SCENARIO( "Time Dataspace is used with type `double`" ) {
+	
+	GIVEN( "Conversion is to unit `second`" ) {
+		
+		Jamoma::Dataspace::Time<double, Dataspace::TimeUnit::seconds> secondsConverter;
+		
+		WHEN( "unspecified unit is assumed to be the native unit (seconds)" ) {
+			auto y = secondsConverter(256.0);
+			REQUIRE( y == Approx(256.0) );
+		}
+		AND_WHEN( "Milliseconds to seconds using enum unit" ) {
+			auto y = secondsConverter(1234.5, Dataspace::TimeUnit::milliseconds);
+			REQUIRE( y == Approx(1.2345));
+		}
+		
+		// TODO: samples to seconds
+		
+		AND_WHEN( "Hertz to seconds using enum unit" ) {
+			auto y = secondsConverter(4.0, Dataspace::TimeUnit::hertz);
+			REQUIRE( y == Approx(0.25));
+		}
+		AND_WHEN( "Beats per minute to seconds using enum unit" ) {
+			auto y = secondsConverter(120.0, Dataspace::TimeUnit::bpm);
+			REQUIRE( y == Approx(0.5));
+		}
+		AND_WHEN( "Midi note 57 to seconds using enum unit" ) {
+			auto y = secondsConverter(57.0, Dataspace::TimeUnit::midinote);
+			REQUIRE( y == Approx(1/220.));
+		}
+		AND_WHEN( "Midi note 69 to seconds using enum unit" ) {
+			auto y = secondsConverter(69.0, Dataspace::TimeUnit::midinote);
+			REQUIRE( y == Approx(1/440.));
+		}
+		AND_WHEN( "5700 cents to seconds using enum unit" ) {
+			auto y = secondsConverter(5700.0, Dataspace::TimeUnit::cents);
+			REQUIRE( y == Approx(1/220.));
+		}
+		AND_WHEN( "6900 cents to seconds using enum unit" ) {
+			auto y = secondsConverter(6900.0, Dataspace::TimeUnit::cents);
+			REQUIRE( y == Approx(1/440.));
+		}
+		AND_WHEN( "bark to seconds using enum unit" ) {
+			auto y = secondsConverter(5.0, Dataspace::TimeUnit::bark);
+			REQUIRE( y == Approx(0.001785990780318596));
+		}
+		AND_WHEN( "mel to seconds using enum unit" ) {
+			auto y = secondsConverter(1000.0, Dataspace::TimeUnit::mel);
+			REQUIRE( y == Approx(0.0009999781840186604));
+		}
+		// speed => seconds
+		// Rather than checking this, there are tests for speed <=> midi note further down
+	}
+	
+	GIVEN( "Conversion is from unit `second`" ) {
+		
+		AND_WHEN( "Seconds to milliseconds using enum unit" ) {
+			Jamoma::Dataspace::Time<double, Dataspace::TimeUnit::milliseconds> msConverter;
+			auto y = msConverter(1.2345, Dataspace::TimeUnit::seconds);
+			REQUIRE( y == Approx(1234.5));
+		}
+		
+		//  TODO: seconds to samples
+		
+		AND_WHEN( "Seconds to hertz using enum unit" ) {
+			Jamoma::Dataspace::Time<double, Dataspace::TimeUnit::hertz> hertzConverter;
+			auto y = hertzConverter(.25, Dataspace::TimeUnit::seconds);
+			REQUIRE( y == Approx(4.0));
+		}
+		AND_WHEN( "Seconds to bpm using enum unit" ) {
+			Jamoma::Dataspace::Time<double, Dataspace::TimeUnit::bpm> bpmConverter;
+			auto y = bpmConverter(0.5, Dataspace::TimeUnit::seconds);
+			REQUIRE( y == Approx(120.0));
+		}
+		AND_WHEN( "Seconds to milliseconds using enum unit" ) {
+			Jamoma::Dataspace::Time<double, Dataspace::TimeUnit::milliseconds> msConverter;
+			auto y = msConverter(1.2345, Dataspace::TimeUnit::seconds);
+			REQUIRE( y == Approx(1234.5));
+		}
+		Jamoma::Dataspace::Time<double, Dataspace::TimeUnit::midinote> midinoteConverter;
+		AND_WHEN( "Seconds to mininote 57 using enum unit" ) {
+			auto y = midinoteConverter(1/220., Dataspace::TimeUnit::seconds);
+			REQUIRE( y == Approx(57.0));
+		}
+		AND_WHEN( "Seconds to mininote 69 using enum unit" ) {
+			auto y = midinoteConverter(1/440., Dataspace::TimeUnit::seconds);
+			REQUIRE( y == Approx(69.0));
+		}
+		Jamoma::Dataspace::Time<double, Dataspace::TimeUnit::cents> centsConverter;
+		AND_WHEN( "Seconds to 5700 cents using enum unit" ) {
+			auto y = centsConverter(1/220., Dataspace::TimeUnit::seconds);
+			REQUIRE( y == Approx(5700.0));
+		}
+		AND_WHEN( "Seconds to 6900 cents using enum unit" ) {
+			auto y = centsConverter(1/440., Dataspace::TimeUnit::seconds);
+			REQUIRE( y == Approx(6900.0));
+		}
+		AND_WHEN( "Seconds to bark using enum unit" ) {
+			Jamoma::Dataspace::Time<double, Dataspace::TimeUnit::bark> barkConverter;
+			auto y = barkConverter(0.001785990780318596, Dataspace::TimeUnit::seconds);
+			REQUIRE( y == Approx(5.0));
+		}
+		AND_WHEN( "Seconds to mel using enum unit" ) {
+			Jamoma::Dataspace::Time<double, Dataspace::TimeUnit::mel> melConverter;
+			auto y = melConverter(0.001, Dataspace::TimeUnit::seconds);
+			REQUIRE( y == Approx(999.9855371396243));
+		}
+	}
+	
+	GIVEN( "Conversion is between non-neutral units" ) {
+		
+		Jamoma::Dataspace::Time<double, Dataspace::TimeUnit::midinote> midinoteConverter;
+		WHEN( "0.5 speed to mininote" ) {
+			auto y = midinoteConverter(0.5, Dataspace::TimeUnit::playbackspeed);
+			REQUIRE( y == Approx(-12.0) );
+		}
+		WHEN( "1.0 speed to mininote" ) {
+			auto y = midinoteConverter(1.0, Dataspace::TimeUnit::playbackspeed);
+			REQUIRE( y == Approx(0.0) );
+		}
+		WHEN( "2.0 speed to mininote" ) {
+			auto y = midinoteConverter(2.0, Dataspace::TimeUnit::playbackspeed);
+			REQUIRE( y == Approx(12.0) );
+		}
+		
+		Jamoma::Dataspace::Time<double, Dataspace::TimeUnit::playbackspeed> playbackspeedConverter;
+		AND_WHEN( "midinote -12 to speed using enum unit" ) {
+			auto y = playbackspeedConverter(-12.0, Dataspace::TimeUnit::midinote);
+			REQUIRE( y == Approx(0.5));
+		}
+		AND_WHEN( "midinote 0 to speed using enum unit" ) {
+			auto y = playbackspeedConverter(0.0, Dataspace::TimeUnit::midinote);
+			REQUIRE( y == Approx(1.0));
+		}
+		AND_WHEN( "midinote -12 to speed using enum unit" ) {
+			auto y = playbackspeedConverter(12, Dataspace::TimeUnit::midinote);
+			REQUIRE( y == Approx(2.0));
+		}
+		
+		AND_WHEN( "Hertz to mel scale using enum unit" ) {
+			Jamoma::Dataspace::Time<double, Dataspace::TimeUnit::mel> melConverter;
+			auto y = melConverter(1000.0, Dataspace::TimeUnit::hertz);
+			REQUIRE( y == Approx(999.9855371396243));
+		}
+		AND_WHEN( "Mel scale to Hertz using enum unit" ) {
+			Jamoma::Dataspace::Time<double, Dataspace::TimeUnit::hertz> hertzConverter;
+			auto y = hertzConverter(999.9855371396243, Dataspace::TimeUnit::mel);
+			REQUIRE( y == Approx(1000.0));
+		}
+	}
+}
