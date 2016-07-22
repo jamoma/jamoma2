@@ -29,13 +29,13 @@ namespace Jamoma {
 } // namespace Jamoma
 
 
-#include "JamomaAngleDataspace.h"
-#include "JamomaDistanceDataspace.h"
-#include "JamomaGainDataspace.h"
-#include "JamomaNoneDataspace.h"
-#include "JamomaSpeedDataspace.h"
-#include "JamomaTemperatureDataspace.h"
-#include "JamomaTimeDataspace.h"
+#include "JamomaDataspaceAngle.h"
+#include "JamomaDataspaceDistance.h"
+#include "JamomaDataspaceGain.h"
+#include "JamomaDataspaceNone.h"
+#include "JamomaDataspaceSpeed.h"
+#include "JamomaDataspaceTemperature.h"
+#include "JamomaDataspaceTime.h"
 
 
 namespace Jamoma {
