@@ -161,13 +161,13 @@ namespace Jamoma {
 			static const int 	delay = 1;
 			
 			constexpr T operator()(T x1, T x2, double delta) noexcept {
-				T a = 0.5 * (1.0 - cos(delta * kPi));
+				T a = 0.5 * (1.0 - cos(delta * M_PI));
 				return x1 + a * (x2-x1);
 			}
             
             constexpr T operator()(T x0, T x1, T x2, T x3, double delta) noexcept {
                 // NW: ideally we would call the operator above to remain DRY, but I could not get syntax right
-                T a = 0.5 * (1.0 - cos(delta * kPi));
+                T a = 0.5 * (1.0 - cos(delta * M_PI));
                 return x1 + a * (x2-x1);
             }
 		};
