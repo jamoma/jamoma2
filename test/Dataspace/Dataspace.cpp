@@ -16,86 +16,6 @@
 using namespace Jamoma;
 
 
-SCENARIO( "Position Dataspace is used with type `double`" ) {
-
-	using Jamoma::Dataspace::PositionValue;
-
-	GIVEN( "Conversion is to unit `xyz`" ) {
-
-		Dataspace::Position<double, Dataspace::PositionUnit::xyz> xyzConverter;
-
-		WHEN( "unspecified unit is assumed to be the native unit (xyz)" ) {
-			auto output = xyzConverter( {{ 1.0, 2.0, 3.0 }} );
-			REQUIRE( output.size() == 3);
-			REQUIRE( output[0] == Approx(1.0) );
-			REQUIRE( output[1] == Approx(2.0) );
-			REQUIRE( output[2] == Approx(3.0) );
-		}
-		AND_WHEN( "position is expressed as cart3d" ) {
-			// same as 'xyz'
-			auto output = xyzConverter( {{ 1.0, 2.0, 3.0 }}, Dataspace::PositionUnit::cart3D);
-			REQUIRE( output.size() == 3);
-			REQUIRE( output[0] == Approx(1.0) );
-			REQUIRE( output[1] == Approx(2.0) );
-			REQUIRE( output[2] == Approx(3.0) );
-		}
-		AND_WHEN( "position is expressed as xy" ) {
-			// an extraneous z value is tossed-out
-			auto output = xyzConverter( {{ 1.0, 2.0, 3.0 }}, Dataspace::PositionUnit::xy);
-			REQUIRE( output.size() == 3);
-			REQUIRE( output[0] == Approx(1.0) );
-			REQUIRE( output[1] == Approx(2.0) );
-			REQUIRE( output[2] == 0.0 );
-		}
-		AND_WHEN( "position is expressed as cart2d" ) {
-			// same as 'xy'
-			auto output = xyzConverter( {{ 1.0, 2.0, 3.0 }}, Dataspace::PositionUnit::cart2D);
-			REQUIRE( output.size() == 3);
-			REQUIRE( output[0] == Approx(1.0) );
-			REQUIRE( output[1] == Approx(2.0) );
-			REQUIRE( output[2] == 0.0 );
-		}
-	}
-
-	GIVEN( "Conversion is to unit `xy`" ) {
-
-		Dataspace::Position<double, Dataspace::PositionUnit::xy> xyConverter;
-
-		WHEN( "unspecified unit is assumed to be the native unit (xy)" ) {
-			auto output = xyConverter( {{ 1.0, 2.0 }} );
-			REQUIRE( output.size() == 3);		// still size 3 for the data returned but the extra element is set to zero
-			REQUIRE( output[0] == Approx(1.0) );
-			REQUIRE( output[1] == Approx(2.0) );
-			REQUIRE( output[2] == 0.0 );
-		}
-		AND_WHEN( "position is expressed as cart2d" ) {
-			// same as 'xy'
-			auto output = xyConverter( {{ 1.0, 2.0 }}, Dataspace::PositionUnit::cart2D);
-			REQUIRE( output.size() == 3);		// still size 3 for the data returned but the extra element is set to zero
-			REQUIRE( output[0] == Approx(1.0) );
-			REQUIRE( output[1] == Approx(2.0) );
-			REQUIRE( output[2] == 0.0 );
-		}
-		AND_WHEN( "position is expressed as xyz" ) {
-			// an extraneous z value is tossed-out
-			auto output = xyConverter( {{ 1.0, 2.0, 3.0 }}, Dataspace::PositionUnit::xyz);
-			REQUIRE( output.size() == 3);
-			REQUIRE( output[0] == Approx(1.0) );
-			REQUIRE( output[1] == Approx(2.0) );
-			REQUIRE( output[2] == 0.0 );
-		}
-		AND_WHEN( "position is expressed as cart3d" ) {
-			// same as 'xyz'
-			auto output = xyConverter( {{ 1.0, 2.0, 3.0 }}, Dataspace::PositionUnit::cart3D);
-			REQUIRE( output.size() == 3);
-			REQUIRE( output[0] == Approx(1.0) );
-			REQUIRE( output[1] == Approx(2.0) );
-			REQUIRE( output[2] == 0.0 );
-		}
-	}
-
-}
-
 
 SCENARIO( "Angle Dataspace is used with type `double`" ) {
 
@@ -327,6 +247,88 @@ SCENARIO( "Gain Dataspace is used with type `double`" ) {
 			REQUIRE( y == Approx(127.0) );
 		}
 	}
+}
+
+
+
+SCENARIO( "Position Dataspace is used with type `double`" ) {
+	
+	using Jamoma::Dataspace::PositionValue;
+	
+	GIVEN( "Conversion is to unit `xyz`" ) {
+		
+		Dataspace::Position<double, Dataspace::PositionUnit::xyz> xyzConverter;
+		
+		WHEN( "unspecified unit is assumed to be the native unit (xyz)" ) {
+			auto output = xyzConverter( {{ 1.0, 2.0, 3.0 }} );
+			REQUIRE( output.size() == 3);
+			REQUIRE( output[0] == Approx(1.0) );
+			REQUIRE( output[1] == Approx(2.0) );
+			REQUIRE( output[2] == Approx(3.0) );
+		}
+		AND_WHEN( "position is expressed as cart3d" ) {
+			// same as 'xyz'
+			auto output = xyzConverter( {{ 1.0, 2.0, 3.0 }}, Dataspace::PositionUnit::cart3D);
+			REQUIRE( output.size() == 3);
+			REQUIRE( output[0] == Approx(1.0) );
+			REQUIRE( output[1] == Approx(2.0) );
+			REQUIRE( output[2] == Approx(3.0) );
+		}
+		AND_WHEN( "position is expressed as xy" ) {
+			// an extraneous z value is tossed-out
+			auto output = xyzConverter( {{ 1.0, 2.0, 3.0 }}, Dataspace::PositionUnit::xy);
+			REQUIRE( output.size() == 3);
+			REQUIRE( output[0] == Approx(1.0) );
+			REQUIRE( output[1] == Approx(2.0) );
+			REQUIRE( output[2] == 0.0 );
+		}
+		AND_WHEN( "position is expressed as cart2d" ) {
+			// same as 'xy'
+			auto output = xyzConverter( {{ 1.0, 2.0, 3.0 }}, Dataspace::PositionUnit::cart2D);
+			REQUIRE( output.size() == 3);
+			REQUIRE( output[0] == Approx(1.0) );
+			REQUIRE( output[1] == Approx(2.0) );
+			REQUIRE( output[2] == 0.0 );
+		}
+	}
+	
+	GIVEN( "Conversion is to unit `xy`" ) {
+		
+		Dataspace::Position<double, Dataspace::PositionUnit::xy> xyConverter;
+		
+		WHEN( "unspecified unit is assumed to be the native unit (xy)" ) {
+			auto output = xyConverter( {{ 1.0, 2.0 }} );
+			REQUIRE( output.size() == 3);		// still size 3 for the data returned but the extra element is set to zero
+			REQUIRE( output[0] == Approx(1.0) );
+			REQUIRE( output[1] == Approx(2.0) );
+			REQUIRE( output[2] == 0.0 );
+		}
+		AND_WHEN( "position is expressed as cart2d" ) {
+			// same as 'xy'
+			auto output = xyConverter( {{ 1.0, 2.0 }}, Dataspace::PositionUnit::cart2D);
+			REQUIRE( output.size() == 3);		// still size 3 for the data returned but the extra element is set to zero
+			REQUIRE( output[0] == Approx(1.0) );
+			REQUIRE( output[1] == Approx(2.0) );
+			REQUIRE( output[2] == 0.0 );
+		}
+		AND_WHEN( "position is expressed as xyz" ) {
+			// an extraneous z value is tossed-out
+			auto output = xyConverter( {{ 1.0, 2.0, 3.0 }}, Dataspace::PositionUnit::xyz);
+			REQUIRE( output.size() == 3);
+			REQUIRE( output[0] == Approx(1.0) );
+			REQUIRE( output[1] == Approx(2.0) );
+			REQUIRE( output[2] == 0.0 );
+		}
+		AND_WHEN( "position is expressed as cart3d" ) {
+			// same as 'xyz'
+			auto output = xyConverter( {{ 1.0, 2.0, 3.0 }}, Dataspace::PositionUnit::cart3D);
+			REQUIRE( output.size() == 3);
+			REQUIRE( output[0] == Approx(1.0) );
+			REQUIRE( output[1] == Approx(2.0) );
+			REQUIRE( output[2] == 0.0 );
+		}
+	}
+	
 }
 
 
