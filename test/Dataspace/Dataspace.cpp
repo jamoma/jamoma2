@@ -290,6 +290,60 @@ SCENARIO( "Position Dataspace is used with type `double`" ) {
 			REQUIRE( output[1] == Approx(2.0) );
 			REQUIRE( output[2] == 0.0 );
 		}
+		AND_WHEN( "position is expressed as aed" ) {
+			auto output = xyzConverter( {{ -90.0, 0.0, 2.0 }}, Dataspace::PositionUnit::aed);
+			REQUIRE( output.size() == 3);
+			REQUIRE( output[0] == Approx(-2.0) );
+			REQUIRE( output[1] == Approx( 0.0) );
+			REQUIRE( output[2] == Approx( 0.0) );
+		}
+		
+		AND_WHEN( "position is expressed as spherical" ) {
+			// same as 'aed'
+			auto output = xyzConverter( {{ -90.0, 0.0, 2.0 }}, Dataspace::PositionUnit::spherical);
+			REQUIRE( output.size() == 3);
+			REQUIRE( output[0] == Approx(-2.0) );
+			REQUIRE( output[1] == Approx( 0.0) );
+			REQUIRE( output[2] == Approx( 0.0) );
+		}
+		AND_WHEN( "position is expressed as ad" ) {
+			// an extraneous z value is tossed-out
+			auto output = xyzConverter( {{ -45.0, 2.0, 7.0 }}, Dataspace::PositionUnit::ad);
+			REQUIRE( output.size() == 3);
+			REQUIRE( output[0] == Approx(-sqrt(2.0)) );
+			REQUIRE( output[1] == Approx( sqrt(2.0)) );
+			REQUIRE( output[2] == Approx( 0.0) );
+		}
+		AND_WHEN( "position is expressed as polar" ) {
+			// same as 'ad', an extraneous z value is tossed-out
+			auto output = xyzConverter( {{ -45.0, 2.0, 7.0 }}, Dataspace::PositionUnit::polar);
+			REQUIRE( output.size() == 3);
+			REQUIRE( output[0] == Approx(-sqrt(2.0)) );
+			REQUIRE( output[1] == Approx( sqrt(2.0)) );
+			REQUIRE( output[2] == Approx( 0.0) );
+		}
+		AND_WHEN( "position is expressed as OpenGL" ) {
+			auto output = xyzConverter( {{ 1.0, 3.0, 2.0 }}, Dataspace::PositionUnit::openGL);
+			REQUIRE( output.size() == 3);
+			REQUIRE( output[0] == Approx(  1.0) );
+			REQUIRE( output[1] == Approx( -2.0) );
+			REQUIRE( output[2] == Approx(  3.0) );
+		}
+		AND_WHEN( "position is expressed as cylindrical" ) {
+			auto output = xyzConverter( {{ 2.0, 45.0, 3.0 }}, Dataspace::PositionUnit::cylindrical);
+			REQUIRE( output.size() == 3);
+			REQUIRE( output[0] == Approx( sqrt(2.0)) );
+			REQUIRE( output[1] == Approx( sqrt(2.0)) );
+			REQUIRE( output[2] == Approx( 3.0) );
+		}
+		AND_WHEN( "position is expressed as daz" ) {
+			// same as 'spherical'
+			auto output = xyzConverter( {{ 2.0, 45.0, 3.0 }}, Dataspace::PositionUnit::daz);
+			REQUIRE( output.size() == 3);
+			REQUIRE( output[0] == Approx( sqrt(2.0)) );
+			REQUIRE( output[1] == Approx( sqrt(2.0)) );
+			REQUIRE( output[2] == Approx( 3.0) );
+		}
 	}
 	
 	GIVEN( "Conversion is to unit `xy`" ) {
