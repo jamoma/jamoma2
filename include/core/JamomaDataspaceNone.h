@@ -39,6 +39,10 @@ namespace Jamoma {
 			{
 				return input;
 			}
+
+			size_t dimensions() const {
+				return 1;
+			}
 		};
 		
 		
@@ -68,6 +72,11 @@ namespace Jamoma {
 				return x;
 			}
 			
+			/// Query for the number of elements represented by the unit
+			size_t dimensions() {
+				return 1;
+			}
+
 			// TODO: should the above be T& references to make sure we don't copy anything?
 
 		};

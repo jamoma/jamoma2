@@ -46,6 +46,10 @@ namespace Jamoma {
 			{
 				return input;
 			}
+
+			size_t dimensions() const {
+				return 1;
+			}
 		};
 		
 		
@@ -60,6 +64,10 @@ namespace Jamoma {
 			T fromNeutral(const T& input) const
 			{
 				return input * 3.6;
+			}
+
+			size_t dimensions() const {
+				return 1;
 			}
 		};
 		
@@ -76,6 +84,10 @@ namespace Jamoma {
 			{
 				return input * 2.236936;
 			}
+
+			size_t dimensions() const {
+				return 1;
+			}
 		};
 		
 		
@@ -91,6 +103,10 @@ namespace Jamoma {
 			{
 				return input * 3.2808399;
 			}
+
+			size_t dimensions() const {
+				return 1;
+			}
 		};
 		
 		
@@ -105,6 +121,10 @@ namespace Jamoma {
 			T fromNeutral(const T& input) const
 			{
 				return input * 1.943844;	//not exact
+			}
+
+			size_t dimensions() const {
+				return 1;
 			}
 		};
 		
@@ -152,6 +172,10 @@ namespace Jamoma {
 				return (*this)( x, (SpeedUnit)Hash(str) );
 			}
 
+			/// Query for the number of elements represented by the unit
+			size_t dimensions() {
+				return mUnit->dimensions();
+			}
 		};
 	
 	} // namespace Dataspace

@@ -54,6 +54,10 @@ namespace Jamoma {
 			{
 				return input;
 			}
+
+			size_t dimensions() const {
+				return 1;
+			}
 		};
 		
 		
@@ -70,6 +74,10 @@ namespace Jamoma {
 			{
 				// taken from http://labrosa.ee.columbia.edu/matlab/rastamat/hz2bark.m
 				return (6 * asinh(1.0 / (double(input) * 600.0)));
+			}
+
+			size_t dimensions() const {
+				return 1;
 			}
 		};
 		
@@ -88,6 +96,10 @@ namespace Jamoma {
 				//TODO: prevent division with zero
 				return 60.0 / double(input);
 			}
+
+			size_t dimensions() const {
+				return 1;
+			}
 		};
 		
 		
@@ -102,6 +114,10 @@ namespace Jamoma {
 			T fromNeutral(const T& input) const
 			{
 				return 6900.0 + 1200.0 * log(1.0/(440.0*double(input)))/log(2.0);
+			}
+
+			size_t dimensions() const {
+				return 1;
 			}
 		};
 		
@@ -120,6 +136,10 @@ namespace Jamoma {
 				//TODO: prevent division with zero
 				return 1.0 / double(input);
 			}
+
+			size_t dimensions() const {
+				return 1;
+			}
 		};
 		
 		
@@ -136,6 +156,10 @@ namespace Jamoma {
 			{
 				// HTK-code from http://labrosa.ee.columbia.edu/matlab/rastamat/hz2mel.m
 				return 2595.0 * log10(1+1.0/(double(input)*700.0));
+			}
+
+			size_t dimensions() const {
+				return 1;
 			}
 		};
 		
@@ -154,6 +178,10 @@ namespace Jamoma {
 				// The above can be transformed to the slightly more optimised:
 				return 69.0 - 12.0 * log(440.0*double(input))/log(2.0);
 			}
+
+			size_t dimensions() const {
+				return 1;
+			}
 		};
 		
 		
@@ -168,6 +196,10 @@ namespace Jamoma {
 			T fromNeutral(const T& input) const
 			{
 				return input * 1000.0;
+			}
+
+			size_t dimensions() const {
+				return 1;
 			}
 		};
 		
@@ -187,6 +219,10 @@ namespace Jamoma {
 				assert(false); // Need to get global sample rate
 				double sampleRate = 96000;
 				return (input) * sampleRate;
+			}
+
+			size_t dimensions() const {
+				return 1;
 			}
 		};
 		
@@ -220,6 +256,10 @@ namespace Jamoma {
 	
 				// Optimized in a similar way to the above:
 				return pow(2.0, 69./12.) / (440.0*double(input));
+			}
+
+			size_t dimensions() const {
+				return 1;
 			}
 		};
 		
@@ -273,6 +313,10 @@ namespace Jamoma {
 				return (*this)( x, (TimeUnit)Hash(str) );
 			}
 
+			/// Query for the number of elements represented by the unit
+			size_t dimensions() {
+				return mUnit->dimensions();
+			}
 		};
 	
 	} // namespace Dataspace

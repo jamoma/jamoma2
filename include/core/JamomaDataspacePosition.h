@@ -53,6 +53,10 @@ namespace Jamoma {
 			PositionValue<T> fromNeutral(const PositionValue<T>& input) const override {
 				return input;
 			}
+
+			size_t dimensions() const override {
+				return 3;
+			}
 		};
 		
 
@@ -73,6 +77,10 @@ namespace Jamoma {
 			
 			PositionValue<T> fromNeutral(const PositionValue<T>& input) const override {
 				return {{ input[0], input[1], 0.0 }};
+			}
+
+			size_t dimensions() const override {
+				return 2;
 			}
 		};
 		
@@ -98,6 +106,11 @@ namespace Jamoma {
 					atan2(input[2], sqrt(input[0] * input[0] + input[1] * input[1])) * kRadToDeg,
 					sqrt(input[0] * input[0] + input[1] * input[1] + input[2] * input[2])
 				}};
+			}
+
+
+			size_t dimensions() const override {
+				return 3;
 			}
 		};
 		
@@ -128,6 +141,10 @@ namespace Jamoma {
 					0.0
 				}};
 			}
+
+			size_t dimensions() const override {
+				return 2;
+			}
 		};
 		
 		
@@ -143,6 +160,10 @@ namespace Jamoma {
 			
 			PositionValue<T> fromNeutral(const PositionValue<T>& input) const override {
 				return {{ input[0], input[2], -input[1] }};
+			}
+
+			size_t dimensions() const override {
+				return 3;
 			}
 		};
 		
@@ -168,6 +189,10 @@ namespace Jamoma {
 					atan2(input[0], input[1]) * kRadToDeg,				// a
 					input[2]											// z
 				}};
+			}
+
+			size_t dimensions() const override {
+				return 3;
 			}
 		};
 
@@ -218,6 +243,11 @@ namespace Jamoma {
 			PositionValue<T> operator()(const PositionValue<T> x, const char* str)
 			{
 				return (*this)( x, (PositionUnit)Hash(str) );
+			}
+
+			/// Query for the number of elements represented by the unit
+			size_t dimensions() {
+				return mUnit->dimensions();
 			}
 
 		};

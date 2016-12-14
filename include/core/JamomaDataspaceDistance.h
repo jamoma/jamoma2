@@ -47,6 +47,10 @@ namespace Jamoma {
 			{
 				return input;
 			}
+
+			size_t dimensions() const {
+				return 1;
+			}
 		};
 		
 		
@@ -61,6 +65,10 @@ namespace Jamoma {
 			T fromNeutral(const T& input) const
 			{
 				return input * 100.0;
+			}
+
+			size_t dimensions() const {
+				return 1;
 			}
 		};
 		
@@ -77,6 +85,10 @@ namespace Jamoma {
 			{
 				return input * 39.37;
 			}
+
+			size_t dimensions() const {
+				return 1;
+			}
 		};
 		
 		
@@ -92,6 +104,10 @@ namespace Jamoma {
 			T fromNeutral(const T& input) const
 			{
 				return input * 3.2808399;
+			}
+
+			size_t dimensions() const {
+				return 1;
 			}
 		};
 		
@@ -139,6 +155,10 @@ namespace Jamoma {
 				return (*this)( x, (DistanceUnit)Hash(str) );
 			}
 
+			/// Query for the number of elements represented by the unit
+			size_t dimensions() {
+				return mUnit->dimensions();
+			}
 		};
 	
 	} // namespace Dataspace

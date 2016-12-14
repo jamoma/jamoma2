@@ -44,6 +44,10 @@ namespace Jamoma {
 			{
 				return input;
 			}
+
+			size_t dimensions() const {
+				return 1;
+			}
 		};
 		
 		
@@ -73,6 +77,10 @@ namespace Jamoma {
 				else
 					return 100 * exp((log(temp/96. + 1.))/kGainMidiPowPow2);
 			}
+
+			size_t dimensions() const {
+				return 1;
+			}
 		};
 		
 		
@@ -90,6 +98,10 @@ namespace Jamoma {
 			T fromNeutral(const T& input) const
 			{
 				return std::max(log10(input) * 20.0, -96.);
+			}
+
+			size_t dimensions() const {
+				return 1;
 			}
 		};
 		
@@ -149,6 +161,10 @@ namespace Jamoma {
 				return (*this)( x, (GainUnit)Hash(str) );
 			}
 
+			/// Query for the number of elements represented by the unit
+			size_t dimensions() {
+				return mUnit->dimensions();
+			}
 		};
 	
 	} // namespace Dataspace

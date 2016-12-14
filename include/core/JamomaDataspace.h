@@ -22,6 +22,7 @@ namespace Jamoma {
 		public:
 			virtual T toNeutral(const T& input) const = 0;
 			virtual T fromNeutral(const T& input) const = 0;
+			virtual size_t dimensions() const = 0;
 		};
 		
 		

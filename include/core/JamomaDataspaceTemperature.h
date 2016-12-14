@@ -45,6 +45,10 @@ namespace Jamoma {
 			{
 				return input;
 			}
+
+			size_t dimensions() const {
+				return 1;
+			}
 		};
 		
 		
@@ -60,6 +64,10 @@ namespace Jamoma {
 			{
 				return input - 273.15;
 			}
+
+			size_t dimensions() const {
+				return 1;
+			}
 		};
 		
 		
@@ -74,6 +82,10 @@ namespace Jamoma {
 			T fromNeutral(const T& input) const
 			{
 				return input * 1.8 - 459.67;
+			}
+
+			size_t dimensions() const {
+				return 1;
 			}
 		};
 		
@@ -119,6 +131,10 @@ namespace Jamoma {
 				return (*this)( x, (TemperatureUnit)Hash(str) );
 			}
 
+			/// Query for the number of elements represented by the unit
+			size_t dimensions() {
+				return mUnit->dimensions();
+			}
 		};
 	
 	} // namespace Dataspace
