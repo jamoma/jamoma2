@@ -372,6 +372,15 @@ SCENARIO( "Position Dataspace is used with type `double`" ) {
 			REQUIRE( output[0] == Approx(1.0) );
 			REQUIRE( output[1] == Approx(2.0) );
 			REQUIRE( output[2] == 0.0 );
+
+			// demonstrate returning to a type containing 2 values instead of 3
+			std::array<double,3>	xyz_coord {{ 3.0, 4.0, 5.0 }};
+			std::array<double,2>	xy_coord;
+
+			output = xyConverter( xyz_coord );
+			for (auto i=0; i < xyConverter.dimensions(); ++i) {
+				xy_coord.at(i) = output[i];	// use at() method instead of [] array notation because at() performs bounds-checking
+			}
 		}
 		AND_WHEN( "position is expressed as cart3d" ) {
 			// same as 'xyz'
@@ -443,7 +452,8 @@ SCENARIO( "Position Dataspace is used with type `double`" ) {
 		WHEN( "unspecified unit is assumed to be the native unit (xyz)" ) {
 			/* TODO:
 			 https://github.com/jamoma/jamoma2/issues/102
-			 The below assertions fails. It seems to assume that the input unit is aed rather than xyz, and converts from aed to neutral rather than from xyz. The above tests for conversion to 'xy' seem to indicate that this is desired behaviour, but this design need to be reviewed.
+			 The below assertions fails. It seems to assume that the input unit is aed rather than xyz, and converts from aed to neutral rather than from xyz. 
+			 The above tests for conversion to 'xy' seem to indicate that this is desired behaviour, but this design need to be reviewed.
 			 Commenting out the below assetsions until this issue has been resolved.
 			 */
 			auto output = adConverter( {{ -3.0, 0.0, 0.0 }} );
