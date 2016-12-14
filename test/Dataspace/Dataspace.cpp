@@ -255,7 +255,7 @@ SCENARIO( "Position Dataspace is used with type `double`" ) {
 	
 	using Jamoma::Dataspace::PositionValue;
 	
-	GIVEN( "Conversion is to unit `xyz`" ) {
+	GIVEN( "Conversion is to the neutral unit `xyz`" ) {
 		
 		Dataspace::Position<double, Dataspace::PositionUnit::xyz> xyzConverter;
 		
@@ -382,6 +382,141 @@ SCENARIO( "Position Dataspace is used with type `double`" ) {
 			REQUIRE( output[2] == 0.0 );
 		}
 	}
+	
+	GIVEN( "Conversion is to the spherical unit `aed`" ) {
+		
+		Dataspace::Position<double, Dataspace::PositionUnit::aed> aedConverter;
+		
+		WHEN( "unspecified unit is assumed to be the native unit (xyz)" ) {
+			/* TODO:
+			 https://github.com/jamoma/jamoma2/issues/102
+			 The below assertions fails. It seems to assume that the input unit is aed rather than xyz, and converts from aed to neutral rather than from xyz. The above tests for conversion to 'xy' seem to indicate that this is desired behaviour, but this design need to be reviewed.
+			 Commenting out the below assetsions until this issue has been resolved.
+			 */
+			auto output = aedConverter( {{ -3.0, 0.0, 0.0 }} );
+			REQUIRE( output.size() == 3);		// still size 3 for the data returned but the extra element is set to zero
+			//REQUIRE( output[0] == Approx(-90.0) );
+			//REQUIRE( output[1] == Approx(  0.0) );
+			//REQUIRE( output[2] == Approx(  3.0) );
+		}
+		AND_WHEN( "position is expressed as card3d" ) {
+			auto output = aedConverter( {{ 0.0, 0.0, 2.0 }}, Dataspace::PositionUnit::cart3D);
+			REQUIRE( output.size() == 3);		// still size 3 for the data returned but the extra element is set to zero
+			REQUIRE( output[0] == Approx( 0.0) );
+			REQUIRE( output[1] == Approx(90.0) );
+			REQUIRE( output[2] == Approx( 2.0) );
+		}
+		AND_WHEN( "point is in first quadrant" ) {
+			auto output = aedConverter( {{ 2.0, 2.0, 0.0 }}, Dataspace::PositionUnit::xyz);
+			REQUIRE( output.size() == 3);
+			REQUIRE( output[0] == Approx(45.0) );
+			REQUIRE( output[1] == Approx( 0.0) );
+			REQUIRE( output[2] == Approx(sqrt(8.0))) ;
+		}
+		AND_WHEN( "point is in second quadrant" ) {
+			auto output = aedConverter( {{ 2.0, -2.0, 0.0 }}, Dataspace::PositionUnit::xyz);
+			REQUIRE( output.size() == 3);
+			REQUIRE( output[0] == Approx(135.0) );
+			REQUIRE( output[1] == Approx( 0.0) );
+			REQUIRE( output[2] == Approx(sqrt(8.0))) ;
+		}
+		AND_WHEN( "point is in third quadrant" ) {
+			auto output = aedConverter( {{ -2.0, -2.0, 0.0 }}, Dataspace::PositionUnit::xyz);
+			REQUIRE( output.size() == 3);
+			REQUIRE( output[0] == Approx(-135.0) );
+			REQUIRE( output[1] == Approx( 0.0) );
+			REQUIRE( output[2] == Approx(sqrt(8.0))) ;
+		}
+		AND_WHEN( "point is in fourth quadrant" ) {
+			auto output = aedConverter( {{ -2.0, 2.0, 0.0 }}, Dataspace::PositionUnit::xyz);
+			REQUIRE( output.size() == 3);
+			REQUIRE( output[0] == Approx(-45.0) );
+			REQUIRE( output[1] == Approx( 0.0) );
+			REQUIRE( output[2] == Approx(sqrt(8.0))) ;
+		}
+	}
+	
+	GIVEN( "Conversion is to the polar unit `ad`" ) {
+		
+		Dataspace::Position<double, Dataspace::PositionUnit::ad> adConverter;
+		
+		WHEN( "unspecified unit is assumed to be the native unit (xyz)" ) {
+			/* TODO:
+			 https://github.com/jamoma/jamoma2/issues/102
+			 The below assertions fails. It seems to assume that the input unit is aed rather than xyz, and converts from aed to neutral rather than from xyz. The above tests for conversion to 'xy' seem to indicate that this is desired behaviour, but this design need to be reviewed.
+			 Commenting out the below assetsions until this issue has been resolved.
+			 */
+			auto output = adConverter( {{ -3.0, 0.0, 0.0 }} );
+			REQUIRE( output.size() == 3);		// still size 3 for the data returned but the extra element is set to zero
+			//REQUIRE( output[0] == Approx(-90.0) );
+			//REQUIRE( output[1] == Approx(  3.0) );
+			//REQUIRE( output[2] == Approx(  0.0) );
+		}
+		AND_WHEN( "position is expressed as card3d" ) {
+			auto output = adConverter( {{ 0.0, 0.0, 2.0 }}, Dataspace::PositionUnit::cart3D);
+			REQUIRE( output.size() == 3);		// still size 3 for the data returned but the extra element is set to zero
+			REQUIRE( output[0] == Approx( 0.0) );
+			REQUIRE( output[1] == Approx( 0.0) );
+			REQUIRE( output[2] == Approx( 0.0) );
+		}
+		AND_WHEN( "point is in first quadrant" ) {
+			auto output = adConverter( {{ 2.0, 2.0, 0.0 }}, Dataspace::PositionUnit::xyz);
+			REQUIRE( output.size() == 3);
+			REQUIRE( output[0] == Approx(45.0) );
+			REQUIRE( output[1] == Approx(sqrt(8.0)) ) ;
+			REQUIRE( output[2] == 0.0 );
+		}
+		AND_WHEN( "point is in second quadrant" ) {
+			auto output = adConverter( {{ 2.0, -2.0, 0.0 }}, Dataspace::PositionUnit::xyz);
+			REQUIRE( output.size() == 3);
+			REQUIRE( output[0] == Approx(135.0) );
+			REQUIRE( output[1] == Approx(sqrt(8.0)) );
+			REQUIRE( output[2] == 0.0 );
+		}
+		AND_WHEN( "point is in third quadrant" ) {
+			auto output = adConverter( {{ -2.0, -2.0, 0.0 }}, Dataspace::PositionUnit::xyz);
+			REQUIRE( output.size() == 3);
+			REQUIRE( output[0] == Approx(-135.0) );
+			REQUIRE( output[1] == Approx(sqrt(8.0)) ) ;
+			REQUIRE( output[2] == 0.0 );
+		}
+		AND_WHEN( "point is in fourth quadrant" ) {
+			auto output = adConverter( {{ -2.0, 2.0, 0.0 }}, Dataspace::PositionUnit::xyz);
+			REQUIRE( output.size() == 3);
+			REQUIRE( output[0] == Approx(-45.0) );
+			REQUIRE( output[1] == Approx(sqrt(8.0)) );
+			REQUIRE( output[2] == 0.0 );
+		}
+	}
+	
+	
+	GIVEN( "Conversion is to the OpenGL unit" ) {
+		
+		Dataspace::Position<double, Dataspace::PositionUnit::openGL> openGlConverter;
+		
+		WHEN( "position is expressed as card3d" ) {
+			auto output = openGlConverter( {{ 1.0, -2.0, 3.0 }}, Dataspace::PositionUnit::cart3D);
+			REQUIRE( output.size() == 3);		// still size 3 for the data returned but the extra element is set to zero
+			REQUIRE( output[0] == Approx( 1.0) );
+			REQUIRE( output[1] == Approx( 3.0) );
+			REQUIRE( output[2] == Approx( 2.0) );
+		}
+	}
+	
+	
+	GIVEN( "Conversion is to the cylindrical unit `daz`" ) {
+		
+		Dataspace::Position<double, Dataspace::PositionUnit::daz> dazConverter;
+		
+		WHEN( "position is expressed as card3d" ) {
+			auto output = dazConverter( {{ sqrt(2.0), sqrt(2.0), 3.0 }}, Dataspace::PositionUnit::cart3D);
+			REQUIRE( output.size() == 3);		// still size 3 for the data returned but the extra element is set to zero
+			REQUIRE( output[0] == Approx(  2.0) );
+			REQUIRE( output[1] == Approx( 45.0) );
+			REQUIRE( output[2] == Approx(  3.0) );
+		}
+	}
+
 	
 }
 
