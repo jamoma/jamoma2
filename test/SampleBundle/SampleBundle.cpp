@@ -68,7 +68,7 @@ namespace Jamoma {
             my_sync16.frameCount = 16;
             
             my_sync16.sampleRate = 48000;
-            my_sync16.phase = 0.0;
+            my_sync16.initialphase = 0.0;
             my_sync16.frequency = 1.0;
             
             // process vector 1 and stash a value

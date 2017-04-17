@@ -34,12 +34,12 @@ namespace Jamoma {
 		static constexpr auto tags = { "dspGeneratorLib", "audio", "generator", "oscillator" };
 		
 
-		Parameter<double, Limit::Wrap<double>, NativeUnit::None<double>>	phase		= { this,
-																						"phase",
+		Parameter<double, Limit::Wrap<double>, NativeUnit::None<double>>	initialphase		= { this,
+																						"initialphase",
 																						0.0,
 																						Range<double>(0.0, 1.0),
 																						Setter([this]{
-																							mPhase = phase;
+																							mPhase = initialphase;
 																						})
 		};
 		
