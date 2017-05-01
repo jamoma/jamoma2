@@ -11,8 +11,8 @@
 
 #pragma once
 
-#include "JamomaAudioObject.h"
-#include "JamomaLowpassOnepole.h"
+#include "../core/JamomaAudioObject.h"
+#include "../objects/JamomaLowpassOnePole.h"
 
 namespace Jamoma {
 

@@ -13,9 +13,9 @@
 
 #pragma once
 
-#include "JamomaAudioObject.h"
-#include "JamomaDcblock.h"
-#include "JamomaGain.h"
+#include "../core/JamomaAudioObject.h"
+#include "../objects/JamomaDcblock.h"
+#include "../objects/JamomaGain.h"
 
 
 namespace Jamoma {
@@ -40,8 +40,8 @@ namespace Jamoma {
 		static constexpr Classname classname = { "limiter" };
 		static constexpr auto tags = { "dspEffectsLib", "audio", "processor", "dynamics", "limiter" };
 
-		AdaptingSampleBundle	mLookaheadBuffer;			///< keep a lookahead buffer for each channel
-		AdaptingSampleBundle	mGain;						///< keep a gain for each channel
+		AdaptingSampleBundle	mLookaheadBuffer { this };			///< keep a lookahead buffer for each channel
+		AdaptingSampleBundle	mGain { this };						///< keep a gain for each channel
 		
 		Dcblock					mDcblockerObject;
 		Gain					mPreampObject;
@@ -96,7 +96,7 @@ namespace Jamoma {
 		/** number of samples by which to look forward. */
 		Parameter<int>								lookahead = {this, "lookahead", 100,
 																Setter([this]{
-																	lookahead = Clip<int>(lookahead, 1, maxBufferSize-1);
+																	lookahead.value() = Clip<int>(lookahead, 1, maxBufferSize-1);
 																	lookaheadInv = 1.0 / double(lookahead);
 																})
 		};

@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include "JamomaAudioObject.h"
+#include "../core/JamomaAudioObject.h"
 
 
 namespace Jamoma {

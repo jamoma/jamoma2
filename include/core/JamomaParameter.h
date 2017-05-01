@@ -190,6 +190,11 @@ namespace Jamoma {
 		}
 
 
+		T& value() {
+			return mValue;
+		}
+
+
 	private:
 		
 		/** worker fn for setters: naked values have no dataspace unit specified, so set them directly

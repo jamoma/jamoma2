@@ -11,8 +11,8 @@
 
 #pragma once
 
-#include "JamomaAudioObject.h"
-#include "third-party/mersenne/MersenneTwister.h"
+#include "../core/JamomaAudioObject.h"
+#include "../third-party/mersenne/MersenneTwister.h"
 
 
 namespace Jamoma {
